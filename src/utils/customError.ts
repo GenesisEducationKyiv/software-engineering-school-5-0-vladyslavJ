@@ -1,5 +1,6 @@
 export class HttpError extends Error {
-	constructor(message, status = 500) {
+	status: number;
+	constructor(message: string, status = 500) {
 		super(message);
 		this.name = 'HttpError';
 		this.status = status;
@@ -7,7 +8,8 @@ export class HttpError extends Error {
 }
 
 export class ConfigError extends Error {
-	constructor(message, status = 500) {
+	status: number;
+	constructor(message: string, status = 500) {
 		super(message);
 		this.name = 'ConfigError';
 		this.status = status;
