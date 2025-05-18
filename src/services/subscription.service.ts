@@ -1,3 +1,5 @@
+// src/services/subscription.service.ts
+
 import { randomBytes } from 'crypto';
 import { HttpError } from '../utils/customError';
 import { subscriptionRepository } from '../repositories/subscription.repository';

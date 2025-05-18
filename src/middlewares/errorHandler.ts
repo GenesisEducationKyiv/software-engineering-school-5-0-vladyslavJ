@@ -1,3 +1,5 @@
+// src/middlewares/errorHandler.ts
+
 import { Request, Response, NextFunction } from 'express';
 import { HttpError, ConfigError } from '../utils/customError';
 

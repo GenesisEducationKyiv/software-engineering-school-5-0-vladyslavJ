@@ -1,3 +1,5 @@
+// src/models/subscription.entity.ts
+
 import {
 	Entity,
 	PrimaryGeneratedColumn,

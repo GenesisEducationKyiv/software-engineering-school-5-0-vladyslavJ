@@ -1,3 +1,5 @@
+// src/utils/templates.ts
+
 import ENV from '../config/env';
 import { WeatherDto } from '../dto/weather.dto';
 

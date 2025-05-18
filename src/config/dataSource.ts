@@ -1,7 +1,7 @@
+// src/config/dataSource.ts
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
 import ENV from './env';
-import { Subscription } from '../models/subscription.entity.js';
 
 export const AppDataSource = new DataSource({
 	type: 'postgres',
@@ -10,12 +10,8 @@ export const AppDataSource = new DataSource({
 	username: ENV.DB_USER,
 	password: ENV.DB_PASSWORD,
 	database: ENV.DB_NAME,
-	entities: [Subscription],
-	migrations: [
-		process.env.NODE_ENV === 'production'
-			? 'dist/migrations/*'
-			: 'src/migrations/*',
-	],
+	entities: [__dirname + '/../models/*.entity.{js,ts}'],
+	migrations: ['dist/migrations/*.js'],
 	synchronize: false,
 	logging: false,
 });

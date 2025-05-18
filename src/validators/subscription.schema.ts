@@ -1,3 +1,5 @@
+// src/validators/subscription.schema.ts
+
 import Joi from 'joi';
 
 export const subscriptionBodySchema = Joi.object({

@@ -1,3 +1,5 @@
+// src/migrations/1747410342116-CreateSubscriptionsTable.ts
+
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class CreateSubscriptionsTable1747410342116

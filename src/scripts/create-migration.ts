@@ -1,3 +1,5 @@
+// src/scripts/create-migration.ts
+
 import { writeFileSync, existsSync, mkdirSync } from 'fs';
 import { resolve, join } from 'path';
 

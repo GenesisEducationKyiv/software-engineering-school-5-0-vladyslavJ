@@ -1,3 +1,5 @@
+// src/routes/weather.routes.ts
+
 import { Router } from 'express';
 import { getWeather } from '../controllers/weather.controller';
 import { weatherQuerySchema } from '../validators/weather.schema';

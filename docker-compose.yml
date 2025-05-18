@@ -3,11 +3,11 @@ version: '3.8'
 services:
     api:
         build: .
-        restart: on-failure
+        restart: always
         ports:
             - '3000:3000'
         env_file:
-            - .env
+            - .env.docker
         depends_on:
             - db
             - redis
@@ -29,6 +29,17 @@ services:
         restart: always
         ports:
             - '${REDIS_PORT}:6379'
+
+    api-test:
+        build: .
+        command: npm run test:docker
+        env_file:
+            - .env.test.docker
+        depends_on:
+            - db
+            - redis
+        tty: true
+        stdin_open: true
 
 volumes:
     db-data:

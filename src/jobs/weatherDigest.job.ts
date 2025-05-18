@@ -1,3 +1,5 @@
+// src/jobs/weatherDigest.job.ts
+
 import { format } from 'date-fns';
 import WeatherService from '../services/weather.service';
 import { subscriptionRepository } from '../repositories/subscription.repository';

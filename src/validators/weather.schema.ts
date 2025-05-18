@@ -1,3 +1,5 @@
+// src/validators/weather.schema.ts
+
 import Joi from 'joi';
 
 export const weatherQuerySchema = Joi.object({

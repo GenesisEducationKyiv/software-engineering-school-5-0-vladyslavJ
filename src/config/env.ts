@@ -1,3 +1,4 @@
+// src/config/env.ts
 import 'dotenv/config';
 import { checkEnv } from '../utils/checkEnv';
 import { ConfigError } from '../utils/customError';
@@ -11,7 +12,6 @@ export interface EnvConfig {
 	DB_NAME: string;
 	DB_PASSWORD: string;
 	DB_PORT: number;
-	DB_URL?: string;
 	MAIL_HOST: string;
 	MAIL_PORT: number;
 	MAIL_SECURE: boolean;
@@ -19,7 +19,7 @@ export interface EnvConfig {
 	MAIL_PASS: string;
 	MAIL_FROM: string;
 	APP_BASE_URL: string;
-	REDIS_HOST: string; //localhost або redis
+	REDIS_HOST: string;
 	REDIS_PORT: number;
 	REDIS_TTL: number;
 }
@@ -33,7 +33,6 @@ const ENV: Readonly<EnvConfig> = Object.freeze({
 	DB_NAME: process.env.DB_NAME ?? '',
 	DB_PASSWORD: process.env.DB_PASSWORD ?? '',
 	DB_PORT: +(process.env.DB_PORT ?? 5432),
-	DB_URL: process.env.DB_URL,
 	MAIL_HOST: process.env.MAIL_HOST ?? 'smtp.gmail.com',
 	MAIL_PORT: +(process.env.MAIL_PORT ?? 465),
 	MAIL_SECURE: (process.env.MAIL_SECURE ?? 'true') === 'true',

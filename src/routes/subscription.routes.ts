@@ -1,3 +1,5 @@
+// src/routes/subscription.routes.ts
+
 import { Router } from 'express';
 import {
 	subscribe,
