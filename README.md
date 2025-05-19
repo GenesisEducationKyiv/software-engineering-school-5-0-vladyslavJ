@@ -8,15 +8,19 @@ A backend service with a minimal frontend, allowing users to subscribe for regul
 
 ```
 git clone https://github.com/vladyslavJ/genesis-se-school-5.git
+```
+```
 cd genesis-se-school-5
 ```
 
 ### 2. Environment Variables
 
-You need to configure two main environment files .env.docker and .env.test.docker. (for integration/E2E tests) Copy the provided examples and fill out required fields:
+You need to configure two main environment files **.env.docker** and **.env.test.docker** (for integration/E2E tests). Copy the provided examples and fill out required fields:
 
 ```
 cp .env.docker.example .env.docker
+```
+```
 cp .env.test.docker.example .env.test.docker
 ```
 
@@ -43,7 +47,7 @@ docker-compose up --build
 ### 5. Run tests
 
 ```
-docker-compose run --rm api-test
+docker-compose --profile test up api-test
 ```
 
 -   Runs integration and end-to-end tests inside a Docker container.
