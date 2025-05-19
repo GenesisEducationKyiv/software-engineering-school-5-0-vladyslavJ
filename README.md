@@ -1,80 +1,95 @@
-# README
+# Weather Forecast API
 
-This document explains how to run the Weather API in Docker containers using Docker Compose.
+A backend service with a minimal frontend, allowing users to subscribe for regular weather updates (hourly or daily) by city. Built with TypeScript, Node.js, Express, PostgreSQL, TypeORM, Redis, and features Swagger UI for API documentation and testing.
 
-## Prerequisites
+## 🚀 Quick Start
 
--   Docker and Docker Compose installed
--   The project contains a `Dockerfile` and `docker-compose.yml` in the root directory
+### 1. Clone the repository
 
-## 1. Environment Configuration (.env)
-
-In the project root, create a file named `.env` with the following variables:
-
-```ini
-PORT=3000
-
-WEATHER_API_KEY=your_weatherapi_key
-WEATHER_BASE_URL=https://api.weatherapi.com/v1
-
-DB_USER=postgres
-DB_PASSWORD=postgres
-DB_HOST=db
-DB_NAME=WeatherAPI
-DB_PORT=5432
-
-MAIL_HOST=smtp.gmail.com
-MAIL_PORT=465
-MAIL_SECURE=true
-MAIL_USER=your_email_username
-MAIL_PASS=your_email_password
-MAIL_FROM=Weather API <no-reply@weatherapi.app>
-
-APP_BASE_URL=http://localhost:3000
-
-REDIS_HOST=redis
-REDIS_PORT=6379
-REDIS_TTL=300
+```
+git clone https://github.com/vladyslavJ/genesis-se-school-5.git
+cd genesis-se-school-5
 ```
 
-## 2. Build and Start Services
+### 2. Environment Variables
 
-From the project root, run:
+You need to configure two main environment files .env.docker and .env.test.docker. (for integration/E2E tests) Copy the provided examples and fill out required fields:
 
-```bash
-docker-compose up --build -d
+```
+cp .env.docker.example .env.docker
+cp .env.test.docker.example .env.test.docker
 ```
 
-## 3. Verify the Setup
+**How to fill:**
 
-1. **Check API logs**
+-   `WEATHER_API_KEY`: [Get your API key here](https://www.weatherapi.com/).
+-   `MAIL_USER`/`MAIL_PASS`: Use Gmail and [set up an App Password](https://support.google.com/accounts/answer/185833).
+-   `APP_BASE_URL`: Public URL of your backend (for local: `http://localhost:3000`).
 
-    ```bash
-    docker-compose logs -f api
-    ```
+### 3. Run the project in Docker
 
-    Confirm that migrations ran successfully and the server started without errors.
-
-2. **Test Endpoints (Postman or curl)**
-
-    - GET `http://localhost:3000/api/weather?city=Kyiv`
-    - POST `http://localhost:3000/api/subscribe`
-
-        ```json
-        {
-        	"email": "test@example.com",
-        	"city": "Kyiv",
-        	"frequency": "daily"
-        }
-        ```
-
-    - GET `http://localhost:3000/api/confirm/<token>`
-    - GET `http://localhost:3000/api/unsubscribe/<token>`
-
-## 4. Shutdown and Cleanup
-
-To stop and remove all containers, networks, and volumes:
-
-```bash
-docker-compose down
 ```
+docker-compose up --build
+```
+
+-   This starts 3 services: **api**, **db** (Postgres), and **redis**.
+-   All dependencies and database migrations will run automatically.
+
+### 4. Open in browser
+
+-   **Frontend (subscription form):** [http://localhost:3000/](http://localhost:3000/)
+-   **Swagger UI (API docs & testing):** [http://localhost:3000/api-docs](http://localhost:3000/api-docs)
+
+### 5. Run tests
+
+```
+docker-compose run --rm api-test
+```
+
+-   Runs integration and end-to-end tests inside a Docker container.
+
+## 📝 Project Logic
+
+-   **REST API** for subscribing to weather updates, confirming subscription, unsubscribing, and getting current weather.
+-   **Frontend**: A minimal HTML page (`public/html/index.html`) for users to subscribe with their email, city, and update frequency.
+-   **Subscription Flow**:
+
+    -   User submits email, city, and frequency.
+    -   Receives a confirmation email (with a styled template and a confirmation link).
+    -   After confirmation, receives weather digests at the chosen frequency.
+    -   Each digest contains a styled weather report and an unsubscribe link.
+
+-   **Weather data** is fetched from [weatherapi.com](https://www.weatherapi.com/) and cached in Redis.
+-   **Emails** are sent via SMTP (Gmail by default), using styled HTML templates for better user experience.
+-   **Background jobs** with cron:
+
+    -   Send hourly and daily digests to all confirmed subscribers.
+
+-   **Logs**:
+
+    -   All events and errors are logged both to the console and to files in the `logs/` directory.
+
+-   **API documentation** is available via Swagger UI.
+
+## 🛠️ Technologies Used
+
+-   **TypeScript, Node.js, Express**
+-   **PostgreSQL** with **TypeORM** (migrations auto-run)
+-   **Redis** for caching weather data
+-   **Nodemailer** for email notifications
+-   **Swagger UI** for interactive API documentation and testing
+-   **Jest** and **Supertest** for testing
+-   **Docker Compose** for easy local/production deployment
+
+## 📂 File/Folder Structure
+
+-   `src/` — main source code (controllers, services, models, routes, etc.)
+-   `public/` — static frontend files (HTML, CSS, JS)
+-   `logs/` — all runtime logs are stored here
+-   `docker-compose.yml`, `Dockerfile` — for containerization
+
+## ℹ️ Notes
+
+-   **First launch:** All database migrations are run automatically, and the API will be available at the specified port.
+-   **SMTP connection:** The server performs a healthcheck for the mail service and will auto-restart if connection fails.
+-   **For production:** Set secure and unique values for all secrets.
