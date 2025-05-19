@@ -2,19 +2,19 @@ import { checkEnv } from '../../utils/checkEnv';
 import { ConfigError } from '../../utils/customError';
 
 describe('checkEnv', () => {
-	it('кидає помилку, якщо значення undefined', () => {
+	it('throws if value is undefined', () => {
 		expect(() => checkEnv({ A: undefined }, ConfigError)).toThrow(
 			/A is undefined or empty/
 		);
 	});
 
-	it('кидає помилку, якщо значення пустий рядок', () => {
+	it('throws if value is an empty string', () => {
 		expect(() => checkEnv({ B: '' }, ConfigError)).toThrow(
 			/B is undefined or empty/
 		);
 	});
 
-	it('не кидає помилку, якщо все заповнено', () => {
+	it('does not throw if all values are set', () => {
 		expect(() => checkEnv({ C: 'ok', D: 1 }, ConfigError)).not.toThrow();
 	});
 });

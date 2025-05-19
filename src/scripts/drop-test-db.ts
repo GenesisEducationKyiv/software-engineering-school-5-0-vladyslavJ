@@ -1,4 +1,5 @@
 import { Client } from 'pg';
+import { logger } from '../utils/logger';
 
 const {
 	DB_USER = 'postgres',
@@ -27,9 +28,9 @@ async function dropTestDb() {
       WHERE datname = '${TEST_DB_NAME}' AND pid <> pg_backend_pid();
     `);
 		await client.query(`DROP DATABASE IF EXISTS "${TEST_DB_NAME}";`);
-		console.log(`Database "${TEST_DB_NAME}" dropped!`);
+		logger.info(`Database "${TEST_DB_NAME}" dropped!`);
 	} catch (err: any) {
-		console.error('Error dropping test database:', err.message || err);
+		logger.error('Error dropping test database:', err.message || err);
 		process.exit(1);
 	} finally {
 		await client.end();

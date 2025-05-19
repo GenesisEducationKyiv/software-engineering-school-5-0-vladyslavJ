@@ -3,6 +3,7 @@ import WeatherService from '../services/weather.service';
 import { subscriptionRepository } from '../repositories/subscription.repository';
 import { sendMail } from '../utils/mailer';
 import { digestTpl } from '../utils/templates';
+import { logger } from '../utils/logger';
 
 class WeatherDigestJob {
 	private static async process(frequency: 'hourly' | 'daily') {
@@ -23,13 +24,13 @@ class WeatherDigestJob {
 					),
 				});
 			} catch (err) {
-				console.error('[JOB] email send error', err);
+				logger.error('[JOB] email send error', err);
 			}
 		}
 	}
 
 	static async runHourly() {
-		console.log('[JOB] runHourly called at', new Date());
+		logger.log('[JOB] runHourly called at', new Date());
 		await this.process('hourly');
 	}
 	static async runDaily() {

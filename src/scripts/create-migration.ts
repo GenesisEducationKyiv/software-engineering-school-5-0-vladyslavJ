@@ -1,10 +1,11 @@
 import { writeFileSync, existsSync, mkdirSync } from 'fs';
 import { resolve, join } from 'path';
+import { logger } from '../utils/logger';
 
 const [, , rawName] = process.argv;
 
 if (!rawName) {
-	console.error('Using: npm run migration:create -- MigrationName');
+	logger.error('Using: npm run migration:create -- MigrationName');
 	process.exit(1);
 }
 
@@ -41,4 +42,4 @@ export class ${className} implements MigrationInterface {
 const filePath = join(migrationsDir, fileName);
 writeFileSync(filePath, content, { encoding: 'utf-8' });
 
-console.log(`Migration created: ${filePath}`);
+logger.info(`Migration created: ${filePath}`);

@@ -97,5 +97,3 @@ docker-compose --profile test up api-test
 -   **First launch:** All database migrations are run automatically, and the API will be available at the specified port.
 -   **SMTP connection:** The server performs a healthcheck for the mail service and will auto-restart if connection fails.
 -   **For production:** Set secure and unique values for all secrets.
-
-![CI/CD](https://github.com/<USER>/<REPO>/actions/workflows/ci.yml/badge.svg)

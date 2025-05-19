@@ -27,7 +27,7 @@ describe('Weather API (E2E)', () => {
 	});
 
 	describe('GET /weather', () => {
-		it('успіх: повертає дані про погоду', async () => {
+		it('success: returns weather data', async () => {
 			const maxRetries = 5;
 			let lastRes: any = null;
 
@@ -56,12 +56,12 @@ describe('Weather API (E2E)', () => {
 			expect(lastRes.status).toBe(200);
 		}, 25000);
 
-		it('400 якщо місто не передане', async () => {
+		it('400 if city is not provided', async () => {
 			const res = await request(app).get(`${base}/weather`);
 			expect(res.status).toBe(400);
 		});
 
-		it('404 якщо місто не знайдено', async () => {
+		it('404 if city not found', async () => {
 			const res = await request(app)
 				.get(`${base}/weather`)
 				.query({ city: 'FakeCityDoesNotExist12345' });
@@ -70,7 +70,7 @@ describe('Weather API (E2E)', () => {
 	});
 
 	describe('POST /subscribe', () => {
-		it('успіх: створює підписку', async () => {
+		it('success: creates subscription', async () => {
 			const res = await request(app)
 				.post(`${base}/subscribe`)
 				.send({ email, city, frequency });
@@ -85,7 +85,7 @@ describe('Weather API (E2E)', () => {
 			unsubscribeToken = sub?.unsubscribe_token ?? '';
 		});
 
-		it('409: не дозволяє повторно підписатись', async () => {
+		it('409: does not allow duplicate subscription', async () => {
 			const res = await request(app)
 				.post(`${base}/subscribe`)
 				.send({ email, city, frequency });
@@ -93,14 +93,14 @@ describe('Weather API (E2E)', () => {
 			expect(res.body.message).toMatch(/already subscribed/);
 		});
 
-		it('400: невалідний email', async () => {
+		it('400: invalid email', async () => {
 			const res = await request(app)
 				.post(`${base}/subscribe`)
 				.send({ email: 'bad', city, frequency });
 			expect(res.status).toBe(400);
 		});
 
-		it('400: невалідна частота', async () => {
+		it('400: invalid frequency', async () => {
 			const res = await request(app)
 				.post(`${base}/subscribe`)
 				.send({ email, city, frequency: 'hourlly' });
@@ -109,20 +109,20 @@ describe('Weather API (E2E)', () => {
 	});
 
 	describe('GET /confirm/:token', () => {
-		it('успіх: підтверджує підписку', async () => {
+		it('success: confirms subscription', async () => {
 			const res = await request(app).get(
 				`${base}/confirm/${confirmationToken}`
 			);
 			expect(res.status).toBe(200);
 			expect(res.body.message).toMatch(/confirmed/);
-			// Повторне підтвердження — теж успіх
+
 			const res2 = await request(app).get(
 				`${base}/confirm/${confirmationToken}`
 			);
 			expect(res2.status).toBe(200);
 		});
 
-		it('404: невалідний токен', async () => {
+		it('404: invalid token', async () => {
 			const res = await request(app).get(
 				`${base}/confirm/fake-invalid-token`
 			);
@@ -131,21 +131,20 @@ describe('Weather API (E2E)', () => {
 	});
 
 	describe('GET /unsubscribe/:token', () => {
-		it('успіх: видаляє підписку', async () => {
+		it('success: deletes subscription', async () => {
 			const res = await request(app).get(
 				`${base}/unsubscribe/${unsubscribeToken}`
 			);
 			expect(res.status).toBe(200);
 			expect(res.body.message).toMatch(/Unsubscribed/);
 
-			// Перевіряємо що справді видалено
 			const sub = await AppDataSource.getRepository(
 				Subscription
 			).findOneBy({ email, city, frequency });
 			expect(sub).toBeNull();
 		});
 
-		it('404: невалідний токен', async () => {
+		it('404: invalid token', async () => {
 			const res = await request(app).get(
 				`${base}/unsubscribe/fake-bad-token`
 			);

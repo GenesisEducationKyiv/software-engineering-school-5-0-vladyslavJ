@@ -1,5 +1,6 @@
 import nodemailer from 'nodemailer';
 import ENV from '../config/env';
+import { logger } from '../utils/logger';
 
 (async () => {
 	try {
@@ -10,10 +11,10 @@ import ENV from '../config/env';
 			auth: { user: ENV.MAIL_USER, pass: ENV.MAIL_PASS },
 		});
 		await transporter.verify();
-		console.log('SMTP OK');
+		logger.info('SMTP OK');
 		process.exit(0);
 	} catch (e) {
-		console.error('SMTP ERROR', e);
+		logger.error('SMTP ERROR', e);
 		process.exit(1);
 	}
 })();

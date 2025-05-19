@@ -1,4 +1,5 @@
 import { Client } from 'pg';
+import { logger } from '../utils/logger';
 
 const {
 	DB_USER = 'postgres',
@@ -26,14 +27,14 @@ async function createTestDb() {
 			`SELECT 1 FROM pg_database WHERE datname='${TEST_DB_NAME}';`
 		);
 		if ((check.rowCount ?? 0) > 0) {
-			console.log(`Database "${TEST_DB_NAME}" already exists!`);
+			logger.info(`Database "${TEST_DB_NAME}" already exists!`);
 			return;
 		}
 
 		await client.query(`CREATE DATABASE "${TEST_DB_NAME}";`);
-		console.log(`Database "${TEST_DB_NAME}" successfully created!`);
+		logger.info(`Database "${TEST_DB_NAME}" successfully created!`);
 	} catch (err: any) {
-		console.error('Error creating test database:', err.message || err);
+		logger.error('Error creating test database:', err.message || err);
 		process.exit(1);
 	} finally {
 		await client.end();

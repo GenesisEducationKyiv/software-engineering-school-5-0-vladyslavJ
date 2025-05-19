@@ -26,7 +26,7 @@ describe('SubscriptionRepository', () => {
 		await AppDataSource.getRepository(Subscription).delete({ email });
 	});
 
-	it('може створювати і знаходити підписку', async () => {
+	it('can create and find a subscription', async () => {
 		await subscriptionRepository.save({
 			email,
 			city,
@@ -46,7 +46,7 @@ describe('SubscriptionRepository', () => {
 		expect(found?.confirmed).toBe(false);
 	});
 
-	it('може підтвердити підписку', async () => {
+	it('can confirm a subscription', async () => {
 		await subscriptionRepository.save({
 			email,
 			city,
@@ -70,7 +70,7 @@ describe('SubscriptionRepository', () => {
 		expect(updated?.confirmed).toBe(true);
 	});
 
-	it('може видалити підписку', async () => {
+	it('can delete a subscription', async () => {
 		await subscriptionRepository.save({
 			email,
 			city,
