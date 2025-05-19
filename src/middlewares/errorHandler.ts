@@ -1,7 +1,6 @@
-// src/middlewares/errorHandler.ts
-
 import { Request, Response, NextFunction } from 'express';
 import { HttpError, ConfigError } from '../utils/customError';
+import { logger } from '../utils/logger';
 
 export const errorHandler = (
 	err: any,
@@ -10,6 +9,7 @@ export const errorHandler = (
 	_next: NextFunction
 ): void => {
 	if (err.isJoi) {
+		logger.warn(`Joi error: ${err.message}`);
 		res.status(400).json({ message: err.message });
 		return;
 	}
@@ -19,6 +19,6 @@ export const errorHandler = (
 		return;
 	}
 
-	console.error(err);
+	logger.error(err.stack || err);
 	res.status(500).json({ message: 'Internal Server Error' });
 };

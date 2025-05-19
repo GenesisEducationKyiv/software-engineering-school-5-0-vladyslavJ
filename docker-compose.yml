@@ -11,6 +11,11 @@ services:
         depends_on:
             - db
             - redis
+        healthcheck:
+            test: ['CMD', 'node', 'dist/scripts/healthcheck-mail.js']
+            interval: 30s
+            timeout: 5s
+            retries: 3
 
     db:
         image: postgres:14
@@ -40,6 +45,7 @@ services:
             - redis
         tty: true
         stdin_open: true
+        profiles: [test]
 
 volumes:
     db-data:

@@ -1,5 +1,3 @@
-// src/utils/checkEnv.ts
-
 export const checkEnv = <T extends Record<string, any>>(
 	env: T,
 	ErrorCtor: new (msg: string) => Error

@@ -1,4 +1,3 @@
-// src/dto/weather.dto.ts
 export class WeatherDto {
 	temperature: number;
 	humidity: number;

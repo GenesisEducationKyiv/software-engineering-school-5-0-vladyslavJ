@@ -1,4 +1,3 @@
-// src/tests/e2e/api.test.ts
 import request from 'supertest';
 import { AppDataSource } from '../../config/dataSource';
 import app from '../../app';
@@ -29,14 +28,33 @@ describe('Weather API (E2E)', () => {
 
 	describe('GET /weather', () => {
 		it('успіх: повертає дані про погоду', async () => {
-			const res = await request(app)
-				.get(`${base}/weather`)
-				.query({ city: 'Kyiv' });
-			expect(res.status).toBe(200);
-			expect(res.body).toHaveProperty('temperature');
-			expect(res.body).toHaveProperty('humidity');
-			expect(res.body).toHaveProperty('description');
-		}, 20_000);
+			const maxRetries = 5;
+			let lastRes: any = null;
+
+			for (let attempt = 1; attempt <= maxRetries; attempt++) {
+				const res = await request(app)
+					.get(`${base}/weather`)
+					.query({ city: 'Kyiv' });
+
+				if (res.status === 200) {
+					expect(res.body).toHaveProperty('temperature');
+					expect(res.body).toHaveProperty('humidity');
+					expect(res.body).toHaveProperty('description');
+					return;
+				}
+
+				lastRes = res;
+				console.warn(`Attempt ${attempt}: status ${res.status}`);
+
+				if (
+					(res.status !== 502 && res.status !== 504) ||
+					attempt === maxRetries
+				)
+					break;
+				await new Promise((r) => setTimeout(r, 1000));
+			}
+			expect(lastRes.status).toBe(200);
+		}, 25000);
 
 		it('400 якщо місто не передане', async () => {
 			const res = await request(app).get(`${base}/weather`);

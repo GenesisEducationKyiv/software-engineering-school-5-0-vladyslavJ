@@ -1,5 +1,3 @@
-// src/tests/unit/checkEnv.test.ts
-
 import { checkEnv } from '../../utils/checkEnv';
 import { ConfigError } from '../../utils/customError';
 

@@ -1,4 +1,3 @@
-// src/config/dataSource.ts
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
 import ENV from './env';

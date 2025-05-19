@@ -1,5 +1,3 @@
-// src/utils/mailer.ts
-
 import nodemailer, { Transporter } from 'nodemailer';
 import type SMTPTransport from 'nodemailer/lib/smtp-transport';
 import ENV from '../config/env';

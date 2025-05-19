@@ -3,12 +3,12 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Підписка на погодний дайджест</title>
+		<title>Weather digest subscription</title>
 		<link rel="stylesheet" href="styles.css" />
 	</head>
 	<body>
 		<main>
-			<h1>Підписка на погодний дайджест</h1>
+			<h1>Weather digest subscription</h1>
 			<form id="subscribeForm">
 				<label for="email">Email:</label>
 				<input
@@ -19,16 +19,16 @@
 					autocomplete="email"
 				/>
 
-				<label for="city">Місто:</label>
+				<label for="city">City:</label>
 				<input type="text" id="city" name="city" required />
 
-				<label for="frequency">Частота:</label>
+				<label for="frequency">Frequency:</label>
 				<select id="frequency" name="frequency" required>
-					<option value="hourly">Щогодини</option>
-					<option value="daily">Щодня</option>
+					<option value="hourly">Hourly</option>
+					<option value="daily">Daily</option>
 				</select>
 
-				<button type="submit">Підписатися</button>
+				<button type="submit">Subscribe</button>
 			</form>
 			<div id="result"></div>
 		</main>

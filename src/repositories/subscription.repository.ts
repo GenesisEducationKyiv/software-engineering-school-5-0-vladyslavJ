@@ -1,5 +1,3 @@
-// src/repositories/subscription.repository.ts
-
 import { AppDataSource } from '../config/dataSource';
 import { Subscription, Frequency } from '../models/subscription.entity';
 import { FindOptionsWhere } from 'typeorm';

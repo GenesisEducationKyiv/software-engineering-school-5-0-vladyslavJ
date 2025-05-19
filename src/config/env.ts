@@ -1,4 +1,3 @@
-// src/config/env.ts
 import 'dotenv/config';
 import { checkEnv } from '../utils/checkEnv';
 import { ConfigError } from '../utils/customError';

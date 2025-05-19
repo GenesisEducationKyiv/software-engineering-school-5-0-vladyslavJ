@@ -1,5 +1,3 @@
-// src/jobs/scheduler.ts
-
 import cron from 'node-cron';
 import WeatherDigestJob from './weatherDigest.job';
 

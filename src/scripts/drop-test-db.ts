@@ -1,5 +1,3 @@
-// scripts/drop-test-db.ts
-
 import { Client } from 'pg';
 
 const {
@@ -23,7 +21,6 @@ async function dropTestDb() {
 
 	try {
 		await client.connect();
-		// Вбиваємо всі сесії (Postgres не дає дропнути БД з активними сесіями)
 		await client.query(`
       SELECT pg_terminate_backend(pid)
       FROM pg_stat_activity

@@ -1,5 +1,3 @@
-// src/tests/unit/customError.test.ts
-
 import { HttpError, ConfigError } from '../../utils/customError';
 
 describe('CustomError', () => {

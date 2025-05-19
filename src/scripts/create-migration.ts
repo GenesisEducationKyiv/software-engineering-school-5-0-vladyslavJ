@@ -1,9 +1,7 @@
-// src/scripts/create-migration.ts
-
 import { writeFileSync, existsSync, mkdirSync } from 'fs';
 import { resolve, join } from 'path';
 
-const [, , rawName] = process.argv; // ім'я міграції з аргументів CLI
+const [, , rawName] = process.argv;
 
 if (!rawName) {
 	console.error('Using: npm run migration:create -- MigrationName');

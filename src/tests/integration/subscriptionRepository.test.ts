@@ -1,5 +1,3 @@
-// src/tests/integration/subscriptionRepository.test.ts
-
 import { AppDataSource } from '../../config/dataSource';
 import { Subscription } from '../../models/subscription.entity';
 import { subscriptionRepository } from '../../repositories/subscription.repository';

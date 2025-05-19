@@ -1,4 +1,3 @@
-// src/controllers/weather.controller.ts
 import { Request, Response, NextFunction } from 'express';
 import WeatherService from '../services/weather.service';
 
