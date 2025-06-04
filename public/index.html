@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="uk">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Weather digest subscription</title>
+		<link rel="stylesheet" href="styles.css" />
+	</head>
+	<body>
+		<main>
+			<h1>Weather digest subscription</h1>
+			<form id="subscribeForm">
+				<label for="email">Email:</label>
+				<input
+					type="email"
+					id="email"
+					name="email"
+					required
+					autocomplete="email"
+				/>
+
+				<label for="city">City:</label>
+				<input type="text" id="city" name="city" required />
+
+				<label for="frequency">Frequency:</label>
+				<select id="frequency" name="frequency" required>
+					<option value="hourly">Hourly</option>
+					<option value="daily">Daily</option>
+				</select>
+
+				<button type="submit">Subscribe</button>
+			</form>
+			<div id="result"></div>
+		</main>
+		<script src="script.js"></script>
+	</body>
+</html>

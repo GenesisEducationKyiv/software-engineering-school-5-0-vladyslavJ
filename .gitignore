@@ -1,0 +1,11 @@
+node_modules
+
+.env
+
+.env.docker
+
+.env.test.docker
+
+dist
+
+coverage
