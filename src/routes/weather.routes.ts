@@ -5,10 +5,6 @@ import { validateRequest } from '../middlewares/validateRequest';
 
 const weatherRouter = Router();
 
-weatherRouter.get(
-	'/weather',
-	validateRequest(weatherQuerySchema, 'query'),
-	getWeather
-);
+weatherRouter.get('/weather', validateRequest(weatherQuerySchema, 'query'), getWeather);
 
 export default weatherRouter;

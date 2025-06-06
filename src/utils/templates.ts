@@ -2,8 +2,8 @@ import ENV from '../config/env';
 import { WeatherDto } from '../dto/weather.dto';
 
 export const confirmTpl = (token: string) => ({
-	subject: 'Confirm your subscription to the weather digest',
-	html: `
+  subject: 'Confirm your subscription to the weather digest',
+  html: `
 		<div style="font-family:sans-serif; background:#f1f5f9; padding:24px">
 			<div style="max-width:420px;margin:auto;background:white;border-radius:12px;padding:32px 20px;text-align:center;box-shadow:0 2px 16px #0001;">
 				<h2 style="color:#2563eb;">Subscription Confirmation</h2>
@@ -16,8 +16,8 @@ export const confirmTpl = (token: string) => ({
 });
 
 export const goodbyeTpl = (city: string) => ({
-	subject: `You have unsubscribed from weather updates for ${city}`,
-	html: `
+  subject: `You have unsubscribed from weather updates for ${city}`,
+  html: `
 		<div style="font-family:sans-serif; background:#f1f5f9; padding:24px">
 			<div style="max-width:420px;margin:auto;background:white;border-radius:12px;padding:32px 20px;text-align:center;box-shadow:0 2px 16px #0001;">
 				<h2 style="color:#ef4444;">You have unsubscribed!</h2>
@@ -29,13 +29,13 @@ export const goodbyeTpl = (city: string) => ({
 });
 
 export const digestTpl = (
-	city: string,
-	w: WeatherDto,
-	stamp: string,
-	unsubscribeToken: string
+  city: string,
+  w: WeatherDto,
+  stamp: string,
+  unsubscribeToken: string,
 ) => ({
-	subject: `Weather for ${city} – ${stamp}`,
-	html: `
+  subject: `Weather for ${city} – ${stamp}`,
+  html: `
 		<div style="font-family:sans-serif; background:#f1f5f9; padding:24px">
 			<div style="max-width:420px;margin:auto;background:white;border-radius:12px;padding:32px 20px;box-shadow:0 2px 16px #0001;">
 				<h2 style="color:#2563eb;margin-top:0;">Weather in ${city}</h2>
@@ -55,21 +55,19 @@ export const digestTpl = (
 });
 
 export const confirmedTpl = (
-	email: string,
-	city: string,
-	frequency: string,
-	unsubscribeToken: string
+  email: string,
+  city: string,
+  frequency: string,
+  unsubscribeToken: string,
 ) => ({
-	subject: 'Your weather subscription is confirmed!',
-	html: `
+  subject: 'Your weather subscription is confirmed!',
+  html: `
 		<div style="font-family:sans-serif; background:#f1f5f9; padding:24px">
 			<div style="max-width:420px;margin:auto;background:white;border-radius:12px;padding:32px 20px;text-align:center;box-shadow:0 2px 16px #0001;">
 				<h2 style="color:#22c55e;">Subscription Confirmed!</h2>
 				<p>
 					Thank you, your subscription for weather updates in <b>${city}</b>
-					(${
-						frequency === 'hourly' ? 'hourly' : 'daily'
-					}) has been <b>successfully confirmed</b>!
+					(${frequency === 'hourly' ? 'hourly' : 'daily'}) has been <b>successfully confirmed</b>!
 				</p>
 				<p>
 					You will receive weather digests at: <b>${email}</b>
@@ -78,8 +76,8 @@ export const confirmedTpl = (
 				<small style="color:#64748b;">
 					Unsubscribe any time:
 					<a href="${
-						ENV.APP_BASE_URL
-					}/api/unsubscribe/${unsubscribeToken}" style="color:#ef4444;text-decoration:none;">
+            ENV.APP_BASE_URL
+          }/api/unsubscribe/${unsubscribeToken}" style="color:#ef4444;text-decoration:none;">
 						click here
 					</a>
 				</small>
