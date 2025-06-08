@@ -57,23 +57,26 @@
 
 ```mermaid
 flowchart LR
-    subgraph Інфраструктура
-        A[API Gateway]
-        B[API Service]
-        C[PostgreSQL]
-        D[Redis]
-        E[Scheduler]
-        F[Email Notifier]
-    end
-    G[Weather API (External)]
-    A --> B
-    B --> C
-    B --> D
-    B --> F
-    B --> E
-    E --> B
-    E --> F
-    B --> G
+  subgraph "Інфраструктура"
+    A["API Gateway"]
+    B["API Service"]
+    C["PostgreSQL"]
+    D["Redis"]
+    E["Scheduler"]
+    F["Email Notifier"]
+  end
+
+  G["Weather API (External)"]
+
+  A --> B
+  B --> C
+  B --> D
+  B --> F
+  B --> E
+  E --> B
+  E --> F
+  B --> G
+
 ```
 
 ## 4. Детальний дизайн компонентів
