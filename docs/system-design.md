@@ -66,7 +66,6 @@ flowchart LR
         F[Email Notifier]
     end
     G[Weather API (External)]
-
     A --> B
     B --> C
     B --> D
@@ -241,21 +240,23 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    participant User
-    participant API_Gateway
-    participant API_Service
-    participant PostgreSQL
+  participant User
+  participant API_Gateway
+  participant API_Service
+  participant PostgreSQL
+  participant EmailNotifier
 
-    User->>API_Gateway: GET /api/unsubscribe/{token}
-    API_Gateway->>API_Service: Передає токен для відписки
-    API_Service->>PostgreSQL: Перевірка та видалення підписки за токеном
-    alt Підписка знайдена і видалена
-        PostgreSQL-->>API_Service: Підтвердження видалення
-        API_Service-->>User: Відповідь: "Ви успішно відписалися від розсилки."
-    else Підписка не знайдена або вже видалена
-        PostgreSQL-->>API_Service: Підписка не знайдена
-        API_Service-->>User: Відповідь: "Підписка не знайдена або вже була видалена."
-    end
+  User->>API_Gateway: GET /api/unsubscribe/{token}
+  API_Gateway->>API_Service: Передає токен для відписки
+  API_Service->>PostgreSQL: Перевірка та видалення підписки за токеном
+  alt Підписка знайдена і видалена
+    PostgreSQL-->>API_Service: Підтвердження видалення
+    API_Service->>EmailNotifier: Відправка листа про відписку
+    API_Service-->>User: Відповідь: "Ви успішно відписалися від розсилки."
+  else Підписка не знайдена або вже видалена
+    PostgreSQL-->>API_Service: Підписка не знайдена
+    API_Service-->>User: Відповідь: "Підписка не знайдена або вже була видалена."
+  end
 ```
 
 ## 6. Опис безпеки
@@ -309,8 +310,11 @@ GET /api/weather?city=kyiv
 
 **Запит:**
 
-```json
+```bash
 POST /api/subscribe
+```
+
+```json
 {
   "email": "user@email.com",
   "city": "kyiv",
