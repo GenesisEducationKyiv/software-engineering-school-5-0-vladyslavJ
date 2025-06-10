@@ -1,80 +1,80 @@
 name: ci
 
 on:
-    push:
-        branches: [main, master]
-    pull_request:
-        branches: [main, master]
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
 
 jobs:
-    build-and-test:
-        runs-on: ubuntu-latest
+  build-and-test:
+    runs-on: ubuntu-latest
 
-        services:
-            postgres:
-                image: postgres:14
-                env:
-                    POSTGRES_USER: postgres
-                    POSTGRES_PASSWORD: postgres
-                    POSTGRES_DB: weatherdb_test
-                ports:
-                    - 5432:5432
-                options: >-
-                    --health-cmd="pg_isready -U postgres" 
-                    --health-interval=10s 
-                    --health-timeout=5s 
-                    --health-retries=5
-
-            redis:
-                image: redis:7
-                ports:
-                    - 6379:6379
-
+    services:
+      postgres:
+        image: postgres:14
         env:
-            DB_USER: postgres
-            DB_PASSWORD: postgres
-            DB_HOST: localhost
-            DB_PORT: 5432
-            DB_NAME: weatherdb_test
-            TEST_DB_NAME: weatherdb_test
-            REDIS_HOST: localhost
-            REDIS_PORT: 6379
-            WEATHER_API_KEY: ${{ secrets.WEATHER_API_KEY }}
-            WEATHER_BASE_URL: https://api.weatherapi.com/v1
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: weatherdb_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres" 
+          --health-interval=10s 
+          --health-timeout=5s 
+          --health-retries=5
 
-            MAIL_HOST: smtp.gmail.com
-            MAIL_PORT: 465
-            MAIL_SECURE: true
-            MAIL_USER: ${{ secrets.MAIL_USER }}
-            MAIL_PASS: ${{ secrets.MAIL_PASS }}
-            MAIL_FROM: Weather API <no-reply@weatherapi.app>
-            APP_BASE_URL: http://localhost:3000
+      redis:
+        image: redis:7
+        ports:
+          - 6379:6379
 
-        steps:
-            - uses: actions/checkout@v4
+    env:
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_HOST: localhost
+      DB_PORT: 5432
+      DB_NAME: weatherdb_test
+      TEST_DB_NAME: weatherdb_test
+      REDIS_HOST: localhost
+      REDIS_PORT: 6379
+      WEATHER_API_KEY: ${{ secrets.WEATHER_API_KEY }}
+      WEATHER_BASE_URL: https://api.weatherapi.com/v1
 
-            - name: Use Node.js 18
-              uses: actions/setup-node@v4
-              with:
-                  node-version: 18
+      MAIL_HOST: smtp.gmail.com
+      MAIL_PORT: 465
+      MAIL_SECURE: true
+      MAIL_USER: ${{ secrets.MAIL_USER }}
+      MAIL_PASS: ${{ secrets.MAIL_PASS }}
+      MAIL_FROM: Weather API <no-reply@weatherapi.app>
+      APP_BASE_URL: http://localhost:3000
 
-            - name: Install dependencies
-              run: npm ci
+    steps:
+      - uses: actions/checkout@v4
 
-            - name: Build project
-              run: npm run build
+      - name: Use Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
 
-            - name: Create test database
-              run: npx ts-node src/scripts/create-test-db.ts
+      - name: Install dependencies
+        run: npm ci
 
-            - name: Run migrations
-              run: npm run migration:run
+      - name: Build project
+        run: npm run build
 
-            - name: Run tests
-              run: npm test
+      - name: Create test database
+        run: npx ts-node src/scripts/create-test-db.ts
 
-            - name: Collect coverage report
-              uses: actions/upload-artifact@v4
-              with:
-                  name: coverage-report
-                  path: coverage
+      - name: Run migrations
+        run: npm run migration:run
+
+      - name: Run tests
+        run: npm test
+
+      - name: Collect coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage

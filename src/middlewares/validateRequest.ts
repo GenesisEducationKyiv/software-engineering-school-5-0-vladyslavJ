@@ -1,16 +1,28 @@
 import { Schema } from 'joi';
 import { Request, Response, NextFunction } from 'express';
+import { ValidationError } from '../utils/customError';
 
 type ReqPart = 'body' | 'query' | 'params';
 
-export const validateRequest =
-	(schema: Schema, property: ReqPart = 'body') =>
-	(req: Request, res: Response, next: NextFunction) => {
-		const { error, value } = schema.validate((req as any)[property]);
+export function validateRequest<T>(schema: Schema<T>, property: ReqPart = 'body') {
+  return (req: Request, res: Response, next: NextFunction) => {
+    const targetValue =
+      property === 'body' ? req.body : property === 'query' ? req.query : req.params;
 
-		if (error) return next(error);
+    const { error, value } = schema.validate(targetValue);
 
-		if (property === 'query') (req as any).validatedQuery = value;
-		else (req as any)[property] = value;
-		next();
-	};
+    if (error) {
+      return next(new ValidationError(error.message));
+    }
+
+    if (property === 'body') {
+      req.validatedBody = value;
+    } else if (property === 'query') {
+      req.validatedQuery = value;
+    } else {
+      req.validatedParams = value;
+    }
+
+    next();
+  };
+}
