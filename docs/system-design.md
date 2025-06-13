@@ -118,16 +118,16 @@ flowchart LR
 
 1. **Weather**
 
-   - `temperature` — температура повітря (число)
-   - `humidity` — вологість (%)
-   - `description` — короткий опис погоди (рядок)
+    - `temperature` — температура повітря (число)
+    - `humidity` — вологість (%)
+    - `description` — короткий опис погоди (рядок)
 
 2. **Subscription**
 
-   - `email` (обовʼязково) — email користувача
-   - `city` (обовʼязково) — місто підписки
-   - `frequency` (обовʼязково) — частота оновлень (наприклад, hourly, daily)
-   - `confirmed` — статус підтвердження підписки (true/false)
+    - `email` (обовʼязково) — email користувача
+    - `city` (обовʼязково) — місто підписки
+    - `frequency` (обовʼязково) — частота оновлень (наприклад, hourly, daily)
+    - `confirmed` — статус підтвердження підписки (true/false)
 
 ### 4.2 Weather API Integration
 
@@ -149,29 +149,12 @@ flowchart LR
   відписки, а також часові мітки створення та оновлення.
 - Забезпечення унікальності підписки для комбінації email + місто + частота.
 
-**Структура таблиці `subscriptions`:**
-
-| Поле               | Тип          | Опис                                   |
-| ------------------ | ------------ | -------------------------------------- |
-| id                 | uuid         | Унікальний ідентифікатор підписки (PK) |
-| email              | varchar(255) | Email користувача                      |
-| city               | varchar(100) | Місто підписки                         |
-| frequency          | varchar(6)   | Частота оновлень (hourly/daily)        |
-| confirmed          | boolean      | Статус підтвердження підписки          |
-| confirmation_token | varchar(64)  | Токен для підтвердження підписки       |
-| unsubscribe_token  | varchar(64)  | Токен для відписки                     |
-| created_at         | TIMESTAMP    | Дата створення підписки                |
-| updated_at         | TIMESTAMP    | Дата останнього оновлення              |
-
-- **Унікальний індекс:** комбінація `email`, `city`, `frequency` (неможливо створити дубль підписки
-  для одного користувача на одне місто з однаковою частотою).
-
-**Діаграма таблиці:**
+**ER-diagram:**
 
 ```mermaid
 erDiagram
     SUBSCRIPTIONS {
-        uuid id PK "Унікальний ідентифікатор"
+        uuid id "Унікальний ідентифікатор" PK
         varchar email "Email користувача"
         varchar city "Місто підписки"
         varchar frequency "Частота (hourly/daily)"
@@ -303,9 +286,9 @@ GET /api/weather?city=kyiv
 
 ```json
 {
-  "temperature": 21,
-  "humidity": 60,
-  "description": "clear sky"
+	"temperature": 21,
+	"humidity": 60,
+	"description": "clear sky"
 }
 ```
 
@@ -319,9 +302,9 @@ POST /api/subscribe
 
 ```json
 {
-  "email": "user@email.com",
-  "city": "kyiv",
-  "frequency": "hourly"
+	"email": "user@email.com",
+	"city": "kyiv",
+	"frequency": "hourly"
 }
 ```
 
@@ -329,7 +312,7 @@ POST /api/subscribe
 
 ```json
 {
-  "message": "Підписка створена. Перевірте email для підтвердження."
+	"message": "Підписка створена. Перевірте email для підтвердження."
 }
 ```
 
@@ -345,7 +328,7 @@ GET /api/confirm/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
 ```json
 {
-  "message": "Підписка підтверджена."
+	"message": "Підписка підтверджена."
 }
 ```
 
@@ -361,6 +344,6 @@ GET /api/unsubscribe/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
 ```json
 {
-  "message": "Ви успішно відписалися від розсилки."
+	"message": "Ви успішно відписалися від розсилки."
 }
 ```
