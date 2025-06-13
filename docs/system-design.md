@@ -154,7 +154,7 @@ flowchart LR
 ```mermaid
 erDiagram
     SUBSCRIPTIONS {
-        uuid id "Унікальний ідентифікатор" PK
+        uuid id PK "Унікальний ідентифікатор"
         varchar email "Email користувача"
         varchar city "Місто підписки"
         varchar frequency "Частота (hourly/daily)"
