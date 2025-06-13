@@ -118,16 +118,16 @@ flowchart LR
 
 1. **Weather**
 
-    - `temperature` — температура повітря (число)
-    - `humidity` — вологість (%)
-    - `description` — короткий опис погоди (рядок)
+   - `temperature` — температура повітря (число)
+   - `humidity` — вологість (%)
+   - `description` — короткий опис погоди (рядок)
 
 2. **Subscription**
 
-    - `email` (обовʼязково) — email користувача
-    - `city` (обовʼязково) — місто підписки
-    - `frequency` (обовʼязково) — частота оновлень (наприклад, hourly, daily)
-    - `confirmed` — статус підтвердження підписки (true/false)
+   - `email` (обовʼязково) — email користувача
+   - `city` (обовʼязково) — місто підписки
+   - `frequency` (обовʼязково) — частота оновлень (наприклад, hourly, daily)
+   - `confirmed` — статус підтвердження підписки (true/false)
 
 ### 4.2 Weather API Integration
 
@@ -286,9 +286,9 @@ GET /api/weather?city=kyiv
 
 ```json
 {
-	"temperature": 21,
-	"humidity": 60,
-	"description": "clear sky"
+  "temperature": 21,
+  "humidity": 60,
+  "description": "clear sky"
 }
 ```
 
@@ -302,9 +302,9 @@ POST /api/subscribe
 
 ```json
 {
-	"email": "user@email.com",
-	"city": "kyiv",
-	"frequency": "hourly"
+  "email": "user@email.com",
+  "city": "kyiv",
+  "frequency": "hourly"
 }
 ```
 
@@ -312,7 +312,7 @@ POST /api/subscribe
 
 ```json
 {
-	"message": "Підписка створена. Перевірте email для підтвердження."
+  "message": "Підписка створена. Перевірте email для підтвердження."
 }
 ```
 
@@ -328,7 +328,7 @@ GET /api/confirm/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
 ```json
 {
-	"message": "Підписка підтверджена."
+  "message": "Підписка підтверджена."
 }
 ```
 
@@ -344,6 +344,6 @@ GET /api/unsubscribe/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
 ```json
 {
-	"message": "Ви успішно відписалися від розсилки."
+  "message": "Ви успішно відписалися від розсилки."
 }
 ```
