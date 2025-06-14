@@ -11,3 +11,10 @@ export interface WeatherApiCurrent {
 export interface WeatherApiResponse {
   current: WeatherApiCurrent;
 }
+
+export interface WeatherApiErrorData {
+  error: {
+    code: number;
+    message: string;
+  };
+}
