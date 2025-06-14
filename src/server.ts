@@ -3,7 +3,7 @@ import app from './app';
 import ENV from './config/env';
 import { AppDataSource } from './config/dataSource';
 import './jobs/scheduler';
-import { connectRedis } from './utils/redisClient';
+import { connectRedis } from './clients/redis.client';
 import { logger } from './utils/logger';
 
 async function bootstrap() {

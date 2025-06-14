@@ -1,4 +1,3 @@
-import { randomBytes } from 'crypto';
 import { HttpError } from '../utils/customError';
 import { subscriptionRepository } from '../repositories/subscription.repository';
 import { Frequency } from '../models/subscription.entity';
@@ -6,8 +5,7 @@ import { sendMail } from '../utils/mailer';
 import { confirmTpl, goodbyeTpl, confirmedTpl } from '../utils/templates';
 import { QueryFailedError } from 'typeorm';
 import { logger } from '../utils/logger';
-
-const genToken = () => randomBytes(32).toString('hex');
+import { genToken } from '../utils/genToken';
 
 class SubscriptionService {
   async subscribe(email: string, city: string, frequency: Frequency): Promise<void> {

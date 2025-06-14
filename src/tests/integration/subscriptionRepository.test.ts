@@ -1,7 +1,7 @@
 import { AppDataSource } from '../../config/dataSource';
 import { Subscription } from '../../models/subscription.entity';
 import { subscriptionRepository } from '../../repositories/subscription.repository';
-import { connectRedis, redisClient } from '../../utils/redisClient';
+import { connectRedis, redisClient } from '../../clients/redis.client';
 
 beforeAll(async () => {
   if (!AppDataSource.isInitialized) {
