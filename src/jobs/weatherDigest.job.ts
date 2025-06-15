@@ -1,17 +1,21 @@
 import { format } from 'date-fns';
-import WeatherService from '../services/weather.service';
+import { injectable, inject } from 'tsyringe';
+import { WeatherService } from '../services/weather.service';
 import { subscriptionRepository } from '../repositories/subscription.repository';
 import { sendMail } from '../utils/mailer';
 import { digestTpl } from '../utils/templates';
 import { logger } from '../utils/logger';
 
-class WeatherDigestJob {
-  private static async process(frequency: 'hourly' | 'daily') {
+@injectable()
+export class WeatherDigestJob {
+  constructor(@inject(WeatherService) private readonly weatherService: WeatherService) {}
+
+  private async process(frequency: 'hourly' | 'daily') {
     const subs = await subscriptionRepository.findConfirmedByFrequency(frequency);
 
     for (const sub of subs) {
       try {
-        const weather = await WeatherService.getWeather(sub.city);
+        const weather = await this.weatherService.getWeather(sub.city);
         await sendMail({
           to: sub.email,
           ...digestTpl(
@@ -27,13 +31,6 @@ class WeatherDigestJob {
     }
   }
 
-  static async runHourly() {
-    logger.log('[JOB] runHourly called at', new Date());
-    await this.process('hourly');
-  }
-  static async runDaily() {
-    await this.process('daily');
-  }
+  runHourly = () => this.process('hourly');
+  runDaily = () => this.process('daily');
 }
-
-export default WeatherDigestJob;

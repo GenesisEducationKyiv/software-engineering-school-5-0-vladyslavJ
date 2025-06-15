@@ -3,6 +3,8 @@ import app from './app';
 import ENV from './config/env';
 import { AppDataSource } from './config/dataSource';
 import './jobs/scheduler';
+import './container';
+import './jobs/scheduler';
 import { connectRedis } from './clients/redis.client';
 import { logger } from './utils/logger';
 
