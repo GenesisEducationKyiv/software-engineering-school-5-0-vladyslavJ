@@ -3,15 +3,16 @@ import { IWeatherApiClient } from '../clients/weatherApi.client';
 import { ICacheService } from './cache.service';
 import { WeatherMapper } from '../mappers/weather.mapper';
 import { WeatherDto } from '../dto/weather.dto';
+import { TOKENS } from '../config/di.tokens';
 import { logger } from '../utils/logger';
 
 @injectable()
 export class WeatherService {
   constructor(
-    @inject('IWeatherApiClient') private api: IWeatherApiClient,
-    @inject('ICacheService<WeatherDto>') private cache: ICacheService<WeatherDto>,
-    @inject(WeatherMapper) private mapper: WeatherMapper,
-    @inject('RedisTTL') private readonly ttl: number,
+    @inject(TOKENS.IWeatherApiClient) private api: IWeatherApiClient,
+    @inject(TOKENS.CacheServiceWeather) private cache: ICacheService<WeatherDto>,
+    @inject(TOKENS.WeatherMapper) private mapper: WeatherMapper,
+    @inject(TOKENS.RedisTTL) private readonly ttl: number,
   ) {}
 
   async getWeather(city: string): Promise<WeatherDto> {

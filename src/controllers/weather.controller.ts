@@ -1,11 +1,12 @@
 import { Request, Response, NextFunction } from 'express';
 import { injectable, inject } from 'tsyringe';
 import { WeatherService } from '../services/weather.service';
+import { TOKENS } from '../config/di.tokens';
 
 @injectable()
 export class WeatherController {
   constructor(
-    @inject(WeatherService)
+    @inject(TOKENS.WeatherService)
     private readonly weatherService: WeatherService,
   ) {}
 
