@@ -1,42 +1,36 @@
-import http from '../utils/httpClient';
+import { inject, injectable } from 'tsyringe';
+import { IWeatherApiClient } from '../clients/weatherApi.client';
+import { ICacheService } from './cache.service';
+import { WeatherMapper } from '../mappers/weather.mapper';
 import { WeatherDto } from '../dto/weather.dto';
-import { redisClient } from '../utils/redisClient';
+import { TOKENS } from '../config/di.tokens';
 import { logger } from '../utils/logger';
-import { WeatherApiResponse } from '../types/weatherApi';
-import ENV from '../config/env';
 
-class WeatherService {
-  private mapCurrentWeather(raw: WeatherApiResponse): WeatherDto {
-    return new WeatherDto({
-      temperature: raw?.current?.temp_c,
-      humidity: raw?.current?.humidity,
-      description: raw?.current?.condition?.text,
-    });
-  }
+@injectable()
+export class WeatherService {
+  constructor(
+    @inject(TOKENS.IWeatherApiClient) private api: IWeatherApiClient,
+    @inject(TOKENS.CacheServiceWeather) private cache: ICacheService<WeatherDto>,
+    @inject(TOKENS.WeatherMapper) private mapper: WeatherMapper,
+    @inject(TOKENS.RedisTTL) private readonly ttl: number,
+  ) {}
 
   async getWeather(city: string): Promise<WeatherDto> {
     const key = `weather:${city.toLowerCase()}`;
-    logger.info(`Requesting weather for city: ${city}`);
+    logger.info(`Weather data request for: ${city}`);
 
-    const cached = await redisClient.get(key);
+    const cached = await this.cache.get(key);
     if (cached) {
-      logger.info(`Weather cache hit for city: ${city}`);
-      return JSON.parse(cached) as WeatherDto;
+      logger.info(`Cache hit for ${city}`);
+      return cached;
     }
 
-    logger.info(`Weather cache miss for city: ${city}. Fetching from API.`);
-    const { data } = await http.get<WeatherApiResponse>('/current.json', {
-      params: { q: city },
-    });
-    const weather = this.mapCurrentWeather(data);
+    logger.info(`Cache miss for ${city}, calling API`);
+    const raw = await this.api.fetchCurrent(city);
+    const dto = this.mapper.mapCurrentWeather(raw);
 
-    await redisClient.set(key, JSON.stringify(weather), {
-      EX: ENV.REDIS_TTL,
-    });
-    logger.info(`Weather data cached for city: ${city}`);
-
-    return weather;
+    await this.cache.set(key, dto, this.ttl);
+    logger.info(`Cached data for ${city}`);
+    return dto;
   }
 }
-
-export default new WeatherService();

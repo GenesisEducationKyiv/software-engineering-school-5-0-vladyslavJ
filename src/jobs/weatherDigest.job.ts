@@ -1,39 +1,44 @@
 import { format } from 'date-fns';
-import WeatherService from '../services/weather.service';
-import { subscriptionRepository } from '../repositories/subscription.repository';
-import { sendMail } from '../utils/mailer';
+import { injectable, inject } from 'tsyringe';
+import { WeatherService } from '../services/weather.service';
+import { ISubscriptionRepository } from '../repositories/subscription.repository';
+import { IMailService } from '../services/mail.service';
 import { digestTpl } from '../utils/templates';
 import { logger } from '../utils/logger';
+import { TOKENS } from '../config/di.tokens';
 
-class WeatherDigestJob {
-  private static async process(frequency: 'hourly' | 'daily') {
-    const subs = await subscriptionRepository.findConfirmedByFrequency(frequency);
+@injectable()
+export class WeatherDigestJob {
+  constructor(
+    @inject(TOKENS.WeatherService) private readonly weatherService: WeatherService,
+    @inject(TOKENS.IMailService) private readonly mail: IMailService,
+    @inject(TOKENS.ISubscriptionRepository)
+    private readonly subscriptionRepository: ISubscriptionRepository,
+  ) {}
 
-    for (const sub of subs) {
-      try {
-        const weather = await WeatherService.getWeather(sub.city);
-        await sendMail({
-          to: sub.email,
-          ...digestTpl(
-            sub.city,
-            weather,
-            format(new Date(), 'dd.MM.yyyy HH:mm'),
-            sub.unsubscribe_token,
-          ),
-        });
-      } catch (err) {
-        logger.error('[JOB] email send error', err);
-      }
-    }
+  private async process(frequency: 'hourly' | 'daily') {
+    const subs = await this.subscriptionRepository.findConfirmedByFrequency(frequency);
+
+    await Promise.allSettled(
+      subs.map(async sub => {
+        try {
+          const weather = await this.weatherService.getWeather(sub.city);
+          await this.mail.send({
+            to: sub.email,
+            ...digestTpl(
+              sub.city,
+              weather,
+              format(new Date(), 'dd.MM.yyyy HH:mm'),
+              sub.unsubscribe_token,
+            ),
+          });
+        } catch (err) {
+          logger.error('[JOB] email send error', err);
+        }
+      }),
+    );
   }
 
-  static async runHourly() {
-    logger.log('[JOB] runHourly called at', new Date());
-    await this.process('hourly');
-  }
-  static async runDaily() {
-    await this.process('daily');
-  }
+  runHourly = () => this.process('hourly');
+  runDaily = () => this.process('daily');
 }
-
-export default WeatherDigestJob;

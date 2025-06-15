@@ -1,0 +1,14 @@
+import { AxiosError } from 'axios';
+import { WeatherApiErrorData } from '../types/weatherApi.interfaces';
+import { HttpError } from '../utils/customError';
+
+export const mapWeatherApiError = (err: AxiosError<WeatherApiErrorData>): Error => {
+  const apiCode = err.response?.data?.error?.code;
+
+  if (apiCode === 1006) return new HttpError('City not found', 404);
+  if (err.code === 'ECONNABORTED' || err.message.includes('timeout'))
+    return new HttpError('External API timeout', 504);
+
+  const status = err.response?.status ?? 502;
+  return new HttpError(err.message || 'External API err', status);
+};
