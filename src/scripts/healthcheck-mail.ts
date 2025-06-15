@@ -1,20 +1,14 @@
-import nodemailer from 'nodemailer';
-import ENV from '../config/env';
-import { logger } from '../utils/logger';
+import { container } from '../container';
+import { IMailTransport } from '../clients/mailer.client';
 
 (async () => {
+  const transport = container.resolve<IMailTransport>('IMailTransport');
   try {
-    const transporter = nodemailer.createTransport({
-      host: ENV.MAIL_HOST,
-      port: ENV.MAIL_PORT,
-      secure: ENV.MAIL_SECURE,
-      auth: { user: ENV.MAIL_USER, pass: ENV.MAIL_PASS },
-    });
-    await transporter.verify();
-    logger.info('SMTP OK');
+    await transport.verify();
+    console.log('SMTP OK');
     process.exit(0);
   } catch (e) {
-    logger.error('SMTP ERROR', e);
+    console.error('SMTP ERROR', e);
     process.exit(1);
   }
 })();

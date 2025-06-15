@@ -1,24 +1,23 @@
-import axios, { AxiosError, AxiosInstance } from 'axios';
+import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
 import axiosRetry from 'axios-retry';
-import { injectable } from 'tsyringe';
-import ENV from '../config/env';
-import { HttpError } from '../utils/customError';
-import { WeatherApiErrorData } from '../types/weatherApi.interfaces';
 
 export interface IHttpClient {
   get<T>(url: string, params?: Record<string, unknown>): Promise<T>;
+  post<T>(url: string, body?: unknown, params?: Record<string, unknown>): Promise<T>;
+  put<T>(url: string, body?: unknown, params?: Record<string, unknown>): Promise<T>;
+  patch<T>(url: string, body?: unknown, params?: Record<string, unknown>): Promise<T>;
+  delete<T>(url: string, params?: Record<string, unknown>): Promise<T>;
 }
 
-@injectable()
-export class HttpClient implements IHttpClient {
-  private readonly instance: AxiosInstance;
+export type ErrorMapper<E = unknown> = (error: AxiosError<E>) => Error;
 
-  constructor() {
-    this.instance = axios.create({
-      baseURL: ENV.WEATHER_BASE_URL,
-      timeout: 21_000,
-      params: { key: ENV.WEATHER_API_KEY, aqi: 'no' },
-    });
+export class BaseHttpClient<E = unknown> implements IHttpClient {
+  protected readonly instance: AxiosInstance;
+  private readonly mapError?: ErrorMapper<E>;
+
+  constructor(config: AxiosRequestConfig, mapError?: ErrorMapper<E>) {
+    this.instance = axios.create(config);
+    this.mapError = mapError;
 
     axiosRetry(this.instance, {
       retries: 3,
@@ -26,24 +25,37 @@ export class HttpClient implements IHttpClient {
       retryCondition: err => axiosRetry.isNetworkError(err) || axiosRetry.isRetryableError(err),
     });
 
-    this.instance.interceptors.response.use(res => res, this.handleError.bind(this));
+    this.instance.interceptors.response.use(
+      res => res,
+      (err: AxiosError<E>) => {
+        if (this.mapError) throw this.mapError(err);
+        throw err;
+      },
+    );
   }
 
-  async get<T>(url: string, params?: Record<string, unknown>): Promise<T> {
+  async get<T>(url: string, params?: Record<string, unknown>) {
     const { data } = await this.instance.get<T>(url, { params });
     return data;
   }
 
-  private handleError(error: AxiosError<WeatherApiErrorData>) {
-    const apiCode = error.response?.data?.error?.code;
+  async post<T>(url: string, body?: unknown, params?: Record<string, unknown>) {
+    const { data } = await this.instance.post<T>(url, body, { params });
+    return data;
+  }
 
-    if (apiCode === 1006) throw new HttpError('City not found', 404);
-    if (error.code === 'ECONNABORTED' || error.message.includes('timeout'))
-      throw new HttpError('External API timeout', 504);
+  async put<T>(url: string, body?: unknown, params?: Record<string, unknown>) {
+    const { data } = await this.instance.put<T>(url, body, { params });
+    return data;
+  }
 
-    const status = error.response?.status ?? 502;
-    throw error instanceof HttpError
-      ? error
-      : new HttpError(error.message || 'External API error', status);
+  async patch<T>(url: string, body?: unknown, params?: Record<string, unknown>) {
+    const { data } = await this.instance.patch<T>(url, body, { params });
+    return data;
+  }
+
+  async delete<T>(url: string, params?: Record<string, unknown>) {
+    const { data } = await this.instance.delete<T>(url, { params });
+    return data;
   }
 }
