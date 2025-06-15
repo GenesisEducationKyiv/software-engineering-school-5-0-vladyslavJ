@@ -4,11 +4,15 @@ import { subscriptionBodySchema } from '../validators/subscription.schema';
 import { container } from '../container';
 import { SubscriptionController } from '../controllers/subscription.controller';
 
-const router = Router();
+const subscriptionRouter = Router();
 const controller = container.resolve(SubscriptionController);
 
-router.post('/subscribe', validateRequest(subscriptionBodySchema), controller.subscribe);
-router.get('/confirm/:token', controller.confirmSubscription);
-router.get('/unsubscribe/:token', controller.unsubscribe);
+subscriptionRouter.post(
+  '/subscribe',
+  validateRequest(subscriptionBodySchema),
+  controller.subscribe,
+);
+subscriptionRouter.get('/confirm/:token', controller.confirmSubscription);
+subscriptionRouter.get('/unsubscribe/:token', controller.unsubscribe);
 
-export default router;
+export default subscriptionRouter;
