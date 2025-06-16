@@ -7,6 +7,11 @@ import { digestTpl } from '../utils/templates';
 import { logger } from '../utils/logger';
 import { TOKENS } from '../config/di.tokens';
 
+enum SubscriptionFrequency {
+  Hourly = 'hourly',
+  Daily = 'daily',
+}
+
 @injectable()
 export class WeatherDigestJob {
   constructor(
@@ -16,7 +21,7 @@ export class WeatherDigestJob {
     private readonly subscriptionRepository: ISubscriptionRepository,
   ) {}
 
-  private async process(frequency: 'hourly' | 'daily') {
+  private async process(frequency: SubscriptionFrequency) {
     const subs = await this.subscriptionRepository.findConfirmedByFrequency(frequency);
 
     await Promise.allSettled(
@@ -39,6 +44,6 @@ export class WeatherDigestJob {
     );
   }
 
-  runHourly = () => this.process('hourly');
-  runDaily = () => this.process('daily');
+  runHourly = () => this.process(SubscriptionFrequency.Hourly);
+  runDaily = () => this.process(SubscriptionFrequency.Daily);
 }
