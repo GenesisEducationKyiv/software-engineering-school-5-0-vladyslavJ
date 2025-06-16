@@ -1,0 +1,17 @@
+export const TOKENS = {
+  IWeatherApiClient: Symbol.for('IWeatherApiClient'),
+  CacheServiceWeather: Symbol.for('CacheServiceWeather'),
+  RedisTTL: Symbol.for('RedisTTL'),
+  IRedisClient: Symbol.for('IRedisClient'),
+  IWeatherMapper: Symbol.for('IWeatherMapper'),
+  WeatherService: Symbol.for('WeatherService'),
+  WeatherController: Symbol.for('WeatherController'),
+  WeatherDigestJob: Symbol.for('WeatherDigestJob'),
+  IMailTransport: Symbol.for('IMailTransport'),
+  IMailService: Symbol.for('IMailService'),
+  SubscriptionService: Symbol.for('SubscriptionService'),
+  SubscriptionController: Symbol.for('SubscriptionController'),
+  ISubscriptionRepository: Symbol.for('ISubscriptionRepository'),
+  ILogger: Symbol.for('ILogger'),
+  ErrorHandlerMiddleware: Symbol.for('ErrorHandlerMiddleware'),
+} as const;

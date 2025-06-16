@@ -2,7 +2,7 @@ import request, { Response } from 'supertest';
 import { AppDataSource } from '../../config/dataSource';
 import app from '../../app';
 import { Subscription } from '../../models/subscription.entity';
-import { connectRedis, redisClient } from '../../utils/redisClient';
+import { connectRedis, redisClient } from '../../clients/redis.client';
 
 describe('Weather API (E2E)', () => {
   const base = '/api';

@@ -1,16 +1,18 @@
 import { Router } from 'express';
-import {
-  subscribe,
-  confirmSubscription,
-  unsubscribe,
-} from '../controllers/subscription.controller';
 import { validateRequest } from '../middlewares/validateRequest';
 import { subscriptionBodySchema } from '../validators/subscription.schema';
+import { container } from '../container';
+import { SubscriptionController } from '../controllers/subscription.controller';
 
 const subscriptionRouter = Router();
+const controller = container.resolve(SubscriptionController);
 
-subscriptionRouter.post('/subscribe', validateRequest(subscriptionBodySchema), subscribe);
-subscriptionRouter.get('/confirm/:token', confirmSubscription);
-subscriptionRouter.get('/unsubscribe/:token', unsubscribe);
+subscriptionRouter.post(
+  '/subscribe',
+  validateRequest(subscriptionBodySchema),
+  controller.subscribe,
+);
+subscriptionRouter.get('/confirm/:token', controller.confirmSubscription);
+subscriptionRouter.get('/unsubscribe/:token', controller.unsubscribe);
 
 export default subscriptionRouter;
