@@ -3,7 +3,7 @@ export const TOKENS = {
   CacheServiceWeather: Symbol.for('CacheServiceWeather'),
   RedisTTL: Symbol.for('RedisTTL'),
   IRedisClient: Symbol.for('IRedisClient'),
-  WeatherMapper: Symbol.for('WeatherMapper'),
+  IWeatherMapper: Symbol.for('IWeatherMapper'),
   WeatherService: Symbol.for('WeatherService'),
   WeatherController: Symbol.for('WeatherController'),
   WeatherDigestJob: Symbol.for('WeatherDigestJob'),

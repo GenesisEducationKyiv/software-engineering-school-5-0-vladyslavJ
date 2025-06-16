@@ -17,6 +17,7 @@ import { WeatherMapper } from './mappers/weather.mapper';
 import { WeatherDto } from './dto/weather.dto';
 import { WeatherController } from './controllers/weather.controller';
 import { WeatherDigestJob } from './jobs/weatherDigest.job';
+import { IWeatherMapper } from './mappers/weather.mapper';
 import ENV from './config/env';
 
 container.registerSingleton<ICacheService<WeatherDto>>(
@@ -27,7 +28,7 @@ container.registerInstance<number>(TOKENS.RedisTTL, ENV.REDIS_TTL);
 container.registerInstance(TOKENS.IRedisClient, redisClient);
 
 container.registerSingleton<IWeatherApiClient>(TOKENS.IWeatherApiClient, WeatherApiClient);
-container.registerSingleton(TOKENS.WeatherMapper, WeatherMapper);
+container.registerSingleton<IWeatherMapper>(TOKENS.IWeatherMapper, WeatherMapper);
 container.registerSingleton(TOKENS.WeatherService, WeatherService);
 container.registerSingleton(TOKENS.WeatherController, WeatherController);
 container.registerSingleton(TOKENS.WeatherDigestJob, WeatherDigestJob);
