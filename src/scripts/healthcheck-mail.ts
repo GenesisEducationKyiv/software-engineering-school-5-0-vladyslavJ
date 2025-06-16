@@ -1,15 +1,20 @@
-import { container } from '../container';
+import 'reflect-metadata';
+import '../container';
+import { container } from 'tsyringe';
 import { IMailTransport } from '../clients/mailer.client';
-import { logger } from '../utils/logger';
+import { ILogger } from '../services/logger.service';
+import { TOKENS } from '../config/di.tokens';
 
 (async () => {
-  const transport = container.resolve<IMailTransport>('IMailTransport');
+  const logger = container.resolve<ILogger>(TOKENS.ILogger);
+  const transport = container.resolve<IMailTransport>(TOKENS.IMailTransport);
+
   try {
     await transport.verify();
-    logger.log({ level: 'info', message: 'SMTP OK' });
+    logger.info('[MAIL] Transport successfully verified');
     process.exit(0);
-  } catch (err) {
-    logger.log({ level: 'error', message: 'SMTP ERROR', error: err });
+  } catch (err: unknown) {
+    logger.error('[MAIL] Transport verification error', err);
     process.exit(1);
   }
 })();

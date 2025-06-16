@@ -1,17 +1,19 @@
+import { injectable, inject } from 'tsyringe';
 import nodemailer, { Transporter } from 'nodemailer';
 import type SMTPTransport from 'nodemailer/lib/smtp-transport';
-import { logger } from '../utils/logger';
+import { ILogger } from '../services/logger.service';
+import { TOKENS } from '../config/di.tokens';
 import ENV from '../config/env';
 
 export interface IMailTransport {
   verify(): Promise<true>;
   send(options: SMTPTransport.Options & { from: string }): Promise<unknown>;
 }
-
+@injectable()
 export class NodemailerTransport implements IMailTransport {
   private readonly transporter: Transporter;
 
-  constructor() {
+  constructor(@inject(TOKENS.ILogger) private readonly logger: ILogger) {
     const smtpOptions: SMTPTransport.Options = {
       host: ENV.MAIL_HOST,
       port: ENV.MAIL_PORT,
@@ -21,7 +23,7 @@ export class NodemailerTransport implements IMailTransport {
 
     this.transporter = nodemailer.createTransport(smtpOptions);
     this.verifyWithRetry().catch(() =>
-      logger.error('[MAIL] SMTP not available, emails will not be sent.'),
+      this.logger.error('[MAIL] SMTP not available, emails will not be sent.'),
     );
   }
 
@@ -29,10 +31,10 @@ export class NodemailerTransport implements IMailTransport {
     for (let i = 1; i <= attempts; i++) {
       try {
         await this.transporter.verify();
-        logger.info(`[MAIL] SMTP connection is OK (try ${i})`);
+        this.logger.info(`[MAIL] SMTP connection is OK (try ${i})`);
         return;
       } catch (err) {
-        logger.error(`[MAIL] SMTP connection failed (try ${i})`, err);
+        this.logger.error(`[MAIL] SMTP connection failed (try ${i})`, err);
         if (i === attempts) throw err;
         await new Promise(r => setTimeout(r, delayMs));
       }

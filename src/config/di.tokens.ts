@@ -12,4 +12,6 @@ export const TOKENS = {
   SubscriptionService: Symbol.for('SubscriptionService'),
   SubscriptionController: Symbol.for('SubscriptionController'),
   ISubscriptionRepository: Symbol.for('ISubscriptionRepository'),
+  ILogger: Symbol.for('ILogger'),
+  ErrorHandlerMiddleware: Symbol.for('ErrorHandlerMiddleware'),
 } as const;

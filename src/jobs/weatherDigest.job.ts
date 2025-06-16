@@ -4,7 +4,7 @@ import { WeatherService } from '../services/weather.service';
 import { ISubscriptionRepository } from '../repositories/subscription.repository';
 import { IMailService } from '../services/mail.service';
 import { digestTpl } from '../utils/templates';
-import { logger } from '../utils/logger';
+import { ILogger } from '../services/logger.service';
 import { TOKENS } from '../config/di.tokens';
 
 enum SubscriptionFrequency {
@@ -19,6 +19,7 @@ export class WeatherDigestJob {
     @inject(TOKENS.IMailService) private readonly mail: IMailService,
     @inject(TOKENS.ISubscriptionRepository)
     private readonly subscriptionRepository: ISubscriptionRepository,
+    @inject(TOKENS.ILogger) private readonly logger: ILogger,
   ) {}
 
   private async process(frequency: SubscriptionFrequency) {
@@ -38,7 +39,7 @@ export class WeatherDigestJob {
             ),
           });
         } catch (err) {
-          logger.error('[JOB] email send error', err);
+          this.logger.error('[JOB] email send error', err);
         }
       }),
     );

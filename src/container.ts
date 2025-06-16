@@ -18,6 +18,9 @@ import { WeatherDto } from './dto/weather.dto';
 import { WeatherController } from './controllers/weather.controller';
 import { WeatherDigestJob } from './jobs/weatherDigest.job';
 import { IWeatherMapper } from './mappers/weather.mapper';
+import { ILogger } from './services/logger.service';
+import { LoggerService } from './services/logger.service';
+import { ErrorHandlerMiddleware } from './middlewares/errorHandler';
 import ENV from './config/env';
 
 container.registerSingleton<ICacheService<WeatherDto>>(
@@ -42,5 +45,12 @@ container.registerSingleton<ISubscriptionRepository>(
 );
 container.registerSingleton(TOKENS.SubscriptionService, SubscriptionService);
 container.registerSingleton(TOKENS.SubscriptionController, SubscriptionController);
+
+container.registerSingleton<ILogger>(TOKENS.ILogger, LoggerService);
+
+container.registerSingleton<ErrorHandlerMiddleware>(
+  TOKENS.ErrorHandlerMiddleware,
+  ErrorHandlerMiddleware,
+);
 
 export { container };
