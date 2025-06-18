@@ -1,0 +1,85 @@
+name: Integration Tests
+
+on:
+  push:
+    paths:
+      - 'src/**'
+      - 'docker-compose.yml'
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'docker-compose.yml'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    env:
+      APP_BASE_URL: http://localhost:3000
+      WEATHER_API_KEY: ${{ secrets.WEATHER_API_KEY }}
+      WEATHER_BASE_URL: https://api.weatherapi.com/v1
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_HOST: localhost
+      DB_PORT: 5432
+      DB_NAME: weatherdb_test
+      TEST_DB_NAME: weatherdb_test
+      REDIS_HOST: localhost
+      REDIS_PORT: 6379
+      MAIL_HOST: smtp.gmail.com
+      MAIL_PORT: 465
+      MAIL_SECURE: true
+      MAIL_USER: ${{ secrets.MAIL_USER }}
+      MAIL_PASS: ${{ secrets.MAIL_PASS }}
+      MAIL_FROM: Weather API <no-reply@weatherapi.app>
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Start Postgres & Redis
+        run: |
+          docker-compose -f docker-compose.yml --profile test up -d db redis
+
+      - name: Wait for Postgres to be healthy
+        run: |
+          until docker-compose exec -T db pg_isready -U $DB_USER; do
+            sleep 2
+          done
+
+      - name: Wait for Redis to be healthy
+        run: |
+          until docker-compose exec -T redis redis-cli ping | grep PONG; do
+            sleep 2
+          done
+
+      - name: Run integration tests
+        run: npm run test:int
+
+      - name: Upload integration test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: integration-test-results
+          path: test-results/integration
+
+      - name: Tear down Docker Compose
+        if: always()
+        run: docker-compose -f docker-compose.yml down --volumes
