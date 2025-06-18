@@ -1,7 +1,4 @@
-version: '3.8'
-
 services:
-  # ---------- DEV ----------
   api:
     build:
       context: .
@@ -12,15 +9,14 @@ services:
     volumes:
       - ./:/usr/src/app
       - /usr/src/app/node_modules
+    command: npm run dev
     depends_on:
       db:
         condition: service_started
       redis:
         condition: service_healthy
-    command: npm run dev
     profiles: ['dev']
 
-  # ---------- PROD ----------
   api-prod:
     build: .
     container_name: weather-api-prod
@@ -33,25 +29,25 @@ services:
         condition: service_healthy
     profiles: ['prod']
 
-  # ---------- TEST ----------
-  api-test:
+  tests-unit:
     build: .
-    container_name: weather-api-test
-    command: npm run test:docker
+    container_name: weather-tests-unit
+    command: npm run test:unit
+    profiles: ['test']
+    depends_on: []
+
+  tests-int:
+    build: .
+    container_name: weather-tests-int
     env_file: [.env.test.docker]
+    command: npm run test:int
+    profiles: ['test']
     depends_on:
       db:
-        condition: service_started
+        condition: service_healthy
       redis:
         condition: service_healthy
-    tty: true
-    stdin_open: true
-    volumes:
-      - ./:/app
-      - /app/node_modules
-    profiles: ['test']
 
-  # ---------- COMMON ----------
   db:
     image: postgres:14
     env_file: [.env.docker]
@@ -62,6 +58,11 @@ services:
     ports: ['${DB_PORT}:5432']
     volumes:
       - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   redis:
     image: redis:7
