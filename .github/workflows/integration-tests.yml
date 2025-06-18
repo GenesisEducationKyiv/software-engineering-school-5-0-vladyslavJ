@@ -56,17 +56,17 @@ jobs:
 
       - name: Start Postgres & Redis
         run: |
-          docker-compose -f docker-compose.yml --profile test up -d db redis
+          docker compose -f docker-compose.yml --profile test up -d db redis
 
       - name: Wait for Postgres to be healthy
         run: |
-          until docker-compose exec -T db pg_isready -U $DB_USER; do
+          until docker compose exec -T db pg_isready -U $DB_USER; do
             sleep 2
           done
 
       - name: Wait for Redis to be healthy
         run: |
-          until docker-compose exec -T redis redis-cli ping | grep PONG; do
+          until docker compose exec -T redis redis-cli ping | grep PONG; do
             sleep 2
           done
 
@@ -82,4 +82,4 @@ jobs:
 
       - name: Tear down Docker Compose
         if: always()
-        run: docker-compose -f docker-compose.yml down --volumes
+        run: docker compose -f docker-compose.yml down --volumes
