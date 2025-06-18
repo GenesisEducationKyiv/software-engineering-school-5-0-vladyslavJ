@@ -70,6 +70,27 @@ jobs:
             sleep 2
           done
 
+      - name: Create .env.docker from secrets
+        run: |
+          cat <<EOF > .env.docker
+          POSTGRES_USER=${{ env.DB_USER }}
+          POSTGRES_PASSWORD=${{ env.DB_PASSWORD }}
+          POSTGRES_DB=${{ env.DB_NAME }}
+          POSTGRES_HOST=${{ env.DB_HOST }}
+          POSTGRES_PORT=${{ env.DB_PORT }}
+          REDIS_HOST=${{ env.REDIS_HOST }}
+          REDIS_PORT=${{ env.REDIS_PORT }}
+          WEATHER_API_KEY=${{ secrets.WEATHER_API_KEY }}
+          WEATHER_BASE_URL=${{ env.WEATHER_BASE_URL }}
+          MAIL_HOST=${{ env.MAIL_HOST }}
+          MAIL_PORT=${{ env.MAIL_PORT }}
+          MAIL_SECURE=${{ env.MAIL_SECURE }}
+          MAIL_USER=${{ secrets.MAIL_USER }}
+          MAIL_PASS=${{ secrets.MAIL_PASS }}
+          MAIL_FROM=${{ env.MAIL_FROM }}
+          APP_BASE_URL=${{ env.APP_BASE_URL }}
+          EOF
+
       - name: Run integration tests
         run: npm run test:int
 
