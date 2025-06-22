@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import '../container';
 import { container } from 'tsyringe';
-import { ILogger } from '../services/logger.service';
+import { ILogger } from '../interfaces/logger.service.interface';
 import { TOKENS } from '../config/di.tokens';
 import { Client } from 'pg';
 

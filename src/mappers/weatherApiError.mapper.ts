@@ -1,9 +1,9 @@
 import { AxiosError } from 'axios';
-import { WeatherApiErrorData } from '../types/weather-api.types';
+import { IWeatherApiErrorData } from '../interfaces/weather-api-error-response.interface';
 import { HttpError } from '../utils/customError';
 import WEATHER_API_ERROR_CODE from '../utils/constants/weather-api-error-code.constants';
 
-export const mapWeatherApiError = (err: AxiosError<WeatherApiErrorData>): Error => {
+export const mapWeatherApiError = (err: AxiosError<IWeatherApiErrorData>): Error => {
   const apiCode = err.response?.data?.error?.code;
 
   if (apiCode === WEATHER_API_ERROR_CODE.CITY_NOT_FOUND)
