@@ -11,5 +11,6 @@ export const mapWeatherApiError = (err: AxiosError<WeatherApiErrorData>): Error 
     return new HttpError('External API timeout', 504);
 
   const status = err.response?.status ?? 502;
+  if (status === 503) return new HttpError('Weather service unavailable', 503);
   return new HttpError(err.message || 'External API err', status);
 };
