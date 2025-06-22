@@ -1,11 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
-import { injectable, inject } from 'tsyringe';
+import { injectable } from 'tsyringe';
 import { SubscriptionService } from '../services/subscription.service';
-import { TOKENS } from '../config/di.tokens';
 
 @injectable()
 export class SubscriptionController {
-  constructor(@inject(TOKENS.SubscriptionService) private readonly svc: SubscriptionService) {}
+  constructor(private readonly svc: SubscriptionService) {}
 
   subscribe = async (req: Request, res: Response, next: NextFunction) => {
     try {
