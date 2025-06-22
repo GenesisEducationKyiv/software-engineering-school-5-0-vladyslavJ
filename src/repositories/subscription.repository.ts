@@ -2,8 +2,7 @@ import { AppDataSource } from '../config/dataSource';
 import { Subscription, Frequency } from '../models/subscription.entity';
 import { FindOptionsWhere } from 'typeorm';
 import { ISubscriptionRepository } from '../interfaces/subscription.repository.interface';
-
-type SubscriptionField = 'confirmation_token' | 'unsubscribe_token';
+import { SubscriptionField } from '../types/subscription-field.type';
 
 export class SubscriptionRepository implements ISubscriptionRepository {
   private repo = AppDataSource.getRepository(Subscription);

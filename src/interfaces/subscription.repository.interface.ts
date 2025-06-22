@@ -1,6 +1,5 @@
 import { Subscription, Frequency } from '../models/subscription.entity';
-
-type SubscriptionField = 'confirmation_token' | 'unsubscribe_token';
+import { SubscriptionField } from '../types/subscription-field.type';
 
 export interface ISubscriptionRepository {
   findByToken(token: string, field: SubscriptionField): Promise<Subscription | null>;
