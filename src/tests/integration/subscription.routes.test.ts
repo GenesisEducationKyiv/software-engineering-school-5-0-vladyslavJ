@@ -4,9 +4,8 @@ import { AppDataSource } from '../../../src/config/dataSource';
 import request from 'supertest';
 import app from '../../../src/app';
 
-jest.mock('nodemailer', () => nodemailerMock);
-
-import nodemailerMock from '../mocks/nodemailer.mock';
+/* eslint-disable-next-line */
+jest.mock('nodemailer', () => require('../mocks/nodemailer.mock'));
 
 beforeAll(async () => {
   await connectRedis();

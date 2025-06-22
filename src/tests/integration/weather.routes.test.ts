@@ -5,7 +5,6 @@ import { MemoryCache } from '../mocks/memory-cache.mock';
 import { connectRedis, redisClient } from '../../../src/clients/redis.client';
 import nock from 'nock';
 import request from 'supertest';
-import app from '../../../src/app';
 import CONSTANTS from '../../../src/config/constants';
 import { HttpError } from '../../../src/utils/customError';
 
@@ -16,11 +15,18 @@ beforeAll(async () => {
 });
 
 afterEach(() => nock.cleanAll());
+
 afterAll(async () => {
   nock.cleanAll();
   container.reset();
   await redisClient.quit();
 });
+
+const freshApp = () => {
+  jest.resetModules();
+  /* eslint-disable-next-line */
+  return require('../../../src/app').default;
+};
 
 describe('GET /api/weather', () => {
   it('Returns the current weather', async () => {
@@ -34,6 +40,8 @@ describe('GET /api/weather', () => {
           condition: { text: 'Cloudy' },
         },
       });
+
+    const app = freshApp();
 
     const res = await request(app).get('/api/weather').query({ city: 'Kyiv' });
 
@@ -51,17 +59,23 @@ describe('GET /api/weather', () => {
       .query(true)
       .reply(400, { error: { code: CONSTANTS.CITY_NOT_FOUND_CODE } });
 
+    const app = freshApp();
+
     const res = await request(app).get('/api/weather').query({ city: 'Atlantis' });
 
     expect(res.status).toBe(404);
   });
 
   it('Returns 503 if weather service is unavailable', async () => {
+    jest.resetModules();
     container.registerInstance(TOKENS.IWeatherApiClient, {
       fetchCurrent: () => {
         throw new HttpError('Weather service unavailable', 503);
       },
     });
+
+    /* eslint-disable-next-line */
+    const app = require('../../../src/app').default;
 
     const res = await request(app).get('/api/weather').query({ city: 'Kyiv' });
     expect(res.status).toBe(503);
