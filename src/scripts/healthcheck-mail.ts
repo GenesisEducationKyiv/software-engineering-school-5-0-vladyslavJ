@@ -1,13 +1,13 @@
 import 'reflect-metadata';
 import '../container';
 import { container } from 'tsyringe';
-import { IMailTransport } from '../clients/mailer.client';
-import { ILogger } from '../services/logger.service';
+import { IEmailTransport } from '../interfaces/email.client.interface';
+import { ILogger } from '../interfaces/logger.service.interface';
 import { TOKENS } from '../config/di.tokens';
 
 (async () => {
   const logger = container.resolve<ILogger>(TOKENS.ILogger);
-  const transport = container.resolve<IMailTransport>(TOKENS.IMailTransport);
+  const transport = container.resolve<IEmailTransport>(TOKENS.IEmailTransport);
 
   try {
     await transport.verify();

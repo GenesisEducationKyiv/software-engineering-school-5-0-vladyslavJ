@@ -1,16 +1,14 @@
 import { injectable } from 'tsyringe';
 import { BaseHttpClient } from './http.client';
-import { WeatherApiResponse, WeatherApiErrorData } from '../types/weatherApi.interfaces';
+import { IWeatherApiResponse } from '../interfaces/weather-api-response.interface';
+import { IWeatherApiErrorData } from '../interfaces/weather-api-error-response.interface';
 import ENV from '../config/env';
 import { mapWeatherApiError } from '../mappers/weatherApiError.mapper';
-
-export interface IWeatherApiClient {
-  fetchCurrent(city: string): Promise<WeatherApiResponse>;
-}
+import { IWeatherApiClient } from '../interfaces/weather-api.client.interface';
 
 @injectable()
 export class WeatherApiClient
-  extends BaseHttpClient<WeatherApiErrorData>
+  extends BaseHttpClient<IWeatherApiErrorData>
   implements IWeatherApiClient
 {
   constructor() {
@@ -25,6 +23,6 @@ export class WeatherApiClient
   }
 
   fetchCurrent(city: string) {
-    return this.get<WeatherApiResponse>('/current.json', { q: city });
+    return this.get<IWeatherApiResponse>('/current.json', { q: city });
   }
 }

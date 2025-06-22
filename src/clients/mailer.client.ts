@@ -1,16 +1,13 @@
 import { injectable, inject } from 'tsyringe';
 import nodemailer, { Transporter } from 'nodemailer';
 import type SMTPTransport from 'nodemailer/lib/smtp-transport';
-import { ILogger } from '../services/logger.service';
+import { ILogger } from '../interfaces/logger.service.interface';
 import { TOKENS } from '../config/di.tokens';
 import ENV from '../config/env';
+import { IEmailTransport } from '../interfaces/email.client.interface';
 
-export interface IMailTransport {
-  verify(): Promise<true>;
-  send(options: SMTPTransport.Options & { from: string }): Promise<unknown>;
-}
 @injectable()
-export class NodemailerTransport implements IMailTransport {
+export class NodemailerTransport implements IEmailTransport {
   private readonly transporter: Transporter;
 
   constructor(@inject(TOKENS.ILogger) private readonly logger: ILogger) {

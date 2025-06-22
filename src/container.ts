@@ -1,24 +1,26 @@
 import 'reflect-metadata';
 import { container } from 'tsyringe';
 import { TOKENS } from './config/di.tokens';
-import { WeatherApiClient, IWeatherApiClient } from './clients/weatherApi.client';
-import { RedisCacheService, ICacheService } from './services/cache.service';
+import { IWeatherApiClient } from './interfaces/weather-api.client.interface';
+import { WeatherApiClient } from './clients/weatherApi.client';
+import { RedisCacheService } from './services/cache.service';
+import { ICacheService } from './interfaces/cache.service.interface';
 import { redisClient } from './clients/redis.client';
-import { NodemailerTransport, IMailTransport } from './clients/mailer.client';
-import { GmailService, IMailService } from './services/mail.service';
+import { NodemailerTransport } from './clients/mailer.client';
+import { IEmailTransport } from './interfaces/email.client.interface';
+import { GmailService } from './services/mail.service';
+import { IEmailService } from './interfaces/email.service.interface';
 import { SubscriptionService } from './services/subscription.service';
 import { SubscriptionController } from './controllers/subscription.controller';
-import {
-  SubscriptionRepository,
-  ISubscriptionRepository,
-} from './repositories/subscription.repository';
+import { SubscriptionRepository } from './repositories/subscription.repository';
+import { ISubscriptionRepository } from './interfaces/subscription.repository.interface';
 import { WeatherService } from './services/weather.service';
 import { WeatherMapper } from './mappers/weather.mapper';
 import { WeatherDto } from './dto/weather.dto';
 import { WeatherController } from './controllers/weather.controller';
 import { WeatherDigestJob } from './jobs/weatherDigest.job';
-import { IWeatherMapper } from './mappers/weather.mapper';
-import { ILogger } from './services/logger.service';
+import { IWeatherMapper } from './interfaces/weather.mapper.interface';
+import { ILogger } from './interfaces/logger.service.interface';
 import { LoggerService } from './services/logger.service';
 import { ErrorHandlerMiddleware } from './middlewares/errorHandler';
 import ENV from './config/env';
@@ -36,8 +38,8 @@ container.registerSingleton(TOKENS.WeatherService, WeatherService);
 container.registerSingleton(TOKENS.WeatherController, WeatherController);
 container.registerSingleton(TOKENS.WeatherDigestJob, WeatherDigestJob);
 
-container.registerSingleton<IMailTransport>(TOKENS.IMailTransport, NodemailerTransport);
-container.registerSingleton<IMailService>(TOKENS.IMailService, GmailService);
+container.registerSingleton<IEmailTransport>(TOKENS.IEmailTransport, NodemailerTransport);
+container.registerSingleton<IEmailService>(TOKENS.IEmailService, GmailService);
 
 container.registerSingleton<ISubscriptionRepository>(
   TOKENS.ISubscriptionRepository,

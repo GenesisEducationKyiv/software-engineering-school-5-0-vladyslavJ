@@ -6,7 +6,7 @@ import ENV from './config/env';
 import { AppDataSource } from './config/dataSource';
 import './jobs/scheduler';
 import { connectRedis } from './clients/redis.client';
-import { ILogger } from './services/logger.service';
+import { ILogger } from './interfaces/logger.service.interface';
 import { TOKENS } from './config/di.tokens';
 
 const logger = container.resolve<ILogger>(TOKENS.ILogger);

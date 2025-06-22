@@ -1,29 +1,9 @@
 import 'dotenv/config';
 import { checkEnv } from '../utils/checkEnv';
 import { ConfigError } from '../utils/customError';
+import { IEnvConfig } from '../interfaces/env-config.interface';
 
-export interface EnvConfig {
-  PORT: number;
-  WEATHER_API_KEY: string;
-  WEATHER_BASE_URL: string;
-  DB_USER: string;
-  DB_HOST: string;
-  DB_NAME: string;
-  DB_PASSWORD: string;
-  DB_PORT: number;
-  MAIL_HOST: string;
-  MAIL_PORT: number;
-  MAIL_SECURE: boolean;
-  MAIL_USER: string;
-  MAIL_PASS: string;
-  MAIL_FROM: string;
-  APP_BASE_URL: string;
-  REDIS_HOST: string;
-  REDIS_PORT: number;
-  REDIS_TTL: number;
-}
-
-const ENV: Readonly<EnvConfig> = Object.freeze({
+const ENV: Readonly<IEnvConfig> = Object.freeze({
   PORT: +(process.env.PORT ?? 3000),
   WEATHER_API_KEY: process.env.WEATHER_API_KEY ?? '',
   WEATHER_BASE_URL: process.env.WEATHER_BASE_URL ?? '',

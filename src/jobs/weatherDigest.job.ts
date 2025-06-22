@@ -1,28 +1,24 @@
 import { format } from 'date-fns';
 import { injectable, inject } from 'tsyringe';
 import { WeatherService } from '../services/weather.service';
-import { ISubscriptionRepository } from '../repositories/subscription.repository';
-import { IMailService } from '../services/mail.service';
+import { ISubscriptionRepository } from '../interfaces/subscription.repository.interface';
+import { IEmailService } from '../interfaces/email.service.interface';
 import { digestTpl } from '../utils/templates';
-import { ILogger } from '../services/logger.service';
+import { ILogger } from '../interfaces/logger.service.interface';
 import { TOKENS } from '../config/di.tokens';
-
-enum SubscriptionFrequency {
-  Hourly = 'hourly',
-  Daily = 'daily',
-}
+import { SubscriptionFrequencyEnum } from '../enums/subscription-frequency.enum';
 
 @injectable()
 export class WeatherDigestJob {
   constructor(
     @inject(TOKENS.WeatherService) private readonly weatherService: WeatherService,
-    @inject(TOKENS.IMailService) private readonly mail: IMailService,
+    @inject(TOKENS.IEmailService) private readonly mail: IEmailService,
     @inject(TOKENS.ISubscriptionRepository)
     private readonly subscriptionRepository: ISubscriptionRepository,
     @inject(TOKENS.ILogger) private readonly logger: ILogger,
   ) {}
 
-  private async process(frequency: SubscriptionFrequency) {
+  private async process(frequency: SubscriptionFrequencyEnum) {
     const subs = await this.subscriptionRepository.findConfirmedByFrequency(frequency);
 
     await Promise.allSettled(
@@ -45,6 +41,6 @@ export class WeatherDigestJob {
     );
   }
 
-  runHourly = () => this.process(SubscriptionFrequency.Hourly);
-  runDaily = () => this.process(SubscriptionFrequency.Daily);
+  runHourly = () => this.process(SubscriptionFrequencyEnum.HOURLY);
+  runDaily = () => this.process(SubscriptionFrequencyEnum.DAILY);
 }

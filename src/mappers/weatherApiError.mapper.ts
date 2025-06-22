@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios';
-import { WeatherApiErrorData } from '../types/weatherApi.interfaces';
+import { WeatherApiErrorData } from '../types/weather-api.types';
 import { HttpError } from '../utils/customError';
 import WEATHER_API_ERROR_CODE from '../utils/constants/weather-api-error-code.constants';
 

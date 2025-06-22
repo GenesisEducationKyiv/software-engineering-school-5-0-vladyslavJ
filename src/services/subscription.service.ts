@@ -1,18 +1,18 @@
 import { injectable, inject } from 'tsyringe';
 import { HttpError } from '../utils/customError';
-import { ISubscriptionRepository } from '../repositories/subscription.repository';
+import { ISubscriptionRepository } from '../interfaces/subscription.repository.interface';
 import { Frequency } from '../models/subscription.entity';
-import { IMailService } from './mail.service';
+import { IEmailService } from '../interfaces/email.service.interface';
 import { confirmTpl, goodbyeTpl, confirmedTpl } from '../utils/templates';
 import { QueryFailedError } from 'typeorm';
-import { ILogger } from './logger.service';
+import { ILogger } from '../interfaces/logger.service.interface';
 import { TOKENS } from '../config/di.tokens';
 import { genToken } from '../utils/genToken';
 
 @injectable()
 export class SubscriptionService {
   constructor(
-    @inject(TOKENS.IMailService) private readonly mail: IMailService,
+    @inject(TOKENS.IEmailService) private readonly mail: IEmailService,
     @inject(TOKENS.ISubscriptionRepository)
     private readonly subscriptionRepository: ISubscriptionRepository,
     @inject(TOKENS.ILogger) private readonly logger: ILogger,
