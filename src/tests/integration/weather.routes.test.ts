@@ -7,6 +7,7 @@ import nock from 'nock';
 import request from 'supertest';
 import app from '../../../src/app';
 import CONSTANTS from '../../../src/config/constants';
+import { HttpError } from '../../../src/utils/customError';
 
 container.registerInstance(TOKENS.CacheServiceWeather, new MemoryCache());
 
@@ -56,13 +57,13 @@ describe('GET /api/weather', () => {
   });
 
   it('Returns 503 if weather service is unavailable', async () => {
-    nock('https://api.weatherapi.com')
-      .get('/v1/current.json')
-      .query(true)
-      .reply(503, { error: { message: 'Service Unavailable' } });
+    container.registerInstance(TOKENS.IWeatherApiClient, {
+      fetchCurrent: () => {
+        throw new HttpError('Weather service unavailable', 503);
+      },
+    });
 
     const res = await request(app).get('/api/weather').query({ city: 'Kyiv' });
-
     expect(res.status).toBe(503);
   });
 });

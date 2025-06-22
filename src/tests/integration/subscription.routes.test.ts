@@ -3,9 +3,10 @@ import { connectRedis, redisClient } from '../../../src/clients/redis.client';
 import { AppDataSource } from '../../../src/config/dataSource';
 import request from 'supertest';
 import app from '../../../src/app';
-import nodemailerMock from '../mocks/nodemailer.mock';
 
 jest.mock('nodemailer', () => nodemailerMock);
+
+import nodemailerMock from '../mocks/nodemailer.mock';
 
 beforeAll(async () => {
   await connectRedis();
