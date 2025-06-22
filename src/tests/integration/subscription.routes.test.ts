@@ -3,13 +3,9 @@ import { connectRedis, redisClient } from '../../../src/clients/redis.client';
 import { AppDataSource } from '../../../src/config/dataSource';
 import request from 'supertest';
 import app from '../../../src/app';
+import nodemailerMock from '../mocks/nodemailer.mock';
 
-jest.mock('nodemailer', () => {
-  const sendMail = jest.fn().mockResolvedValue({});
-  const verify = jest.fn().mockResolvedValue(true);
-  const createTransport = jest.fn().mockReturnValue({ verify, sendMail });
-  return { __esModule: true, default: { createTransport }, createTransport };
-});
+jest.mock('nodemailer', () => nodemailerMock);
 
 beforeAll(async () => {
   await connectRedis();

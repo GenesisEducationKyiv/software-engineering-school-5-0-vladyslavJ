@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { container } from 'tsyringe';
 import { TOKENS } from '../../../src/config/di.tokens';
-import { MemoryCache } from '../utils/mocks';
+import { MemoryCache } from '../mocks/memory-cache.mock';
 import { connectRedis, redisClient } from '../../../src/clients/redis.client';
 import nock from 'nock';
 import request from 'supertest';
@@ -53,5 +53,16 @@ describe('GET /api/weather', () => {
     const res = await request(app).get('/api/weather').query({ city: 'Atlantis' });
 
     expect(res.status).toBe(404);
+  });
+
+  it('Returns 503 if weather service is unavailable', async () => {
+    nock('https://api.weatherapi.com')
+      .get('/v1/current.json')
+      .query(true)
+      .reply(503, { error: { message: 'Service Unavailable' } });
+
+    const res = await request(app).get('/api/weather').query({ city: 'Kyiv' });
+
+    expect(res.status).toBe(503);
   });
 });
