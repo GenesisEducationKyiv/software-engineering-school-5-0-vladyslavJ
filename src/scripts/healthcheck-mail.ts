@@ -1,20 +1,20 @@
-import nodemailer from 'nodemailer';
-import ENV from '../config/env';
-import { logger } from '../utils/logger';
+import 'reflect-metadata';
+import '../container';
+import { container } from 'tsyringe';
+import { IEmailTransport } from '../interfaces/email.client.interface';
+import { ILogger } from '../interfaces/logger.service.interface';
+import { TOKENS } from '../config/di.tokens';
 
 (async () => {
+  const logger = container.resolve<ILogger>(TOKENS.ILogger);
+  const transport = container.resolve<IEmailTransport>(TOKENS.IEmailTransport);
+
   try {
-    const transporter = nodemailer.createTransport({
-      host: ENV.MAIL_HOST,
-      port: ENV.MAIL_PORT,
-      secure: ENV.MAIL_SECURE,
-      auth: { user: ENV.MAIL_USER, pass: ENV.MAIL_PASS },
-    });
-    await transporter.verify();
-    logger.info('SMTP OK');
+    await transport.verify();
+    logger.info('[MAIL] Transport successfully verified');
     process.exit(0);
-  } catch (e) {
-    logger.error('SMTP ERROR', e);
+  } catch (err: unknown) {
+    logger.error('[MAIL] Transport verification error', err);
     process.exit(1);
   }
 })();

@@ -1,5 +1,14 @@
 import cron from 'node-cron';
-import WeatherDigestJob from './weatherDigest.job';
+import { container } from '../container';
+import { WeatherDigestJob } from './weatherDigest.job';
+import CRON_FREQUENCY from '../utils/constants/cron.constants';
 
-cron.schedule('0 0 * * * *', () => WeatherDigestJob.runHourly());
-cron.schedule('0 0 7 * * *', () => WeatherDigestJob.runDaily());
+const job = container.resolve(WeatherDigestJob);
+
+cron.schedule(CRON_FREQUENCY.HOURLY, async () => {
+  await job.runHourly();
+});
+
+cron.schedule(CRON_FREQUENCY.DAILY, async () => {
+  await job.runDaily();
+});

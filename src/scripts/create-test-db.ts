@@ -1,5 +1,11 @@
+import 'reflect-metadata';
+import '../container';
+import { container } from 'tsyringe';
+import { ILogger } from '../interfaces/logger.service.interface';
+import { TOKENS } from '../config/di.tokens';
 import { Client } from 'pg';
-import { logger } from '../utils/logger';
+
+const logger = container.resolve<ILogger>(TOKENS.ILogger);
 
 const {
   DB_USER = 'postgres',
@@ -9,13 +15,13 @@ const {
   TEST_DB_NAME = 'weatherdb_test',
 } = process.env;
 
-const SYSTEM_DB = process.env.PG_SYSTEM_DB || 'postgres';
+const SYSTEM_DB = process.env.PG_SYSTEM_DB ?? 'postgres';
 
-async function createTestDb() {
+async function createTestDb(): Promise<void> {
   const client = new Client({
     user: DB_USER,
     host: DB_HOST,
-    port: +DB_PORT,
+    port: Number(DB_PORT),
     password: DB_PASSWORD,
     database: SYSTEM_DB,
   });
@@ -23,17 +29,19 @@ async function createTestDb() {
   try {
     await client.connect();
 
-    const check = await client.query(`SELECT 1 FROM pg_database WHERE datname='${TEST_DB_NAME}';`);
+    const check = await client.query(`SELECT 1 FROM pg_database WHERE datname = $1;`, [
+      TEST_DB_NAME,
+    ]);
+
     if ((check.rowCount ?? 0) > 0) {
-      logger.info(`Database "${TEST_DB_NAME}" already exists!`);
+      logger.info(`Test database "${TEST_DB_NAME}" already exists`);
       return;
     }
 
     await client.query(`CREATE DATABASE "${TEST_DB_NAME}";`);
-    logger.info(`Database "${TEST_DB_NAME}" successfully created!`);
+    logger.info(`Test database "${TEST_DB_NAME}" successfully created`);
   } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : String(err);
-    logger.error('Error creating test database:', message);
+    logger.error('Error creating test database', err);
     process.exit(1);
   } finally {
     await client.end();

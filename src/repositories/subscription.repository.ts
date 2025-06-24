@@ -1,14 +1,16 @@
 import { AppDataSource } from '../config/dataSource';
 import { Subscription, Frequency } from '../models/subscription.entity';
 import { FindOptionsWhere } from 'typeorm';
+import { ISubscriptionRepository } from '../interfaces/subscription.repository.interface';
+import { SubscriptionField } from '../types/subscription-field.type';
 
-type TokenField = 'confirmation_token' | 'unsubscribe_token';
-
-export class SubscriptionRepository {
+export class SubscriptionRepository implements ISubscriptionRepository {
   private repo = AppDataSource.getRepository(Subscription);
 
-  findByToken(token: string, field: TokenField) {
-    const where: Partial<Record<TokenField, string>> = { [field]: token };
+  findByToken(token: string, field: SubscriptionField) {
+    const where: Partial<Record<SubscriptionField, string>> = {
+      [field]: token,
+    };
     return this.repo.findOneBy(where);
   }
 
@@ -37,5 +39,3 @@ export class SubscriptionRepository {
     return this.repo.find({ where });
   }
 }
-
-export const subscriptionRepository = new SubscriptionRepository();

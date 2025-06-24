@@ -1,13 +1,14 @@
 import 'reflect-metadata';
+import { container } from 'tsyringe';
 import express from 'express';
 import morgan from 'morgan';
 import helmet from 'helmet';
 import cors from 'cors';
 import router from './routes/router';
-import { errorHandler } from './middlewares/errorHandler';
 import { Request, Response } from 'express';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from './config/swagger.json';
+import { ErrorHandlerMiddleware } from './middlewares/errorHandler';
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.use((_req: Request, res: Response) => {
   res.status(404).json({ message: 'Not Found' });
 });
 
-app.use(errorHandler);
+const errorHandler = container.resolve(ErrorHandlerMiddleware);
+app.use(errorHandler.handle.bind(errorHandler));
 
 export default app;
