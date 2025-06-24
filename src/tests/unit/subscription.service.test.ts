@@ -2,8 +2,8 @@ import 'reflect-metadata';
 import { container } from 'tsyringe';
 import { TOKENS } from '../../config/di.tokens';
 import { SubscriptionService } from '../../services/subscription.service';
-import { ISubscriptionRepository } from '../../repositories/subscription.repository';
-import { IMailService } from '../../services/mail.service';
+import { ISubscriptionRepository } from '../../interfaces/subscription.repository.interface';
+import { IEmailService } from '../../interfaces/email.service.interface';
 import { HttpError } from '../../utils/customError';
 
 const mockLogger = {
@@ -23,7 +23,7 @@ class FakeRepo implements ISubscriptionRepository {
   findConfirmedByFrequency = jest.fn();
 }
 
-class FakeMail implements IMailService {
+class FakeMail implements IEmailService {
   send = jest.fn().mockResolvedValue(undefined);
 }
 
@@ -38,7 +38,7 @@ describe('SubscriptionService', () => {
 
     container.registerInstance(TOKENS.ILogger, mockLogger);
     container.registerInstance(TOKENS.ISubscriptionRepository, repo);
-    container.registerInstance(TOKENS.IMailService, mail);
+    container.registerInstance(TOKENS.IEmailService, mail);
 
     svc = container.resolve(SubscriptionService);
   });

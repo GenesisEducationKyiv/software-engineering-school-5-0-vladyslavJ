@@ -1,10 +1,10 @@
 import 'reflect-metadata';
 import { WeatherMapper } from '../../mappers/weather.mapper';
-import { WeatherApiResponse } from '../../types/weatherApi.interfaces';
+import { IWeatherApiResponse } from '../../interfaces/weather-api-response.interface';
 
 describe('WeatherMapper', () => {
   it('Mappes the updated API response object to DTO', () => {
-    const raw: WeatherApiResponse = {
+    const raw: IWeatherApiResponse = {
       location: {
         name: 'London',
         region: 'City of London, Greater London',
