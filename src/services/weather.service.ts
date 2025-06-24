@@ -1,9 +1,9 @@
 import { inject, injectable } from 'tsyringe';
-import { IWeatherApiClient } from '../clients/weatherApi.client';
-import { ICacheService } from './cache.service';
-import { IWeatherMapper } from '../mappers/weather.mapper';
+import { IWeatherApiClient } from '../interfaces/weather-api.client.interface';
+import { ICacheService } from '../interfaces/cache.service.interface';
+import { IWeatherMapper } from '../interfaces/weather.mapper.interface';
 import { WeatherDto } from '../dto/weather.dto';
-import { ILogger } from './logger.service';
+import { ILogger } from '../interfaces/logger.service.interface';
 import { TOKENS } from '../config/di.tokens';
 
 @injectable()

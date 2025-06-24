@@ -4,8 +4,8 @@ import { TOKENS } from '../../../src/config/di.tokens';
 import { MemoryCache } from '../mocks/memory-cache.mock';
 import nock from 'nock';
 import request from 'supertest';
-import CONSTANTS from '../../../src/config/constants';
 import { HttpError } from '../../../src/utils/customError';
+import WEATHER_API_ERROR_CODE from '../../../src/utils/constants/weather-api-error-code.constants';
 
 jest.mock('../../../src/clients/redis.client', () => ({
   connectRedis: async () => {},
@@ -69,7 +69,7 @@ describe('GET /api/weather', () => {
     nock('https://api.weatherapi.com')
       .get('/v1/current.json')
       .query(true)
-      .reply(400, { error: { code: CONSTANTS.CITY_NOT_FOUND_CODE } });
+      .reply(400, { error: { code: WEATHER_API_ERROR_CODE.CITY_NOT_FOUND } });
 
     const app = freshApp();
 

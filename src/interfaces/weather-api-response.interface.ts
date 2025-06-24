@@ -1,16 +1,16 @@
-export interface WeatherApiCondition {
+export interface IWeatherApiCondition {
   text: string;
   icon: string;
   code: number;
 }
 
-export interface WeatherApiCurrent {
+export interface IWeatherApiCurrent {
   last_updated_epoch: number;
   last_updated: string;
   temp_c: number;
   temp_f: number;
   is_day: number;
-  condition: WeatherApiCondition;
+  condition: IWeatherApiCondition;
   wind_mph: number;
   wind_kph: number;
   wind_degree: number;
@@ -36,7 +36,7 @@ export interface WeatherApiCurrent {
   gust_kph: number;
 }
 
-export interface WeatherApiLocation {
+export interface IWeatherApiLocation {
   name: string;
   region: string;
   country: string;
@@ -47,14 +47,7 @@ export interface WeatherApiLocation {
   localtime: string;
 }
 
-export interface WeatherApiResponse {
-  location: WeatherApiLocation;
-  current: WeatherApiCurrent;
-}
-
-export interface WeatherApiErrorData {
-  error: {
-    code: number;
-    message: string;
-  };
+export interface IWeatherApiResponse {
+  location: IWeatherApiLocation;
+  current: IWeatherApiCurrent;
 }

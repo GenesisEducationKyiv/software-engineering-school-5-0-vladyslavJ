@@ -2,12 +2,7 @@ import { injectable } from 'tsyringe';
 import { createLogger, format, transports, Logger as WinstonLogger } from 'winston';
 import { existsSync, mkdirSync } from 'fs';
 import { join } from 'path';
-
-export interface ILogger {
-  info(message: string): void;
-  warn(message: string): void;
-  error(message: string, error?: unknown): void;
-}
+import { ILogger } from '../interfaces/logger.service.interface';
 
 @injectable()
 export class LoggerService implements ILogger {

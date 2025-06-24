@@ -1,14 +1,11 @@
 import { injectable } from 'tsyringe';
 import { WeatherDto } from '../dto/weather.dto';
-import { WeatherApiResponse } from '../types/weatherApi.interfaces';
-
-export interface IWeatherMapper {
-  mapCurrentWeather(raw: WeatherApiResponse): WeatherDto;
-}
+import { IWeatherApiResponse } from '../interfaces/weather-api-response.interface';
+import { IWeatherMapper } from '../interfaces/weather.mapper.interface';
 
 @injectable()
 export class WeatherMapper implements IWeatherMapper {
-  mapCurrentWeather(raw: WeatherApiResponse): WeatherDto {
+  mapCurrentWeather(raw: IWeatherApiResponse): WeatherDto {
     return new WeatherDto({
       temperature: raw?.current?.temp_c,
       humidity: raw?.current?.humidity,

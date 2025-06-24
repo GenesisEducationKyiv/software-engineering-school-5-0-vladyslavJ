@@ -1,18 +1,15 @@
 import { injectable, inject } from 'tsyringe';
-import { IMailTransport } from '../clients/mailer.client';
-import { SendOptions } from '../types/mail.interfaces';
+import { IEmailTransport } from '../interfaces/email.client.interface';
+import { IEmailSendOptions } from '../interfaces/email-send-options.interfaces';
 import { TOKENS } from '../config/di.tokens';
 import ENV from '../config/env';
-
-export interface IMailService {
-  send(opts: SendOptions): Promise<void>;
-}
+import { IEmailService } from '../interfaces/email.service.interface';
 
 @injectable()
-export class GmailService implements IMailService {
-  constructor(@inject(TOKENS.IMailTransport) private readonly transport: IMailTransport) {}
+export class GmailService implements IEmailService {
+  constructor(@inject(TOKENS.IEmailTransport) private readonly transport: IEmailTransport) {}
 
-  async send(opts: SendOptions) {
+  async send(opts: IEmailSendOptions) {
     await this.transport.send({
       from: ENV.MAIL_FROM,
       to: opts.to,
