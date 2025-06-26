@@ -17,4 +17,6 @@ export interface IEnvConfig {
   REDIS_HOST: string;
   REDIS_PORT: number;
   REDIS_TTL: number;
+  OPENWEATHERMAP_API_KEY: string;
+  OPENWEATHERMAP_BASE_URL: string;
 }

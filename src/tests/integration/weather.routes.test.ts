@@ -73,18 +73,19 @@ describe('GET /api/weather', () => {
 
     const app = freshApp();
 
-    const res = await request(app).get('/api/weather').query({ city: 'Atlantis' });
+    const res = await request(app).get('/api/weather').query({ city: 'GenesisSchool' });
 
     expect(res.status).toBe(404);
   });
 
   it('Returns 503 if weather service is unavailable', async () => {
     jest.resetModules();
-    jest.mock('../../../src/clients/weatherApi.client', () => ({
+    jest.doMock('../../../src/clients/weatherApi.client', () => ({
       WeatherApiClient: jest.fn().mockImplementation(() => ({
-        fetchCurrent: () => {
+        fetchCurrentWeather: () => {
           throw new HttpError('Weather service unavailable', 503);
         },
+        setNextProvider: () => {},
       })),
     }));
 

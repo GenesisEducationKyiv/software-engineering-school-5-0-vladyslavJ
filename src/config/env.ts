@@ -22,6 +22,8 @@ const ENV: Readonly<IEnvConfig> = Object.freeze({
   REDIS_HOST: process.env.REDIS_HOST ?? 'redis',
   REDIS_PORT: +(process.env.REDIS_PORT ?? 6379),
   REDIS_TTL: +(process.env.REDIS_TTL ?? 300), // 5 min.
+  OPENWEATHERMAP_API_KEY: process.env.OPENWEATHERMAP_API_KEY ?? '',
+  OPENWEATHERMAP_BASE_URL: process.env.OPENWEATHERMAP_BASE_URL ?? '',
 });
 
 checkEnv(ENV, ConfigError);

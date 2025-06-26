@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { WeatherMapper } from '../../mappers/weather.mapper';
+import { WeatherMapper } from '../../mappers/weather-data.mapper';
 import { IWeatherApiResponse } from '../../interfaces/weather-api-response.interface';
 
 describe('WeatherMapper', () => {
