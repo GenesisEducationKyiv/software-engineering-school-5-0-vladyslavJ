@@ -1,8 +1,8 @@
 import 'reflect-metadata';
 import '../container';
 import { container } from 'tsyringe';
-import { ILogger } from '../interfaces/logger.service.interface';
-import { TOKENS } from '../config/di.tokens';
+import { ILogger } from '../interfaces/logger-service.interface';
+import { TOKENS } from '../config/di-tokens.config';
 import { writeFileSync, existsSync, mkdirSync } from 'fs';
 import { resolve, join } from 'path';
 

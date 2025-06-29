@@ -1,6 +1,6 @@
 import { Schema } from 'joi';
 import { Request, Response, NextFunction } from 'express';
-import { ValidationError } from '../utils/customError';
+import { ValidationError } from '../utils/custom-error.util';
 
 type ReqPart = 'body' | 'query' | 'params';
 

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { validateRequest } from '../middlewares/validateRequest';
+import { validateRequest } from '../middlewares/validate-request.middleware';
 import { subscriptionBodySchema } from '../validators/subscription.schema';
 import { container } from '../container';
 import { SubscriptionController } from '../controllers/subscription.controller';

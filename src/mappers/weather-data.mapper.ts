@@ -1,7 +1,7 @@
 import { injectable } from 'tsyringe';
 import { WeatherDto } from '../dto/weather.dto';
 import { IWeatherApiResponse } from '../interfaces/weather-api-response.interface';
-import { IWeatherMapper } from '../interfaces/weather-data.mapper.interface';
+import { IWeatherMapper } from '../interfaces/weather-data-mapper.interface';
 
 @injectable()
 export class WeatherMapper implements IWeatherMapper {

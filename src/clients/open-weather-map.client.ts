@@ -1,13 +1,13 @@
 import { injectable, inject } from 'tsyringe';
 import { BaseHttpClient } from './http.client';
 import { IWeatherApiResponse } from '../interfaces/weather-api-response.interface';
-import { IWeatherApiProvider } from '../interfaces/weather-api.provider.interface';
-import { ILogger } from '../interfaces/logger.service.interface';
-import { TOKENS } from '../config/di.tokens';
-import { IOpenWeatherMapResponse } from '../interfaces/openWeatherMap-response.interface';
-import { mapOpenWeatherMapToWeatherApiResponse } from '../mappers/openWeatherMap.mapper';
-import { IOpenWeatherMapErrorData } from '../interfaces/openWeatherMap-error-response.interface';
-import { mapWeatherApiError } from '../mappers/weatherApiError.mapper';
+import { IWeatherApiProvider } from '../interfaces/weather-provider.interface';
+import { ILogger } from '../interfaces/logger-service.interface';
+import { TOKENS } from '../config/di-tokens.config';
+import { IOpenWeatherMapResponse } from '../interfaces/open-weather-map-response.interface';
+import { mapOpenWeatherMapToWeatherApiResponse } from '../mappers/open-weather-map.mapper';
+import { IOpenWeatherMapErrorData } from '../interfaces/open-weather-map-error-response.interface';
+import { mapWeatherApiError } from '../mappers/weather-error.mapper';
 import ENV from '../config/env';
 
 @injectable()

@@ -10,14 +10,14 @@
     "migration:run": "npm run build && node ./node_modules/typeorm/cli.js migration:run -d dist/config/dataSource.js",
     "migration:revert": "npm run build && node ./node_modules/typeorm/cli.js migration:revert -d dist/config/dataSource.js",
     "migration:show": "npm run build && node ./node_modules/typeorm/cli.js migration:show -d dist/config/dataSource.js",
-    "migration:create": "ts-node src/scripts/create-migration.ts",
-    "db:create:test:docker": "cross-env NODE_ENV=test dotenv -e .env.test.docker -- ts-node src/scripts/create-test-db.ts",
+    "migration:create": "ts-node src/scripts/create-migration.script.ts",
+    "db:create:test:docker": "cross-env NODE_ENV=test dotenv -e .env.test.docker -- ts-node src/scripts/create-test-db.script.ts",
     "test:docker": "npm run db:create:test:docker && npm test",
     "lint": "eslint \"src/**/*.{js,ts}\"",
     "lint:fix": "eslint \"src/**/*.{js,ts}\" --fix",
     "format": "prettier . --write",
-    "test:unit": "jest --config src/tests/setup/jest.unit.config.ts",
-    "test:int": "jest --config src/tests/setup/jest.integration.config.ts"
+    "test:unit": "jest --config src/tests/setup/jest-unit.config.ts",
+    "test:int": "jest --config src/tests/setup/jest-integration.config.ts"
   },
   "author": "",
   "license": "ISC",

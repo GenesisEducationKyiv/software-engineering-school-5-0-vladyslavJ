@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import weatherRouter from './weather.routes';
-import subscriptionRouter from './subscription.routes';
+import weatherRouter from './weather.route';
+import subscriptionRouter from './subscription.route';
 
 const router = Router();
 

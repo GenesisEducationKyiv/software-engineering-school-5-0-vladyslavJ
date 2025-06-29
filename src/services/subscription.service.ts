@@ -1,13 +1,13 @@
 import { injectable, inject } from 'tsyringe';
-import { HttpError } from '../utils/customError';
-import { ISubscriptionRepository } from '../interfaces/subscription.repository.interface';
+import { HttpError } from '../utils/custom-error.util';
+import { ISubscriptionRepository } from '../interfaces/subscription-repository.interface';
 import { Frequency } from '../models/subscription.entity';
-import { IEmailService } from '../interfaces/email.service.interface';
-import { confirmTpl, goodbyeTpl, confirmedTpl } from '../utils/templates';
+import { IEmailService } from '../interfaces/email-service.interface';
+import { confirmTpl, goodbyeTpl, confirmedTpl } from '../utils/email-templates.util';
 import { QueryFailedError } from 'typeorm';
-import { ILogger } from '../interfaces/logger.service.interface';
-import { TOKENS } from '../config/di.tokens';
-import { genToken } from '../utils/genToken';
+import { ILogger } from '../interfaces/logger-service.interface';
+import { TOKENS } from '../config/di-tokens.config';
+import { genToken } from '../utils/gen-token.util';
 
 @injectable()
 export class SubscriptionService {

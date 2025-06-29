@@ -4,10 +4,10 @@ import { container } from 'tsyringe';
 import app from './app';
 import ENV from './config/env';
 import { AppDataSource } from './config/dataSource';
-import './jobs/scheduler';
+import './jobs/scheduler.job';
 import { connectRedis } from './clients/redis.client';
-import { ILogger } from './interfaces/logger.service.interface';
-import { TOKENS } from './config/di.tokens';
+import { ILogger } from './interfaces/logger-service.interface';
+import { TOKENS } from './config/di-tokens.config';
 
 const logger = container.resolve<ILogger>(TOKENS.ILogger);
 

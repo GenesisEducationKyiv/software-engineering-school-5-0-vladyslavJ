@@ -1,6 +1,6 @@
 import 'dotenv/config';
-import { checkEnv } from '../utils/checkEnv';
-import { ConfigError } from '../utils/customError';
+import { checkEnv } from '../utils/check-env.util';
+import { ConfigError } from '../utils/custom-error.util';
 import { IEnvConfig } from '../interfaces/env-config.interface';
 
 const ENV: Readonly<IEnvConfig> = Object.freeze({

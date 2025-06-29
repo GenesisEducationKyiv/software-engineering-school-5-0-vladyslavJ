@@ -1,5 +1,5 @@
 import { injectable } from 'tsyringe';
-import { ICacheService } from '../../interfaces/cache.service.interface';
+import { ICacheService } from '../../interfaces/cache-service.interface';
 
 @injectable()
 export class MemoryCache<T> implements ICacheService<T> {

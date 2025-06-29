@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { injectable, inject } from 'tsyringe';
 import { WeatherService } from '../services/weather.service';
-import { TOKENS } from '../config/di.tokens';
+import { TOKENS } from '../config/di-tokens.config';
 
 @injectable()
 export class WeatherController {

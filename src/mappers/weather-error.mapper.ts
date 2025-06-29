@@ -1,8 +1,8 @@
 import { AxiosError } from 'axios';
-import { HttpError } from '../utils/customError';
-import WEATHER_API_ERROR_CODE from '../utils/constants/weather-api-error-code.constants';
-import { IWeatherApiErrorData } from '../interfaces/weatherApi-error-response.interface';
-import { IOpenWeatherMapErrorData } from '../interfaces/openWeatherMap-error-response.interface';
+import { HttpError } from '../utils/custom-error.util';
+import WEATHER_API_ERROR_CODE from '../utils/constants/weather-api-error-code.constant';
+import { IWeatherApiErrorData } from '../interfaces/weather-api-error-response.interface';
+import { IOpenWeatherMapErrorData } from '../interfaces/open-weather-map-error-response.interface';
 
 type KnownErrorData = IWeatherApiErrorData | IOpenWeatherMapErrorData | undefined;
 

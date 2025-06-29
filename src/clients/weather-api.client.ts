@@ -1,12 +1,12 @@
 import { injectable, inject } from 'tsyringe';
 import { BaseHttpClient } from './http.client';
 import { IWeatherApiResponse } from '../interfaces/weather-api-response.interface';
-import { IWeatherApiErrorData } from '../interfaces/weatherApi-error-response.interface';
+import { IWeatherApiErrorData } from '../interfaces/weather-api-error-response.interface';
 import ENV from '../config/env';
-import { mapWeatherApiError } from '../mappers/weatherApiError.mapper';
-import { IWeatherApiProvider } from '../interfaces/weather-api.provider.interface';
-import { ILogger } from '../interfaces/logger.service.interface';
-import { TOKENS } from '../config/di.tokens';
+import { mapWeatherApiError } from '../mappers/weather-error.mapper';
+import { IWeatherApiProvider } from '../interfaces/weather-provider.interface';
+import { ILogger } from '../interfaces/logger-service.interface';
+import { TOKENS } from '../config/di-tokens.config';
 
 @injectable()
 export class WeatherApiClient

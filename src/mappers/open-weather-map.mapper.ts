@@ -1,4 +1,4 @@
-import { IOpenWeatherMapResponse } from '../interfaces/openWeatherMap-response.interface';
+import { IOpenWeatherMapResponse } from '../interfaces/open-weather-map-response.interface';
 import { IWeatherApiResponse } from '../interfaces/weather-api-response.interface';
 
 const KELVIN_TO_FAHRENHEIT = 1.8;

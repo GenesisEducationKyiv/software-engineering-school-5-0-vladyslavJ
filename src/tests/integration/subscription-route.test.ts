@@ -1,8 +1,8 @@
 import 'reflect-metadata';
-import { connectRedis, redisClient } from '../../../src/clients/redis.client';
-import { AppDataSource } from '../../../src/config/dataSource';
+import { connectRedis, redisClient } from '../../clients/redis.client';
+import { AppDataSource } from '../../config/dataSource';
 import request from 'supertest';
-import app from '../../../src/app';
+import app from '../../app';
 
 /* eslint-disable-next-line */
 jest.mock('nodemailer', () => require('../mocks/nodemailer.mock'));

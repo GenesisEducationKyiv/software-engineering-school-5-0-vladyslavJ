@@ -1,11 +1,11 @@
 import 'reflect-metadata';
 import { container } from 'tsyringe';
-import { TOKENS } from '../../../src/config/di.tokens';
+import { TOKENS } from '../../config/di-tokens.config';
 import { MemoryCache } from '../mocks/memory-cache.mock';
 import nock from 'nock';
 import request from 'supertest';
-import { HttpError } from '../../../src/utils/customError';
-import WEATHER_API_ERROR_CODE from '../../../src/utils/constants/weather-api-error-code.constants';
+import { HttpError } from '../../utils/custom-error.util';
+import WEATHER_API_ERROR_CODE from '../../utils/constants/weather-api-error-code.constant';
 
 jest.mock('../../../src/clients/redis.client', () => ({
   connectRedis: async () => {},
@@ -18,7 +18,7 @@ jest.mock('../../../src/clients/redis.client', () => ({
   },
 }));
 
-import { connectRedis, redisClient } from '../../../src/clients/redis.client';
+import { connectRedis, redisClient } from '../../clients/redis.client';
 
 container.registerInstance(TOKENS.CacheServiceWeather, new MemoryCache());
 
@@ -80,7 +80,7 @@ describe('GET /api/weather', () => {
 
   it('Returns 503 if weather service is unavailable', async () => {
     jest.resetModules();
-    jest.doMock('../../../src/clients/weatherApi.client', () => ({
+    jest.doMock('../../../src/clients/weather-api.client', () => ({
       WeatherApiClient: jest.fn().mockImplementation(() => ({
         fetchCurrentWeather: () => {
           throw new HttpError('Weather service unavailable', 503);
@@ -89,7 +89,7 @@ describe('GET /api/weather', () => {
       })),
     }));
 
-    const { default: app } = await import('../../../src/app');
+    const { default: app } = await import('../../app');
 
     const res = await request(app).get('/api/weather').query({ city: 'Kyiv' });
     expect(res.status).toBeGreaterThanOrEqual(500);
