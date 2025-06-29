@@ -3,7 +3,8 @@ import { container } from 'tsyringe';
 import { TOKENS } from './config/di-tokens.config';
 import { RedisCacheService } from './services/cache.service';
 import { ICacheService } from './interfaces/cache-service.interface';
-import { redisClient } from './clients/redis.client';
+import { RedisClient } from './clients/redis.client';
+import { ICacheClient } from './interfaces/cache-client.interface';
 import { NodemailerTransport } from './clients/mailer.client';
 import { IEmailTransport } from './interfaces/email-client.interface';
 import { GmailService } from './services/mail.service';
@@ -27,12 +28,12 @@ import ENV from './config/env';
 
 container.registerSingleton<ILogger>(TOKENS.ILogger, LoggerService);
 
+container.registerInstance<number>(TOKENS.RedisTTL, ENV.REDIS_TTL);
+container.registerSingleton<ICacheClient>(TOKENS.IRedisClient, RedisClient);
 container.registerSingleton<ICacheService<WeatherDto>>(
   TOKENS.CacheServiceWeather,
   RedisCacheService,
 );
-container.registerInstance<number>(TOKENS.RedisTTL, ENV.REDIS_TTL);
-container.registerInstance(TOKENS.IRedisClient, redisClient);
 
 const weatherApiClient = container.resolve(WeatherApiClient);
 const openWeatherMapClient = container.resolve(OpenWeatherMapClient);

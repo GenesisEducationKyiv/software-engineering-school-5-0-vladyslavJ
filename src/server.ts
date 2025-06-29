@@ -5,15 +5,16 @@ import app from './app';
 import ENV from './config/env';
 import { AppDataSource } from './config/dataSource';
 import './jobs/scheduler.job';
-import { connectRedis } from './clients/redis.client';
 import { ILogger } from './interfaces/logger-service.interface';
+import { ICacheClient } from './interfaces/cache-client.interface';
 import { TOKENS } from './config/di-tokens.config';
 
 const logger = container.resolve<ILogger>(TOKENS.ILogger);
+const redisClient = container.resolve<ICacheClient>(TOKENS.IRedisClient);
 
 async function bootstrap() {
   try {
-    await connectRedis();
+    await redisClient.connect();
     await AppDataSource.initialize();
     await AppDataSource.runMigrations();
     app.listen(ENV.PORT, () => logger.info(`API is running at http://localhost:${ENV.PORT}`));

@@ -4,6 +4,7 @@ export const TOKENS = {
   CacheServiceWeather: Symbol.for('CacheServiceWeather'),
   RedisTTL: Symbol.for('RedisTTL'),
   IRedisClient: Symbol.for('IRedisClient'),
+  ICacheService: Symbol.for('ICacheService'),
   IWeatherMapper: Symbol.for('IWeatherMapper'),
   WeatherService: Symbol.for('WeatherService'),
   WeatherController: Symbol.for('WeatherController'),
