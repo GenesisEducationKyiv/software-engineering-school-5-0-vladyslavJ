@@ -7,6 +7,8 @@ import { mapWeatherApiError } from '../mappers/weather-error.mapper';
 import { IWeatherApiProvider } from '../interfaces/weather-provider.interface';
 import { ILogger } from '../interfaces/logger-service.interface';
 import { TOKENS } from '../config/di-tokens.config';
+import TIMEOUT from '../utils/constants/timeout.constant';
+import { condenseWeatherApiResponse } from '../utils/condense-response.util';
 
 @injectable()
 export class WeatherApiClient
@@ -18,7 +20,7 @@ export class WeatherApiClient
     super(
       {
         baseURL: ENV.WEATHER_BASE_URL,
-        timeout: 21_000,
+        timeout: TIMEOUT.WEATHER_API_TIMEOUT_MS,
         params: { key: ENV.WEATHER_API_KEY, aqi: 'no' },
       },
       mapWeatherApiError,
@@ -28,7 +30,9 @@ export class WeatherApiClient
   async fetchCurrentWeather(city: string): Promise<IWeatherApiResponse> {
     try {
       const response = await this.get<IWeatherApiResponse>('/current.json', { q: city });
-      this.logger.info(`weatherapi.com - Response: ${JSON.stringify(response)}`);
+      this.logger.info(
+        `weatherapi.com - Response: ${JSON.stringify(condenseWeatherApiResponse(response))}`,
+      );
       return response;
     } catch (error) {
       this.logger.warn(`weatherapi.com - Error: ${error}`);

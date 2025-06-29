@@ -8,6 +8,8 @@ import { IOpenWeatherMapResponse } from '../interfaces/open-weather-map-response
 import { mapOpenWeatherMapToWeatherApiResponse } from '../mappers/open-weather-map.mapper';
 import { IOpenWeatherMapErrorData } from '../interfaces/open-weather-map-error-response.interface';
 import { mapWeatherApiError } from '../mappers/weather-error.mapper';
+import { condenseWeatherApiResponse } from '../utils/condense-response.util';
+import TIMEOUT from '../utils/constants/timeout.constant';
 import ENV from '../config/env';
 
 @injectable()
@@ -20,7 +22,7 @@ export class OpenWeatherMapClient
     super(
       {
         baseURL: ENV.OPENWEATHERMAP_BASE_URL,
-        timeout: 21_000,
+        timeout: TIMEOUT.WEATHER_API_TIMEOUT_MS,
         params: { appid: ENV.OPENWEATHERMAP_API_KEY, units: 'metric' },
       },
       mapWeatherApiError,
@@ -31,7 +33,9 @@ export class OpenWeatherMapClient
     try {
       const response = await this.get<IOpenWeatherMapResponse>('/weather', { q: city });
       const mapped = mapOpenWeatherMapToWeatherApiResponse(response);
-      this.logger.info(`openweathermap.org - Response: ${JSON.stringify(response)}`);
+      this.logger.info(
+        `openweathermap.org - Response: ${JSON.stringify(condenseWeatherApiResponse(mapped))}`,
+      );
       return mapped;
     } catch (error) {
       this.logger.warn(`openweathermap.org - Error: ${error}`);
