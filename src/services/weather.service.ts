@@ -1,15 +1,15 @@
 import { inject, injectable } from 'tsyringe';
-import { IWeatherApiClient } from '../interfaces/weather-api.client.interface';
-import { ICacheService } from '../interfaces/cache.service.interface';
-import { IWeatherMapper } from '../interfaces/weather.mapper.interface';
+import { IWeatherApiProvider } from '../interfaces/weather-provider.interface';
+import { ICacheService } from '../interfaces/cache-service.interface';
+import { IWeatherMapper } from '../interfaces/weather-data-mapper.interface';
 import { WeatherDto } from '../dto/weather.dto';
-import { ILogger } from '../interfaces/logger.service.interface';
-import { TOKENS } from '../config/di.tokens';
+import { ILogger } from '../interfaces/logger-service.interface';
+import { TOKENS } from '../config/di-tokens.config';
 
 @injectable()
 export class WeatherService {
   constructor(
-    @inject(TOKENS.IWeatherApiClient) private api: IWeatherApiClient,
+    @inject(TOKENS.IWeatherApiProvider) private api: IWeatherApiProvider,
     @inject(TOKENS.CacheServiceWeather) private cache: ICacheService<WeatherDto>,
     @inject(TOKENS.IWeatherMapper) private mapper: IWeatherMapper,
     @inject(TOKENS.RedisTTL) private readonly ttl: number,
@@ -27,7 +27,7 @@ export class WeatherService {
     }
 
     this.logger.info(`Cache miss for ${city}, calling API`);
-    const raw = await this.api.fetchCurrent(city);
+    const raw = await this.api.fetchCurrentWeather(city);
     const dto = this.mapper.mapCurrentWeather(raw);
 
     await this.cache.set(key, dto, this.ttl);

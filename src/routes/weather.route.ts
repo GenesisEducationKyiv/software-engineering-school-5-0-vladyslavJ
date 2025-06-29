@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { validateRequest } from '../middlewares/validateRequest';
+import { validateRequest } from '../middlewares/validate-request.middleware';
 import { weatherQuerySchema } from '../validators/weather.schema';
 import { container } from '../container';
 import { WeatherController } from '../controllers/weather.controller';

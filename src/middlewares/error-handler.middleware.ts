@@ -1,8 +1,8 @@
 import { injectable, inject } from 'tsyringe';
 import { Request, Response, NextFunction } from 'express';
-import { HttpError, ConfigError, ValidationError } from '../utils/customError';
-import { ILogger } from '../interfaces/logger.service.interface';
-import { TOKENS } from '../config/di.tokens';
+import { HttpError, ConfigError, ValidationError } from '../utils/custom-error.util';
+import { ILogger } from '../interfaces/logger-service.interface';
+import { TOKENS } from '../config/di-tokens.config';
 
 @injectable()
 export class ErrorHandlerMiddleware {

@@ -1,4 +1,5 @@
 export const TOKENS = {
+  IWeatherApiProvider: Symbol.for('IWeatherApiProvider'),
   IWeatherApiClient: Symbol.for('IWeatherApiClient'),
   CacheServiceWeather: Symbol.for('CacheServiceWeather'),
   RedisTTL: Symbol.for('RedisTTL'),

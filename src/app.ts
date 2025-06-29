@@ -8,7 +8,7 @@ import router from './routes/router';
 import { Request, Response } from 'express';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from './config/swagger.json';
-import { ErrorHandlerMiddleware } from './middlewares/errorHandler';
+import { ErrorHandlerMiddleware } from './middlewares/error-handler.middleware';
 
 const app = express();
 

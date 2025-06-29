@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
 import axiosRetry from 'axios-retry';
-import { IHttpClient } from '../interfaces/http.client.interface';
+import { IHttpClient } from '../interfaces/http-client.interface';
 
 export type ErrorMapper<E = unknown> = (error: AxiosError<E>) => Error;
 

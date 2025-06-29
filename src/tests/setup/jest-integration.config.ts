@@ -13,8 +13,8 @@ const config: Config = {
 
   setupFiles: ['dotenv/config'],
 
-  globalSetup: '<rootDir>/setup/globalSetup.ts',
-  globalTeardown: '<rootDir>/setup/globalTeardown.ts',
+  globalSetup: '<rootDir>/setup/global.setup.ts',
+  globalTeardown: '<rootDir>/setup/global-teardown.setup.ts',
 
   moduleFileExtensions: ['ts', 'js', 'json'],
   collectCoverage: true,

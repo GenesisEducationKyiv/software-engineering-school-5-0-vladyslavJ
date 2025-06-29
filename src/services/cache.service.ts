@@ -1,7 +1,7 @@
 import { injectable, inject } from 'tsyringe';
 import type { RedisClientType } from 'redis';
-import { TOKENS } from '../config/di.tokens';
-import { ICacheService } from '../interfaces/cache.service.interface';
+import { TOKENS } from '../config/di-tokens.config';
+import { ICacheService } from '../interfaces/cache-service.interface';
 
 @injectable()
 export class RedisCacheService<T> implements ICacheService<T> {

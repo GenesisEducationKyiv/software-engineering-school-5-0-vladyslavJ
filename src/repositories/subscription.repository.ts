@@ -1,7 +1,7 @@
 import { AppDataSource } from '../config/dataSource';
 import { Subscription, Frequency } from '../models/subscription.entity';
 import { FindOptionsWhere } from 'typeorm';
-import { ISubscriptionRepository } from '../interfaces/subscription.repository.interface';
+import { ISubscriptionRepository } from '../interfaces/subscription-repository.interface';
 import { SubscriptionField } from '../types/subscription-field.type';
 
 export class SubscriptionRepository implements ISubscriptionRepository {

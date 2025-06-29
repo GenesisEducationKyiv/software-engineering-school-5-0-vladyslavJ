@@ -1,9 +1,9 @@
 import { injectable, inject } from 'tsyringe';
-import { IEmailTransport } from '../interfaces/email.client.interface';
-import { IEmailSendOptions } from '../interfaces/email-send-options.interfaces';
-import { TOKENS } from '../config/di.tokens';
+import { IEmailTransport } from '../interfaces/email-client.interface';
+import { IEmailSendOptions } from '../interfaces/email-send-options.interface';
+import { TOKENS } from '../config/di-tokens.config';
 import ENV from '../config/env';
-import { IEmailService } from '../interfaces/email.service.interface';
+import { IEmailService } from '../interfaces/email-service.interface';
 
 @injectable()
 export class GmailService implements IEmailService {

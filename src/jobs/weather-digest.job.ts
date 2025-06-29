@@ -1,11 +1,11 @@
 import { format } from 'date-fns';
 import { injectable, inject } from 'tsyringe';
 import { WeatherService } from '../services/weather.service';
-import { ISubscriptionRepository } from '../interfaces/subscription.repository.interface';
-import { IEmailService } from '../interfaces/email.service.interface';
-import { digestTpl } from '../utils/templates';
-import { ILogger } from '../interfaces/logger.service.interface';
-import { TOKENS } from '../config/di.tokens';
+import { ISubscriptionRepository } from '../interfaces/subscription-repository.interface';
+import { IEmailService } from '../interfaces/email-service.interface';
+import { digestTpl } from '../utils/email-templates.util';
+import { ILogger } from '../interfaces/logger-service.interface';
+import { TOKENS } from '../config/di-tokens.config';
 import { SubscriptionFrequencyEnum } from '../enums/subscription-frequency.enum';
 
 @injectable()

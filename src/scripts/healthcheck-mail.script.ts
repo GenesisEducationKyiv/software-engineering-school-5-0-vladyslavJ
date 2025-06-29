@@ -1,9 +1,9 @@
 import 'reflect-metadata';
 import '../container';
 import { container } from 'tsyringe';
-import { IEmailTransport } from '../interfaces/email.client.interface';
-import { ILogger } from '../interfaces/logger.service.interface';
-import { TOKENS } from '../config/di.tokens';
+import { IEmailTransport } from '../interfaces/email-client.interface';
+import { ILogger } from '../interfaces/logger-service.interface';
+import { TOKENS } from '../config/di-tokens.config';
 
 (async () => {
   const logger = container.resolve<ILogger>(TOKENS.ILogger);
