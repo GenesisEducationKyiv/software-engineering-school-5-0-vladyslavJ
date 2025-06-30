@@ -25,6 +25,8 @@ import { ErrorHandlerMiddleware } from './middlewares/error-handler.middleware';
 import { WeatherApiClient } from './clients/weather-api.client';
 import { OpenWeatherMapClient } from './clients/open-weather-map.client';
 import ENV from './config/env';
+import { CacheMetricService } from './services/cache-metric.service';
+import { ICacheMetricService } from './interfaces/cache-metric-service.interface';
 
 container.registerSingleton<ILogger>(TOKENS.ILogger, LoggerService);
 
@@ -59,5 +61,7 @@ container.registerSingleton<ErrorHandlerMiddleware>(
   TOKENS.ErrorHandlerMiddleware,
   ErrorHandlerMiddleware,
 );
+
+container.registerSingleton<ICacheMetricService>(TOKENS.ICacheMetricService, CacheMetricService);
 
 export { container };

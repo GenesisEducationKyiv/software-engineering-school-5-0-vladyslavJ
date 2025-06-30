@@ -9,7 +9,8 @@ import { Request, Response } from 'express';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from './config/swagger.json';
 import { ErrorHandlerMiddleware } from './middlewares/error-handler.middleware';
-import client from 'prom-client';
+import { ICacheMetricService } from './interfaces/cache-metric-service.interface';
+import { TOKENS } from './config/di-tokens.config';
 
 const app = express();
 
@@ -22,9 +23,10 @@ app.use(express.static('public'));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/api', router);
 
-app.get('/api/metrics', async (_req, res) => {
-  res.set('Content-Type', client.register.contentType);
-  res.end(await client.register.metrics());
+app.get('/metrics', async (_req: Request, res: Response) => {
+  const metricService = container.resolve<ICacheMetricService>(TOKENS.ICacheMetricService);
+  res.set('Content-Type', 'text/plain');
+  res.end(await metricService.getMetrics());
 });
 
 app.use((_req: Request, res: Response) => {

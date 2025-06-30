@@ -16,4 +16,5 @@ export const TOKENS = {
   ISubscriptionRepository: Symbol.for('ISubscriptionRepository'),
   ILogger: Symbol.for('ILogger'),
   ErrorHandlerMiddleware: Symbol.for('ErrorHandlerMiddleware'),
+  ICacheMetricService: Symbol.for('ICacheMetricService'),
 } as const;
