@@ -1,16 +1,17 @@
 import client from 'prom-client';
+import CACHE_METRIC from '../utils/constants/cache-metric.constant';
 
 export const cacheHitCounter = new client.Counter({
-  name: 'redis_cache_hit_total',
-  help: 'Total number of cache hits',
+  name: CACHE_METRIC.CACHE_HIT_TOTAL,
+  help: CACHE_METRIC.NUMBER_CACHE_HITS,
 });
 
 export const cacheMissCounter = new client.Counter({
-  name: 'redis_cache_miss_total',
-  help: 'Total number of cache misses',
+  name: CACHE_METRIC.CACHE_MISS_TOTAL,
+  help: CACHE_METRIC.NUMBER_CACHE_MISSES,
 });
 
 export const cacheErrorCounter = new client.Counter({
-  name: 'redis_cache_error_total',
-  help: 'Total number of cache errors',
+  name: CACHE_METRIC.CACHE_ERROR_TOTAL,
+  help: CACHE_METRIC.NUMBER_CACHE_ERRORS,
 });
