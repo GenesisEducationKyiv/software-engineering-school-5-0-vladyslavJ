@@ -13,6 +13,7 @@ export class RedisClient implements ICacheClient {
     @inject(TOKENS.RedisHost) private readonly host: string,
     @inject(TOKENS.RedisPort) private readonly port: number,
     @inject(TOKENS.ILogger) private readonly logger: ILogger,
+    @inject(TOKENS.RedisDefaultTTL) private readonly defaultTtl: number,
   ) {
     this.client = createClient({
       url: `redis://${this.host}:${this.port}`,
@@ -59,11 +60,8 @@ export class RedisClient implements ICacheClient {
       return;
     }
 
-    if (ttl) {
-      await this.client.set(key, value, { EX: ttl });
-    } else {
-      await this.client.set(key, value);
-    }
+    const finalTtl = ttl ?? this.defaultTtl;
+    await this.client.set(key, value, { EX: finalTtl });
   }
 
   async del(key: string): Promise<void> {

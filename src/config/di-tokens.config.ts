@@ -19,4 +19,5 @@ export const TOKENS = {
   ICacheMetricService: Symbol.for('ICacheMetricService'),
   RedisHost: Symbol.for('RedisHost'),
   RedisPort: Symbol.for('RedisPort'),
+  RedisDefaultTTL: Symbol.for('RedisDefaultTTL'),
 } as const;
