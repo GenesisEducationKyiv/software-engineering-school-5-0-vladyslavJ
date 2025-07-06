@@ -12,7 +12,7 @@ const {
   DB_PASSWORD = '',
   DB_HOST = 'localhost',
   DB_PORT = '5432',
-  TEST_DB_NAME = 'weatherdb_test',
+  TEST_DB_NAME = 'weatherdb',
 } = process.env;
 
 const SYSTEM_DB = process.env.PG_SYSTEM_DB ?? 'postgres';
