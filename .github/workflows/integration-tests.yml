@@ -69,12 +69,14 @@ jobs:
           WEATHER_BASE_URL=${{ env.WEATHER_BASE_URL }}
           OPENWEATHERMAP_API_KEY=${{ secrets.OPENWEATHERMAP_API_KEY }}
           OPENWEATHERMAP_BASE_URL=${{ env.OPENWEATHERMAP_BASE_URL }}
+
           DB_USER=${{ env.DB_USER }}
           DB_PASSWORD=${{ env.DB_PASSWORD }}
-          DB_HOST=${{ env.DB_HOST }}
-          DB_PORT=${{ env.DB_PORT }}
+          DB_HOST=postgres-test
+          DB_PORT=5432
           DB_NAME=${{ env.DB_NAME }}
           TEST_DB_NAME=${{ env.TEST_DB_NAME }}
+          
           MAIL_HOST=${{ env.MAIL_HOST }}
           MAIL_PORT=${{ env.MAIL_PORT }}
           MAIL_SECURE=${{ env.MAIL_SECURE }}
@@ -82,8 +84,9 @@ jobs:
           MAIL_PASS=${{ secrets.MAIL_PASS }}
           MAIL_FROM=${{ env.MAIL_FROM }}
           APP_BASE_URL=${{ env.APP_BASE_URL }}
-          REDIS_HOST=${{ env.REDIS_HOST }}
-          REDIS_PORT=${{ env.REDIS_PORT }}
+          
+          REDIS_HOST=redis-test
+          REDIS_PORT=6379
           REDIS_TTL=${{ env.REDIS_TTL }}
           EOF
 
@@ -95,15 +98,18 @@ jobs:
       - name: Wait for Postgres to be healthy
         run: |
           until docker compose -f docker-compose.test.yml exec -T postgres-test pg_isready -U $DB_USER; do
+            echo "Waiting for PostgreSQL to be ready..."
             sleep 2
           done
-          pg_isready -h localhost -p 5432 -U $DB_USER
+          echo "PostgreSQL is ready!"
 
       - name: Wait for Redis to be healthy
         run: |
           until docker compose -f docker-compose.test.yml exec -T redis-test redis-cli ping | grep PONG; do
+            echo "Waiting for Redis to be ready..."
             sleep 2
           done
+          echo "Redis is ready!"
 
       - name: Run integration tests
         run: npm run test:int
