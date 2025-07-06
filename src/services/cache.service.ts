@@ -30,6 +30,7 @@ export class RedisCacheService<T> implements ICacheService<T> {
   async set(key: string, value: T, ttlSeconds: number) {
     try {
       await this.client.set(key, JSON.stringify(value), ttlSeconds);
+      this.metricService.incCacheSet();
     } catch (err) {
       this.metricService.incCacheError();
       throw err;

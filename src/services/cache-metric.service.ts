@@ -17,6 +17,10 @@ export class CacheMetricService implements ICacheMetricService {
     name: CACHE_METRIC.CACHE_ERROR_TOTAL,
     help: CACHE_METRIC.NUMBER_CACHE_ERRORS,
   });
+  private readonly cacheSetCounter = new client.Counter({
+    name: CACHE_METRIC.CACHE_SET_TOTAL,
+    help: CACHE_METRIC.NUMBER_CACHE_SETS,
+  });
 
   incCacheHit(): void {
     this.cacheHitCounter.inc();
@@ -26,6 +30,9 @@ export class CacheMetricService implements ICacheMetricService {
   }
   incCacheError(): void {
     this.cacheErrorCounter.inc();
+  }
+  incCacheSet(): void {
+    this.cacheSetCounter.inc();
   }
   async getMetrics(): Promise<string> {
     return client.register.metrics();
