@@ -18,9 +18,11 @@ const {
 const SYSTEM_DB = process.env.PG_SYSTEM_DB ?? 'postgres';
 
 async function createTestDb(): Promise<void> {
+  const host = DB_HOST === 'localhost' ? '127.0.0.1' : DB_HOST;
+
   const client = new Client({
     user: DB_USER,
-    host: DB_HOST,
+    host: host,
     port: Number(DB_PORT),
     password: DB_PASSWORD,
     database: SYSTEM_DB,
