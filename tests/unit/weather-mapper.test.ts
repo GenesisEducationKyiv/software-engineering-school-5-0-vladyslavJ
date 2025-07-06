@@ -1,6 +1,6 @@
 import 'reflect-metadata';
-import { WeatherMapper } from '../../mappers/weather-data.mapper';
-import { IWeatherApiResponse } from '../../interfaces/weather-api-response.interface';
+import { WeatherMapper } from '../../src/mappers/weather-data.mapper';
+import { IWeatherApiResponse } from '../../src/interfaces/weather-api-response.interface';
 
 describe('WeatherMapper', () => {
   it('Mappes the updated API response object to DTO', () => {

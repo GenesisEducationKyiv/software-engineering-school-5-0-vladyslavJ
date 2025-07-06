@@ -1,4 +1,5 @@
 import type { Config } from 'jest';
+import 'dotenv/config';
 import { config as loadEnv } from 'dotenv';
 import { resolve } from 'path';
 

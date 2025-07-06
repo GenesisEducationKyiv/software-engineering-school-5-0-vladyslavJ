@@ -1,10 +1,10 @@
 import 'reflect-metadata';
 import { container } from 'tsyringe';
-import { TOKENS } from '../../config/di-tokens.config';
-import { SubscriptionService } from '../../services/subscription.service';
-import { ISubscriptionRepository } from '../../interfaces/subscription-repository.interface';
-import { IEmailService } from '../../interfaces/email-service.interface';
-import { HttpError } from '../../utils/custom-error.util';
+import { TOKENS } from '../../src/config/di-tokens.config';
+import { SubscriptionService } from '../../src/services/subscription.service';
+import { ISubscriptionRepository } from '../../src/interfaces/subscription-repository.interface';
+import { IEmailService } from '../../src/interfaces/email-service.interface';
+import { HttpError } from '../../src/utils/custom-error.util';
 
 const mockLogger = {
   info: jest.fn(),
