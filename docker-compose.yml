@@ -1,9 +1,9 @@
 services:
-  api:
+  api-dev:
     build:
       context: .
       dockerfile: Dockerfile.dev
-    container_name: weather-api-dev
+    container_name: api-dev
     env_file: [.env.docker]
     ports: ['3000:3000']
     volumes:
@@ -11,7 +11,7 @@ services:
       - /usr/src/app/node_modules
     command: npm run dev
     depends_on:
-      db:
+      postgres:
         condition: service_started
       redis:
         condition: service_healthy
@@ -19,36 +19,17 @@ services:
 
   api-prod:
     build: .
-    container_name: weather-api-prod
+    container_name: api-prod
     env_file: [.env.docker]
     ports: ['3000:3000']
     depends_on:
-      db:
+      postgres:
         condition: service_started
       redis:
         condition: service_healthy
     profiles: ['prod']
 
-  tests-unit:
-    build: .
-    container_name: weather-tests-unit
-    command: npm run test:unit
-    profiles: ['test']
-    depends_on: []
-
-  tests-int:
-    build: .
-    container_name: weather-tests-int
-    env_file: [.env.test.docker]
-    command: npm run test:int
-    profiles: ['test']
-    depends_on:
-      db:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-
-  db:
+  postgres:
     image: postgres:14
     env_file: [.env.docker]
     environment:
@@ -57,7 +38,7 @@ services:
       POSTGRES_DB: ${DB_NAME}
     ports: ['${DB_PORT}:5432']
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -U postgres']
       interval: 10s
@@ -74,4 +55,4 @@ services:
       retries: 10
 
 volumes:
-  db-data:
+  postgres-data:

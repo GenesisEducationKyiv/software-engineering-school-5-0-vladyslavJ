@@ -3,7 +3,8 @@ import { container } from 'tsyringe';
 import { TOKENS } from './config/di-tokens.config';
 import { RedisCacheService } from './services/cache.service';
 import { ICacheService } from './interfaces/cache-service.interface';
-import { redisClient } from './clients/redis.client';
+import { RedisClient } from './clients/redis.client';
+import { ICacheClient } from './interfaces/cache-client.interface';
 import { NodemailerTransport } from './clients/mailer.client';
 import { IEmailTransport } from './interfaces/email-client.interface';
 import { GmailService } from './services/mail.service';
@@ -24,15 +25,20 @@ import { ErrorHandlerMiddleware } from './middlewares/error-handler.middleware';
 import { WeatherApiClient } from './clients/weather-api.client';
 import { OpenWeatherMapClient } from './clients/open-weather-map.client';
 import ENV from './config/env';
+import { CacheMetricService } from './services/cache-metric.service';
+import { ICacheMetricService } from './interfaces/cache-metric-service.interface';
 
 container.registerSingleton<ILogger>(TOKENS.ILogger, LoggerService);
 
+container.registerInstance<string>(TOKENS.RedisHost, ENV.REDIS_HOST);
+container.registerInstance<number>(TOKENS.RedisPort, ENV.REDIS_PORT);
+container.registerInstance<number>(TOKENS.RedisDefaultTTL, ENV.REDIS_DEFAULT_TTL);
+container.registerInstance<number>(TOKENS.RedisTTL, ENV.REDIS_TTL);
+container.registerSingleton<ICacheClient>(TOKENS.IRedisClient, RedisClient);
 container.registerSingleton<ICacheService<WeatherDto>>(
   TOKENS.CacheServiceWeather,
   RedisCacheService,
 );
-container.registerInstance<number>(TOKENS.RedisTTL, ENV.REDIS_TTL);
-container.registerInstance(TOKENS.IRedisClient, redisClient);
 
 const weatherApiClient = container.resolve(WeatherApiClient);
 const openWeatherMapClient = container.resolve(OpenWeatherMapClient);
@@ -58,5 +64,7 @@ container.registerSingleton<ErrorHandlerMiddleware>(
   TOKENS.ErrorHandlerMiddleware,
   ErrorHandlerMiddleware,
 );
+
+container.registerSingleton<ICacheMetricService>(TOKENS.ICacheMetricService, CacheMetricService);
 
 export { container };

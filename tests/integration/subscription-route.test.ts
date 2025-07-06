@@ -1,20 +1,21 @@
 import 'reflect-metadata';
-import { connectRedis, redisClient } from '../../clients/redis.client';
-import { AppDataSource } from '../../config/dataSource';
+import { AppDataSource } from '../../src/config/dataSource';
 import request from 'supertest';
-import app from '../../app';
+import app from '../../src/app';
 
 /* eslint-disable-next-line */
 jest.mock('nodemailer', () => require('../mocks/nodemailer.mock'));
 
 beforeAll(async () => {
-  await connectRedis();
   await AppDataSource.initialize();
 });
 
 afterAll(async () => {
   await AppDataSource.destroy();
-  await redisClient.quit();
+});
+
+afterEach(async () => {
+  await AppDataSource.query('TRUNCATE TABLE subscriptions RESTART IDENTITY CASCADE;');
 });
 
 describe('POST /api/subscribe', () => {

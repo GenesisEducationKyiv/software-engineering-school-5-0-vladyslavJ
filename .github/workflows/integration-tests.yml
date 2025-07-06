@@ -5,10 +5,14 @@ on:
     paths:
       - 'src/**'
       - 'docker-compose.yml'
+      - 'docker-compose.test.yml'
+      - '.github/workflows/integration-tests.yml'
   pull_request:
     paths:
       - 'src/**'
       - 'docker-compose.yml'
+      - 'docker-compose.test.yml'
+      - '.github/workflows/integration-tests.yml'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
@@ -30,12 +34,13 @@ jobs:
       OPENWEATHERMAP_BASE_URL: https://api.openweathermap.org/data/2.5
       DB_USER: postgres
       DB_PASSWORD: postgres
-      DB_HOST: localhost
-      DB_PORT: 5432
-      DB_NAME: weatherdb_test
-      TEST_DB_NAME: weatherdb_test
-      REDIS_HOST: localhost
-      REDIS_PORT: 6379
+      DB_HOST: 127.0.0.1
+      DB_PORT: 5433
+      DB_NAME: weatherdb
+      TEST_DB_NAME: weatherdb
+      REDIS_HOST: 127.0.0.1
+      REDIS_PORT: 6380
+      REDIS_TTL: 60
       MAIL_HOST: smtp.gmail.com
       MAIL_PORT: 465
       MAIL_SECURE: true
@@ -56,18 +61,22 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Create .env.docker from secrets
+      - name: Create .env.test.docker from secrets
         run: |
-          cat <<EOF > .env.docker
-          POSTGRES_USER=${{ env.DB_USER }}
-          POSTGRES_PASSWORD=${{ env.DB_PASSWORD }}
-          POSTGRES_DB=${{ env.DB_NAME }}
-          POSTGRES_HOST=${{ env.DB_HOST }}
-          POSTGRES_PORT=${{ env.DB_PORT }}
-          REDIS_HOST=${{ env.REDIS_HOST }}
-          REDIS_PORT=${{ env.REDIS_PORT }}
+          cat <<EOF > .env.test.docker
+          PORT=3000
           WEATHER_API_KEY=${{ secrets.WEATHER_API_KEY }}
           WEATHER_BASE_URL=${{ env.WEATHER_BASE_URL }}
+          OPENWEATHERMAP_API_KEY=${{ secrets.OPENWEATHERMAP_API_KEY }}
+          OPENWEATHERMAP_BASE_URL=${{ env.OPENWEATHERMAP_BASE_URL }}
+
+          DB_USER=${{ env.DB_USER }}
+          DB_PASSWORD=${{ env.DB_PASSWORD }}
+          DB_HOST=postgres-test
+          DB_PORT=5432
+          DB_NAME=${{ env.DB_NAME }}
+          TEST_DB_NAME=${{ env.TEST_DB_NAME }}
+
           MAIL_HOST=${{ env.MAIL_HOST }}
           MAIL_PORT=${{ env.MAIL_PORT }}
           MAIL_SECURE=${{ env.MAIL_SECURE }}
@@ -75,23 +84,32 @@ jobs:
           MAIL_PASS=${{ secrets.MAIL_PASS }}
           MAIL_FROM=${{ env.MAIL_FROM }}
           APP_BASE_URL=${{ env.APP_BASE_URL }}
+
+          REDIS_HOST=redis-test
+          REDIS_PORT=6379
+          REDIS_TTL=${{ env.REDIS_TTL }}
           EOF
 
       - name: Start Postgres & Redis
         run: |
-          docker compose -f docker-compose.yml --profile test up -d db redis
+          docker compose -f docker-compose.test.yml up -d postgres-test redis-test
+          docker ps
 
       - name: Wait for Postgres to be healthy
         run: |
-          until docker compose exec -T db pg_isready -U $DB_USER; do
+          until docker compose -f docker-compose.test.yml exec -T postgres-test pg_isready -U $DB_USER; do
+            echo "Waiting for PostgreSQL to be ready..."
             sleep 2
           done
+          echo "PostgreSQL is ready!"
 
       - name: Wait for Redis to be healthy
         run: |
-          until docker compose exec -T redis redis-cli ping | grep PONG; do
+          until docker compose -f docker-compose.test.yml exec -T redis-test redis-cli ping | grep PONG; do
+            echo "Waiting for Redis to be ready..."
             sleep 2
           done
+          echo "Redis is ready!"
 
       - name: Run integration tests
         run: npm run test:int
@@ -105,4 +123,4 @@ jobs:
 
       - name: Tear down Docker Compose
         if: always()
-        run: docker compose -f docker-compose.yml down --volumes
+        run: docker compose -f docker-compose.test.yml down --volumes

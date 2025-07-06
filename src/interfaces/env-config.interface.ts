@@ -19,4 +19,5 @@ export interface IEnvConfig {
   REDIS_TTL: number;
   OPENWEATHERMAP_API_KEY: string;
   OPENWEATHERMAP_BASE_URL: string;
+  REDIS_DEFAULT_TTL: number;
 }
