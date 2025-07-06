@@ -30,6 +30,8 @@ import { ICacheMetricService } from './interfaces/cache-metric-service.interface
 
 container.registerSingleton<ILogger>(TOKENS.ILogger, LoggerService);
 
+container.registerInstance<string>(TOKENS.RedisHost, ENV.REDIS_HOST);
+container.registerInstance<number>(TOKENS.RedisPort, ENV.REDIS_PORT);
 container.registerInstance<number>(TOKENS.RedisTTL, ENV.REDIS_TTL);
 container.registerSingleton<ICacheClient>(TOKENS.IRedisClient, RedisClient);
 container.registerSingleton<ICacheService<WeatherDto>>(

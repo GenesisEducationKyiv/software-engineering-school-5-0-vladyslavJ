@@ -1,15 +1,18 @@
 import { createClient, RedisClientType } from 'redis';
-import { injectable } from 'tsyringe';
-import ENV from '../config/env';
+import { injectable, inject } from 'tsyringe';
+import { TOKENS } from '../config/di-tokens.config';
 import { ICacheClient } from '../interfaces/cache-client.interface';
 
 @injectable()
 export class RedisClient implements ICacheClient {
   private readonly client: RedisClientType;
 
-  constructor() {
+  constructor(
+    @inject(TOKENS.RedisHost) private readonly host: string,
+    @inject(TOKENS.RedisPort) private readonly port: number,
+  ) {
     this.client = createClient({
-      url: `redis://${ENV.REDIS_HOST}:${ENV.REDIS_PORT}`,
+      url: `redis://${this.host}:${this.port}`,
     });
     this.client.on('error', err => console.error('[REDIS] error', err));
   }

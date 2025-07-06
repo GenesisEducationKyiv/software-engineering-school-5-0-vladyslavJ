@@ -17,4 +17,6 @@ export const TOKENS = {
   ILogger: Symbol.for('ILogger'),
   ErrorHandlerMiddleware: Symbol.for('ErrorHandlerMiddleware'),
   ICacheMetricService: Symbol.for('ICacheMetricService'),
+  RedisHost: Symbol.for('RedisHost'),
+  RedisPort: Symbol.for('RedisPort'),
 } as const;
