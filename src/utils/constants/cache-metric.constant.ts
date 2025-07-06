@@ -1,12 +1,16 @@
 const CACHE_METRIC = Object.freeze({
   CACHE_HIT_TOTAL: 'redis_cache_hit_total',
-  NUMBER_CACHE_HITS: 'Total number of cache hits',
+  CACHE_HIT_TOTAL_DESCRIPTION:
+    'Total number of times a requested key was found in the Redis cache.',
   CACHE_MISS_TOTAL: 'redis_cache_miss_total',
-  NUMBER_CACHE_MISSES: 'Total number of cache misses',
+  CACHE_MISS_TOTAL_DESCRIPTION:
+    'Total number of times a requested key was not found in the Redis cache.',
   CACHE_ERROR_TOTAL: 'redis_cache_error_total',
-  NUMBER_CACHE_ERRORS: 'Total number of cache errors',
+  CACHE_ERROR_TOTAL_DESCRIPTION:
+    'Total number of errors that occurred during Redis cache operations (get, set, del).',
   CACHE_SET_TOTAL: 'redis_cache_set_total',
-  NUMBER_CACHE_SETS: 'Total number of cache sets',
+  CACHE_SET_TOTAL_DESCRIPTION:
+    'Total number of times a key was successfully set or updated in the Redis cache.',
 } as const);
 
 export default CACHE_METRIC;

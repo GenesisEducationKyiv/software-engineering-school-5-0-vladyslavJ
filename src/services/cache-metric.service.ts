@@ -7,19 +7,19 @@ import { injectable } from 'tsyringe';
 export class CacheMetricService implements ICacheMetricService {
   private readonly cacheHitCounter = new client.Counter({
     name: CACHE_METRIC.CACHE_HIT_TOTAL,
-    help: CACHE_METRIC.NUMBER_CACHE_HITS,
+    help: CACHE_METRIC.CACHE_HIT_TOTAL_DESCRIPTION,
   });
   private readonly cacheMissCounter = new client.Counter({
     name: CACHE_METRIC.CACHE_MISS_TOTAL,
-    help: CACHE_METRIC.NUMBER_CACHE_MISSES,
+    help: CACHE_METRIC.CACHE_MISS_TOTAL_DESCRIPTION,
   });
   private readonly cacheErrorCounter = new client.Counter({
     name: CACHE_METRIC.CACHE_ERROR_TOTAL,
-    help: CACHE_METRIC.NUMBER_CACHE_ERRORS,
+    help: CACHE_METRIC.CACHE_ERROR_TOTAL_DESCRIPTION,
   });
   private readonly cacheSetCounter = new client.Counter({
     name: CACHE_METRIC.CACHE_SET_TOTAL,
-    help: CACHE_METRIC.NUMBER_CACHE_SETS,
+    help: CACHE_METRIC.CACHE_SET_TOTAL_DESCRIPTION,
   });
 
   incCacheHit(): void {
