@@ -38,8 +38,8 @@ jobs:
       DB_PORT: 5433
       DB_NAME: weatherdb
       TEST_DB_NAME: weatherdb
-      REDIS_HOST: localhost
-      REDIS_PORT: 6379
+      REDIS_HOST: 127.0.0.1
+      REDIS_PORT: 6380
       REDIS_TTL: 60
       MAIL_HOST: smtp.gmail.com
       MAIL_PORT: 465
