@@ -4,13 +4,11 @@ import express from 'express';
 import morgan from 'morgan';
 import helmet from 'helmet';
 import cors from 'cors';
-import router from './routes/router';
+import router from './infrastructure/adapters/primary/api/routes/router';
 import { Request, Response } from 'express';
-import swaggerUi from 'swagger-ui-express';
-import swaggerDocument from './config/swagger.json';
-import { ErrorHandlerMiddleware } from './middlewares/error-handler.middleware';
-import { ICacheMetricService } from './interfaces/cache-metric-service.interface';
-import { TOKENS } from './config/di-tokens.config';
+import { ErrorHandlerMiddleware } from './infrastructure/adapters/primary/api/middlewares/error-handling/error-handler.middleware';
+import { ICacheMetricService } from './infrastructure/interfaces/cache-metric-service.interface';
+import { TOKENS } from './infrastructure/di/di-tokens';
 
 const app = express();
 
@@ -20,7 +18,6 @@ app.use(express.json());
 app.use(morgan('tiny'));
 app.use(express.static('public'));
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/api', router);
 
 app.get('/metrics', async (_req: Request, res: Response) => {
