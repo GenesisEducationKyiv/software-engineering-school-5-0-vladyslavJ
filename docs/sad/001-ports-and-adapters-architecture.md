@@ -1,8 +1,7 @@
 # SAD-001: Ports and Adapters Architecture
 
 **Status:** Accepted  
-**Date:** 2024-07-25  
-**Author:** GitHub Copilot
+**Date:** 11-07-2025 **Author:** Zhukov Vladyslav
 
 ## 1. Context
 
@@ -43,14 +42,14 @@ graph TD
     subgraph "Infrastructure Layer (Adapters)"
         direction LR
         subgraph "Primary/Driving Adapters"
-            A1[REST API Controllers<br>(WeatherController, SubscriptionController)]
-            A2[Scheduled Jobs<br>(WeatherDigestJob)]
+            A1["REST API Controllers<br>(WeatherController, SubscriptionController)"]
+            A2["Scheduled Jobs<br>(WeatherDigestJob)"]
         end
         subgraph "Secondary/Driven Adapters"
-            B1[PostgreSQL Repository<br>(SubscriptionRepository)]
-            B2[Redis Cache<br>(WeatherCacheAdapter)]
-            B3[External Weather Providers<br>(WeatherApiAdapter, OpenWeatherMapAdapter)]
-            B4[Email Service<br>(EmailAdapter)]
+            B1["PostgreSQL Repository<br>(SubscriptionRepository)"]
+            B2["Redis Cache<br>(WeatherCacheAdapter)"]
+            B3["External Weather Providers<br>(WeatherApiAdapter, OpenWeatherMapAdapter)"]
+            B4["Email Service<br>(EmailAdapter)"]
         end
     end
 
@@ -63,8 +62,8 @@ graph TD
     end
 
     subgraph "Domain Layer (Core Logic)"
-        D1[Models<br>(Weather)]
-        D2[Output Ports (Interfaces)<br>- ISubscriptionRepository<br>- IWeatherCachePort<br>- IWeatherProviderPort<br>- IEmailPort]
+        D1["Models<br>(Weather)"]
+        D2["Output Ports (Interfaces)<br>- ISubscriptionRepository<br>- IWeatherCachePort<br>- IWeatherProviderPort<br>- IEmailPort"]
     end
 
     %% Dependencies
@@ -89,7 +88,7 @@ graph TD
     B4 -.-> D2
 
     classDef layer fill:#f9f9f9,stroke:#333,stroke-width:2px;
-    class Infrastructure Layer (Adapters),Application Layer (Use Cases),Domain Layer (Core Logic) layer;
+    class "Infrastructure Layer (Adapters)","Application Layer (Use Cases)","Domain Layer (Core Logic)" layer;
 
     linkStyle 0,1,2,3,4,9,10,11,12,13 stroke-width:2px,stroke:blue,fill:none;
     linkStyle 5,6,7,8 stroke-width:2px,stroke:green,fill:none;
