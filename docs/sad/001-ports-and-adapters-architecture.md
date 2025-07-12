@@ -39,17 +39,7 @@ from the outer layer (Infrastructure) to the inner layers (Application, Domain).
 has no external dependencies.
 
 ```mermaid
-graph TD
-    subgraph DomainLayer["Domain Layer"]
-        Models["Models"]
-        OP["Output Ports"]
-    end
-
-    subgraph ApplicationLayer["Application Layer"]
-        UC["Use Cases"]
-        IP["Input Ports"]
-        AppServices["Application Services"]
-    end
+graph TB
 
     subgraph InfrastructureLayer["Infrastructure Layer"]
         PrA["Primary Adapters"]
@@ -58,6 +48,17 @@ graph TD
         DB["Database"]
         DI["DI Container"]
         InfraServices["Infrastructure Services"]
+    end
+
+    subgraph ApplicationLayer["Application Layer"]
+        UC["Use Cases"]
+        IP["Input Ports"]
+        AppServices["Application Services"]
+    end
+
+        subgraph DomainLayer["Domain Layer"]
+        Models["Models"]
+        OP["Output Ports"]
     end
 
     subgraph SharedLayer["Shared Layer"]
