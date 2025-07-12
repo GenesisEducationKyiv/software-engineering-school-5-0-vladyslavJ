@@ -1,7 +1,8 @@
 # SAD-001: Ports and Adapters Architecture
 
 **Status:** Accepted  
-**Date:** 11-07-2025 **Author:** Zhukov Vladyslav
+**Date:** 11-07-2025  
+**Author:** Zhukov Vladyslav
 
 ## 1. Context
 
@@ -39,65 +40,62 @@ has no external dependencies.
 
 ```mermaid
 graph TD
-    subgraph "Infrastructure Layer (Adapters)"
-        direction LR
-        subgraph "Primary/Driving Adapters"
-            A1["REST API Controllers<br>(WeatherController, SubscriptionController)"]
-            A2["Scheduled Jobs<br>(WeatherDigestJob)"]
-        end
-        subgraph "Secondary/Driven Adapters"
-            B1["PostgreSQL Repository<br>(SubscriptionRepository)"]
-            B2["Redis Cache<br>(WeatherCacheAdapter)"]
-            B3["External Weather Providers<br>(WeatherApiAdapter, OpenWeatherMapAdapter)"]
-            B4["Email Service<br>(EmailAdapter)"]
-        end
+    subgraph InfrastructureLayer["Infrastructure Layer"]
+        PrA[Primary Adapters]
+        SecA[Secondary Adapters]
+        Config[Configuration]
     end
 
-    subgraph "Application Layer (Use Cases)"
-        C1[GetWeatherUseCase]
-        C2[SubscribeUseCase]
-        C3[ConfirmSubscriptionUseCase]
-        C4[UnsubscribeUseCase]
-        C5[SendWeatherDigestUseCase]
+    subgraph ApplicationLayer["Application Layer"]
+        IP[Input Ports]
+        UC[Use Cases]
     end
 
-    subgraph "Domain Layer (Core Logic)"
-        D1["Models<br>(Weather)"]
-        D2["Output Ports (Interfaces)<br>- ISubscriptionRepository<br>- IWeatherCachePort<br>- IWeatherProviderPort<br>- IEmailPort"]
+    subgraph DomainLayer["Domain Layer"]
+        Models[Models]
+        OP[Output Ports]
     end
 
-    %% Dependencies
-    A1 --> C1
-    A1 --> C2
-    A1 --> C3
-    A1 --> C4
-    A2 --> C5
+    %% Primary Adapters to Application
+    PrA -->|"calls"| IP
 
-    C1 --> D2
-    C2 --> D2
-    C3 --> D2
-    C4 --> D2
-    C5 --> D2
+    %% Use Cases implement Input Ports
+    UC -.->|"implements"| IP
 
-    C1 --> D1
-    C5 --> D1
+    %% Use Cases depend on Output Ports
+    UC -->|"uses"| OP
 
-    B1 -.-> D2
-    B2 -.-> D2
-    B3 -.-> D2
-    B4 -.-> D2
+    %% Use Cases use Models
+    UC -->|"uses"| Models
 
-    classDef layer fill:#f9f9f9,stroke:#333,stroke-width:2px;
-    class "Infrastructure Layer (Adapters)","Application Layer (Use Cases)","Domain Layer (Core Logic)" layer;
+    %% Secondary Adapters implement Output Ports
+    SecA -.->|"implements"| OP
 
-    linkStyle 0,1,2,3,4,9,10,11,12,13 stroke-width:2px,stroke:blue,fill:none;
-    linkStyle 5,6,7,8 stroke-width:2px,stroke:green,fill:none;
-    linkStyle 14,15,16,17 stroke-width:2px,stroke:red,fill:none,stroke-dasharray: 5 5;
+    %% Configuration wires everything
+    Config -->|"configures"| PrA
+    Config -->|"configures"| SecA
+    Config -->|"configures"| UC
 
-    %% Style Notes
-    %% Blue arrows: Primary Adapters call Application Use Cases
-    %% Green arrows: Application Use Cases use Domain Models and Ports
-    %% Red dashed arrows: Secondary Adapters implement Domain Ports
+    %% Show specific components
+    PrA -->|"includes"| Controllers[API Controllers]
+    PrA -->|"includes"| Jobs[Scheduled Jobs]
+
+    SecA -->|"includes"| Repos[Repositories]
+    SecA -->|"includes"| Cache[Cache Adapter]
+    SecA -->|"includes"| Weather[Weather Provider]
+    SecA -->|"includes"| Email[Email Adapter]
+
+    Config -->|"includes"| DI[DI Container]
+    Config -->|"includes"| Server[Server Setup]
+
+    %% Стили для слоев
+    classDef infrastructureStyle fill:#f9f,stroke:#333;
+    classDef applicationStyle fill:#bbf,stroke:#333;
+    classDef domainStyle fill:#bfb,stroke:#333;
+
+    class InfrastructureLayer infrastructureStyle;
+    class ApplicationLayer applicationStyle;
+    class DomainLayer domainStyle;
 ```
 
 ## 4. Layer Responsibilities
@@ -110,8 +108,7 @@ graph TD
 - **Key Components:**
   - **Models** ([`Weather`](src/domain/models/weather.model.ts)): Business objects with their own
     logic.
-  - **Ports** ([`src/domain/ports/`](src/domain/ports/)): Interfaces defining contracts for data
-    persistence
+  - **Ports** (`src/domain/ports/`): Interfaces defining contracts for data persistence
     ([`ISubscriptionRepository`](src/domain/ports/repositories/subscription-repository.port.ts)),
     caching ([`IWeatherCachePort`](src/domain/ports/cache/weather-cache.port.ts)), external data
     providers ([`IWeatherProviderPort`](src/domain/ports/providers/weather-provider.port.ts)), and
@@ -126,8 +123,8 @@ graph TD
   - **Input Ports** ([`IWeatherInputPort`](src/application/ports/weather.port.ts),
     [`ISubscriptionInputPort`](src/application/ports/subscription.port.ts)): Interfaces that define
     the application's capabilities.
-  - **Use Cases** ([`src/application/use-cases/`](src/application/use-cases/)): Implementations of
-    the input ports. They contain the logic for specific user stories, like
+  - **Use Cases** (`src/application/use-cases/`): Implementations of the input ports. They contain
+    the logic for specific user stories, like
     [`GetWeatherUseCase`](src/application/use-cases/weather/get-weather.use-case.ts) or
     [`SubscribeUseCase`](src/application/use-cases/subscription/subscribe.use-case.ts). They depend
     on the domain's output ports to interact with external systems.
@@ -140,9 +137,8 @@ graph TD
   implements the domain's output ports.
 - **Key Components:**
   - **Primary Adapters:**
-    - **API Controllers**
-      ([`src/infrastructure/adapters/primary/api/controllers/`](src/infrastructure/adapters/primary/api/controllers/)):
-      Handle HTTP requests, validate input, and call the appropriate use cases (input ports).
+    - **API Controllers** (`src/infrastructure/adapters/primary/api/controllers/`): Handle HTTP
+      requests, validate input, and call the appropriate use cases (input ports).
     - **Jobs**
       ([`WeatherDigestJob`](src/infrastructure/adapters/primary/jobs/weather-digest.job.ts)):
       Scheduled tasks that trigger use cases.
@@ -166,4 +162,16 @@ graph TD
 
 ## 5. Consequences
 
-- **High Testability:** The core logic (Domain and Application) can be tested
+- **High Testability:** The core logic (Domain and Application) can be tested in isolation using
+  mocks for the output ports.
+- **Technology Independence:** The core business logic is decoupled from specific technologies,
+  making it easier to swap out infrastructure components.
+- **Maintainability:** Clear separation of concerns makes the codebase easier to understand and
+  maintain.
+- **Parallel Development:** Different teams can work on different layers simultaneously.
+- **Adaptability:** New features or changes in requirements can be accommodated with minimal impact
+  on existing code.
+- **Learning Curve:** The architecture introduces additional complexity that new team members need
+  to understand.
+- **Increased Initial Development Time:** Defining and implementing all the interfaces (ports) takes
+  more
