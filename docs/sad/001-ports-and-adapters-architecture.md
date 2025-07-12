@@ -64,29 +64,13 @@ graph TD
         Utils["Utilities"]
         DTOs["DTOs"]
         Constants["Constants"]
+        Scripts["Scripts"]
     end
 
     %% Dependencies between layers
-    InfrastructureLayer -->|"depends on"| ApplicationLayer
-    InfrastructureLayer -->|"depends on"| DomainLayer
-    ApplicationLayer -->|"depends on"| DomainLayer
-
-    %% Implementation relationships
-    AppServices -.->|"implements"| IP
-    SecA -.->|"implements"| OP
-    AppServices -->|"uses"| UC
-    UC -->|"uses"| OP
-    UC -->|"uses"| Models
-    PrA -->|"calls"| IP
-
-    %% Configuration wiring
-    Config -->|"configures"| PrA
-    Config -->|"configures"| SecA
-    Config -->|"configures"| UC
-    DI -->|"resolves"| PrA
-    DI -->|"resolves"| SecA
-    DI -->|"resolves"| UC
-    DI -->|"resolves"| AppServices
+    InfrastructureLayer --> ApplicationLayer
+    InfrastructureLayer --> DomainLayer
+    ApplicationLayer --> DomainLayer
 
     %% Styles
     classDef domainStyle fill:#bfb,stroke:#333;
