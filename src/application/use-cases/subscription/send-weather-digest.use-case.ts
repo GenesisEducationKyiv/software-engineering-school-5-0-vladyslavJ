@@ -6,7 +6,7 @@ import { IEmailPort } from '../../../domain/ports/notification/email.port';
 import { IWeatherInputPort } from '../../ports/weather.port';
 import { ILogger } from '../../../shared/interfaces/logger-service.interface';
 import { digestTpl } from '../../../shared/utils/email-templates.util';
-import { SubscriptionFrequencyEnum } from '../../../shared/enums/subscription-frequency.enum';
+import { SubscriptionFrequency } from '../../../shared/enums/subscription-frequency.enum';
 import { WeatherDto } from '../../../shared/dtos/weather.dto';
 
 @injectable()
@@ -19,7 +19,7 @@ export class SendWeatherDigestUseCase {
     @inject(TOKENS.ILogger) private readonly logger: ILogger,
   ) {}
 
-  async sendDigest(frequency: SubscriptionFrequencyEnum): Promise<void> {
+  async sendDigest(frequency: SubscriptionFrequency): Promise<void> {
     this.logger.info(`[JOB] Starting ${frequency} weather digest...`);
     const subscriptions = await this.subscriptionRepository.findConfirmedByFrequency(frequency);
 

@@ -4,8 +4,7 @@ import { SubscribeUseCase } from '../use-cases/subscription/subscribe.use-case';
 import { ConfirmSubscriptionUseCase } from '../use-cases/subscription/confirm-subscription.use-case';
 import { UnsubscribeUseCase } from '../use-cases/subscription/unsubscribe.use-case';
 import { SendWeatherDigestUseCase } from '../use-cases/subscription/send-weather-digest.use-case';
-import { Frequency } from '../../infrastructure/database/entities/subscription.entity';
-import { SubscriptionFrequencyEnum } from '../../shared/enums/subscription-frequency.enum';
+import { SubscriptionFrequency } from '../../shared/enums/subscription-frequency.enum';
 
 @injectable()
 export class SubscriptionService implements ISubscriptionInputPort {
@@ -17,7 +16,7 @@ export class SubscriptionService implements ISubscriptionInputPort {
     @inject(SendWeatherDigestUseCase) private sendWeatherDigestUseCase: SendWeatherDigestUseCase,
   ) {}
 
-  async subscribe(email: string, city: string, frequency: Frequency): Promise<void> {
+  async subscribe(email: string, city: string, frequency: SubscriptionFrequency): Promise<void> {
     return this.subscribeUseCase.subscribe(email, city, frequency);
   }
 
@@ -29,7 +28,7 @@ export class SubscriptionService implements ISubscriptionInputPort {
     return this.unsubscribeUseCase.unsubscribe(token);
   }
 
-  async sendDigest(frequency: SubscriptionFrequencyEnum): Promise<void> {
+  async sendDigest(frequency: SubscriptionFrequency): Promise<void> {
     return this.sendWeatherDigestUseCase.sendDigest(frequency);
   }
 }

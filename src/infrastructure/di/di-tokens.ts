@@ -40,4 +40,5 @@ export const TOKENS = {
   SubscribeUseCase: Symbol('SubscribeUseCase'),
   ConfirmSubscriptionUseCase: Symbol('ConfirmSubscriptionUseCase'),
   UnsubscribeUseCase: Symbol('UnsubscribeUseCase'),
+  GetWeatherUseCase: Symbol('GetWeatherUseCase'),
 } as const;

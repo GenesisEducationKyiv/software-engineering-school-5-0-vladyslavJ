@@ -1,8 +1,9 @@
 import { AppDataSource } from '../../../config/dataSource';
-import { Subscription, Frequency } from '../../../database/entities/subscription.entity';
+import { Subscription } from '../../../database/entities/subscription.entity';
 import { FindOptionsWhere } from 'typeorm';
 import { ISubscriptionRepository } from '../../../../domain/ports/repositories/subscription-repository.port';
 import { SubscriptionField } from '../../../../shared/types/subscription-field.type';
+import { SubscriptionFrequency } from '../../../../shared/enums/subscription-frequency.enum';
 
 export class SubscriptionRepository implements ISubscriptionRepository {
   private repo = AppDataSource.getRepository(Subscription);
@@ -14,7 +15,7 @@ export class SubscriptionRepository implements ISubscriptionRepository {
     return this.repo.findOneBy(where);
   }
 
-  findExisting(email: string, city: string, frequency: Frequency) {
+  findExisting(email: string, city: string, frequency: SubscriptionFrequency) {
     return this.repo.findOneBy({ email, city, frequency });
   }
 
@@ -31,7 +32,7 @@ export class SubscriptionRepository implements ISubscriptionRepository {
     await this.repo.remove(sub);
   }
 
-  findConfirmedByFrequency(frequency: Frequency) {
+  findConfirmedByFrequency(frequency: SubscriptionFrequency) {
     const where: FindOptionsWhere<Subscription> = {
       confirmed: true,
       frequency,

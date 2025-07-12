@@ -6,8 +6,9 @@ import {
   UpdateDateColumn,
   Index,
 } from 'typeorm';
+import { SubscriptionFrequency } from '../../../shared/enums/subscription-frequency.enum';
 
-export type Frequency = 'hourly' | 'daily';
+//export type Frequency = 'hourly' | 'daily';
 
 @Entity({ name: 'subscriptions' })
 @Index(['email', 'city', 'frequency'], { unique: true })
@@ -22,7 +23,7 @@ export class Subscription {
   city!: string;
 
   @Column({ type: 'varchar' })
-  frequency!: Frequency;
+  frequency!: SubscriptionFrequency;
 
   @Column({ type: 'boolean', default: false })
   confirmed!: boolean;

@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { injectable, inject } from 'tsyringe';
 import { TOKENS } from '../../../../di/di-tokens';
 import { ISubscriptionInputPort } from '../../../../../application/ports/subscription.port';
-import { Frequency } from '../../../../database/entities/subscription.entity';
+import { SubscriptionFrequency } from '../../../../../shared/enums/subscription-frequency.enum';
 
 @injectable()
 export class SubscriptionController {
@@ -16,7 +16,7 @@ export class SubscriptionController {
       const { email, city, frequency } = req.body as {
         email: string;
         city: string;
-        frequency: Frequency;
+        frequency: SubscriptionFrequency;
       };
       await this.subscriptionService.subscribe(email, city, frequency);
       res.status(200).json({ message: 'Subscription successful. Confirmation email sent.' });

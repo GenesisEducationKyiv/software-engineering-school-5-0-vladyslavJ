@@ -14,8 +14,9 @@ clean separation of concerns is crucial.
 
 ## 2. Decision
 
-We have chosen the **Ports and Adapters (Hexagonal) Architecture**. This pattern isolates the core
-application logic (domain and application layers) from external concerns.
+А We have chosen the **Ports and Adapters (Hexagonal) Architecture**, often used in combination with
+**Domain-Driven Design (DDD)** principles. This pattern isolates the core application logic (domain
+and application layers) from external concerns.
 
 - **Ports** are interfaces that define how the application interacts with the outside world. There
   are two types:
@@ -90,13 +91,14 @@ graph TB
 ### 4.1. Domain Layer
 
 - **Location:** `src/domain/`
-- **Responsibility:** Contains the core business logic, entities, and rules of the application. It
-  is completely independent of any external technology.
+- **Responsibility:** Contains the core business logic, entities, and rules of the application,
+  modeled according to **Domain-Driven Design (DDD)** principles. It is completely independent of
+  any external technology.
 - **Key Components:**
-  - **Models**: Business objects with their own logic.
+  - **Models/Entities**: Business objects with their own logic and a distinct identity.
   - **Ports**: Interfaces defining contracts for data persistence (`ISubscriptionRepository`),
     caching (`IWeatherCachePort`), external data providers (`IWeatherProviderPort`), and
-    notifications (`IEmailPort`).
+    notifications (`IEmailPort`). These are the output ports required by the domain.
 
 ### 4.2. Application Layer
 
@@ -155,7 +157,3 @@ graph TB
   to understand.
 - **Increased Initial Development Time:** Defining and implementing all the interfaces (ports) takes
   more time upfront but pays off in the long run with easier maintenance and scalability.
-- **Learning Curve:** The architecture introduces additional complexity that new team members need
-  to understand.
-- **Increased Initial Development Time:** Defining and implementing all the interfaces (ports) takes
-  more

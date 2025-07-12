@@ -1,9 +1,8 @@
-import { Frequency } from '../../infrastructure/database/entities/subscription.entity';
-import { SubscriptionFrequencyEnum } from '../../shared/enums/subscription-frequency.enum';
+import { SubscriptionFrequency } from '../../shared/enums/subscription-frequency.enum';
 
 export interface ISubscriptionInputPort {
-  subscribe(email: string, city: string, frequency: Frequency): Promise<void>;
+  subscribe(email: string, city: string, frequency: SubscriptionFrequency): Promise<void>;
   confirm(token: string): Promise<void>;
   unsubscribe(token: string): Promise<void>;
-  sendDigest(frequency: SubscriptionFrequencyEnum): Promise<void>;
+  sendDigest(frequency: SubscriptionFrequency): Promise<void>;
 }
