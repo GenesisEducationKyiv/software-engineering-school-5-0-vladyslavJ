@@ -1,13 +1,13 @@
 import 'reflect-metadata';
-import './container';
+import './infrastructure/di/container';
 import { container } from 'tsyringe';
 import app from './app';
-import ENV from './config/env';
-import { AppDataSource } from './config/dataSource';
-import './jobs/scheduler.job';
-import { ILogger } from './interfaces/logger-service.interface';
-import { ICacheClient } from './interfaces/cache-client.interface';
-import { TOKENS } from './config/di-tokens.config';
+import ENV from './infrastructure/config/env';
+import { AppDataSource } from './infrastructure/config/dataSource';
+import './infrastructure/adapters/primary/jobs/scheduler.job';
+import { ILogger } from './shared/interfaces/logger-service.interface';
+import { ICacheClient } from './infrastructure/interfaces/cache-client.interface';
+import { TOKENS } from './infrastructure/di/di-tokens';
 
 const logger = container.resolve<ILogger>(TOKENS.ILogger);
 const redisClient = container.resolve<ICacheClient>(TOKENS.IRedisClient);

@@ -14,12 +14,12 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
 
-    "typeRoots": ["src/types", "node_modules/@types"],
+    "typeRoots": ["src/shared/types", "node_modules/@types"],
 
     "sourceMap": true
   },
 
-  "include": ["src/**/*.ts", "src/types/**/*.d.ts"],
+  "include": ["src/**/*.ts", "src/shared/types/**/*.d.ts"],
 
   "exclude": ["node_modules", "dist", "public"]
 }

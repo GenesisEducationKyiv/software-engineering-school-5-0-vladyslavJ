@@ -1,4 +1,4 @@
-import { injectable } from 'tsyringe';
+/*import { injectable } from 'tsyringe';
 import { ICacheService } from '../../src/interfaces/cache-service.interface';
 
 @injectable()
@@ -16,3 +16,4 @@ export class MemoryCache<T> implements ICacheService<T> {
     this.store.set(key, { v: value, exp: Date.now() + ttl * 1_000 });
   }
 }
+*/
