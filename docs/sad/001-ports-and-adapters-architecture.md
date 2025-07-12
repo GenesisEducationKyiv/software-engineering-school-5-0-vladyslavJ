@@ -40,62 +40,63 @@ has no external dependencies.
 
 ```mermaid
 graph TD
-    subgraph InfrastructureLayer["Infrastructure Layer"]
-        PrA[Primary Adapters]
-        SecA[Secondary Adapters]
-        Config[Configuration]
+    subgraph DomainLayer["Domain Layer"]
+        Models["Models"]
+        OP["Output Ports"]
     end
 
     subgraph ApplicationLayer["Application Layer"]
-        IP[Input Ports]
-        UC[Use Cases]
+        UC["Use Cases"]
+        IP["Input Ports"]
+        AppServices["Application Services"]
     end
 
-    subgraph DomainLayer["Domain Layer"]
-        Models[Models]
-        OP[Output Ports]
+    subgraph InfrastructureLayer["Infrastructure Layer"]
+        PrA["Primary Adapters"]
+        SecA["Secondary Adapters"]
+        Config["Configuration"]
+        DB["Database"]
+        DI["DI Container"]
+        InfraServices["Infrastructure Services"]
     end
 
-    %% Primary Adapters to Application
+    subgraph SharedLayer["Shared Layer"]
+        Utils["Utilities"]
+        DTOs["DTOs"]
+        Constants["Constants"]
+    end
+
+    %% Dependencies between layers
+    InfrastructureLayer -->|"depends on"| ApplicationLayer
+    InfrastructureLayer -->|"depends on"| DomainLayer
+    ApplicationLayer -->|"depends on"| DomainLayer
+
+    %% Implementation relationships
+    AppServices -.->|"implements"| IP
+    SecA -.->|"implements"| OP
+    AppServices -->|"uses"| UC
+    UC -->|"uses"| OP
+    UC -->|"uses"| Models
     PrA -->|"calls"| IP
 
-    %% Use Cases implement Input Ports
-    UC -.->|"implements"| IP
-
-    %% Use Cases depend on Output Ports
-    UC -->|"uses"| OP
-
-    %% Use Cases use Models
-    UC -->|"uses"| Models
-
-    %% Secondary Adapters implement Output Ports
-    SecA -.->|"implements"| OP
-
-    %% Configuration wires everything
+    %% Configuration wiring
     Config -->|"configures"| PrA
     Config -->|"configures"| SecA
     Config -->|"configures"| UC
+    DI -->|"resolves"| PrA
+    DI -->|"resolves"| SecA
+    DI -->|"resolves"| UC
+    DI -->|"resolves"| AppServices
 
-    %% Show specific components
-    PrA -->|"includes"| Controllers[API Controllers]
-    PrA -->|"includes"| Jobs[Scheduled Jobs]
-
-    SecA -->|"includes"| Repos[Repositories]
-    SecA -->|"includes"| Cache[Cache Adapter]
-    SecA -->|"includes"| Weather[Weather Provider]
-    SecA -->|"includes"| Email[Email Adapter]
-
-    Config -->|"includes"| DI[DI Container]
-    Config -->|"includes"| Server[Server Setup]
-
-    %% Стили для слоев
-    classDef infrastructureStyle fill:#f9f,stroke:#333;
-    classDef applicationStyle fill:#bbf,stroke:#333;
+    %% Styles
     classDef domainStyle fill:#bfb,stroke:#333;
+    classDef applicationStyle fill:#bbf,stroke:#333;
+    classDef infrastructureStyle fill:#f9f,stroke:#333;
+    classDef sharedStyle fill:#ffb,stroke:#333;
 
-    class InfrastructureLayer infrastructureStyle;
-    class ApplicationLayer applicationStyle;
     class DomainLayer domainStyle;
+    class ApplicationLayer applicationStyle;
+    class InfrastructureLayer infrastructureStyle;
 ```
 
 ## 4. Layer Responsibilities
