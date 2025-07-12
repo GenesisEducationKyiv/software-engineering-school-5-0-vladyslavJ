@@ -36,7 +36,7 @@ making it highly testable and easier to evolve.
 
 The following diagram illustrates the layers and dependencies in the application. Dependencies flow
 from the outer layer (Infrastructure) to the inner layers (Application, Domain). The Domain layer
-has no external dependencies.
+has no external dependencies, except for the Shared Layer.
 
 ```mermaid
 graph TB
@@ -56,7 +56,7 @@ graph TB
         AppServices["Application Services"]
     end
 
-        subgraph DomainLayer["Domain Layer"]
+    subgraph DomainLayer["Domain Layer"]
         Models["Models"]
         OP["Output Ports"]
     end
@@ -82,6 +82,7 @@ graph TB
     class DomainLayer domainStyle;
     class ApplicationLayer applicationStyle;
     class InfrastructureLayer infrastructureStyle;
+    class SharedLayer sharedStyle;
 ```
 
 ## 4. Layer Responsibilities
@@ -92,13 +93,10 @@ graph TB
 - **Responsibility:** Contains the core business logic, entities, and rules of the application. It
   is completely independent of any external technology.
 - **Key Components:**
-  - **Models** ([`Weather`](src/domain/models/weather.model.ts)): Business objects with their own
-    logic.
-  - **Ports** (`src/domain/ports/`): Interfaces defining contracts for data persistence
-    ([`ISubscriptionRepository`](src/domain/ports/repositories/subscription-repository.port.ts)),
-    caching ([`IWeatherCachePort`](src/domain/ports/cache/weather-cache.port.ts)), external data
-    providers ([`IWeatherProviderPort`](src/domain/ports/providers/weather-provider.port.ts)), and
-    notifications ([`IEmailPort`](src/domain/ports/notification/email.port.ts)).
+  - **Models**: Business objects with their own logic.
+  - **Ports**: Interfaces defining contracts for data persistence (`ISubscriptionRepository`),
+    caching (`IWeatherCachePort`), external data providers (`IWeatherProviderPort`), and
+    notifications (`IEmailPort`).
 
 ### 4.2. Application Layer
 
@@ -106,14 +104,10 @@ graph TB
 - **Responsibility:** Orchestrates the domain models to perform application-specific tasks (use
   cases). It defines the input ports for the application.
 - **Key Components:**
-  - **Input Ports** ([`IWeatherInputPort`](src/application/ports/weather.port.ts),
-    [`ISubscriptionInputPort`](src/application/ports/subscription.port.ts)): Interfaces that define
-    the application's capabilities.
-  - **Use Cases** (`src/application/use-cases/`): Implementations of the input ports. They contain
-    the logic for specific user stories, like
-    [`GetWeatherUseCase`](src/application/use-cases/weather/get-weather.use-case.ts) or
-    [`SubscribeUseCase`](src/application/use-cases/subscription/subscribe.use-case.ts). They depend
-    on the domain's output ports to interact with external systems.
+  - **Input Ports**: Interfaces that define the application's capabilities.
+  - **Use Cases**: Implementations of the input ports. They contain the logic for specific user
+    stories, like `GetWeatherUseCase` or `SubscribeUseCase`. They depend on the domain's output
+    ports to interact with external systems.
 
 ### 4.3. Infrastructure Layer
 
@@ -123,28 +117,28 @@ graph TB
   implements the domain's output ports.
 - **Key Components:**
   - **Primary Adapters:**
-    - **API Controllers** (`src/infrastructure/adapters/primary/api/controllers/`): Handle HTTP
-      requests, validate input, and call the appropriate use cases (input ports).
-    - **Jobs**
-      ([`WeatherDigestJob`](src/infrastructure/adapters/primary/jobs/weather-digest.job.ts)):
-      Scheduled tasks that trigger use cases.
+    - **API Controllers**: Handle HTTP requests, validate input, and call the appropriate use cases
+      (input ports).
+    - **Jobs**: Scheduled tasks that trigger use cases.
   - **Secondary Adapters:**
-    - **Repositories**
-      ([`SubscriptionRepository`](src/infrastructure/adapters/secondary/repositories/subscription.repository.ts)):
-      Implements the `ISubscriptionRepository` port using TypeORM and PostgreSQL.
-    - **Cache**
-      ([`WeatherCacheAdapter`](src/infrastructure/adapters/secondary/cache/weather-cache.adapter.ts)):
-      Implements the `IWeatherCachePort` using Redis.
-    - **Weather Providers**
-      ([`WeatherApiAdapter`](src/infrastructure/adapters/secondary/weather-providers/weather-api.adapter.ts)):
-      Implements the `IWeatherProviderPort` by calling external weather APIs.
-    - **Email** ([`EmailAdapter`](src/infrastructure/adapters/secondary/email/email.adapter.ts)):
-      Implements the `IEmailPort` using Nodemailer.
+    - **Repositories**: Implements the `ISubscriptionRepository` port using TypeORM and PostgreSQL.
+    - **Cache**: Implements the `IWeatherCachePort` using Redis.
+    - **Weather Providers**: Implements the `IWeatherProviderPort` by calling external weather APIs.
+    - **Email**: Implements the `IEmailPort` using Nodemailer.
   - **Configuration:**
-    - **DI Container** ([`container.ts`](src/infrastructure/di/container.ts)): Wires all the
-      components together using `tsyringe`.
-    - **Server Setup** ([`app.ts`](src/app.ts), [`server.ts`](src/server.ts)): Express server
-      configuration, middleware, and startup logic.
+    - **DI Container**: Wires all the components together using `tsyringe`.
+    - **Server Setup**: Express server configuration, middleware, and startup logic.
+
+### 4.4. Shared Layer
+
+- **Location:** `src/shared/`
+- **Responsibility:** Contains code that can be used by any other layer. This layer should not have
+  any dependencies on the Domain, Application, or Infrastructure layers.
+- **Key Components:**
+  - **DTOs**: Data Transfer Objects used for communication between layers, especially for API
+    requests and responses.
+  - **Utilities**: Common helper functions, constants, and base classes.
+  - **Scripts**: Utility scripts for development or deployment.
 
 ## 5. Consequences
 
@@ -157,6 +151,10 @@ graph TB
 - **Parallel Development:** Different teams can work on different layers simultaneously.
 - **Adaptability:** New features or changes in requirements can be accommodated with minimal impact
   on existing code.
+- **Learning Curve:** The architecture introduces additional complexity that new team members need
+  to understand.
+- **Increased Initial Development Time:** Defining and implementing all the interfaces (ports) takes
+  more time upfront but pays off in the long run with easier maintenance and scalability.
 - **Learning Curve:** The architecture introduces additional complexity that new team members need
   to understand.
 - **Increased Initial Development Time:** Defining and implementing all the interfaces (ports) takes
