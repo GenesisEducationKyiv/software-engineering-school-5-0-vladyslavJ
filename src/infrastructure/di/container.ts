@@ -87,6 +87,4 @@ container.registerSingleton(SubscriptionController);
 
 container.registerSingleton(WeatherDigestJob);
 
-//container.registerSingleton(TOKENS.WeatherService, WeatherService);
-
 export { container };

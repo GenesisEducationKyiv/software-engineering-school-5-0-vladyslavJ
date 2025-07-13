@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { AppDataSource } from '../../src/config/dataSource';
+import { AppDataSource } from '../../src/infrastructure/config/dataSource';
 import request from 'supertest';
 import app from '../../src/app';
 

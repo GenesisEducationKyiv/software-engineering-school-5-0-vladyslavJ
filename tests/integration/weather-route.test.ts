@@ -3,10 +3,10 @@ import { container } from 'tsyringe';
 import nock from 'nock';
 import request from 'supertest';
 import app from '../../src/app';
-import { TOKENS } from '../../src/config/di-tokens.config';
-import { HttpError } from '../../src/utils/custom-error.util';
-import { ICacheClient } from '../../src/interfaces/cache-client.interface';
-import WEATHER_API_ERROR_CODE from '../../src/utils/constants/weather-api-error-code.constant';
+import { TOKENS } from '../../src/infrastructure/di/di-tokens';
+import { HttpError } from '../../src/shared/utils/custom-error.util';
+import { ICacheClient } from '../../src/infrastructure/interfaces/cache-client.interface';
+import WEATHER_API_ERROR_CODE from '../../src/shared/utils/constants/weather-api-error-code.constant';
 
 const redisClient = container.resolve<ICacheClient>(TOKENS.IRedisClient);
 
