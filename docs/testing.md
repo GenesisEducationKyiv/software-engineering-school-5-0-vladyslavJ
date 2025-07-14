@@ -17,7 +17,7 @@ started.
 ## 1. Unit Tests
 
 ```bash
-docker compose -f docker-compose.test.yml run --rm tests-unit
+docker compose -f docker-compose.test.yml run --rm --build tests-unit
 ```
 
 **What this command does:**  
@@ -28,7 +28,7 @@ The `test` profile ensures that only the necessary services for testing are star
 ## 2. Integration Tests
 
 ```bash
-docker compose -f docker-compose.test.yml run --rm tests-int
+docker compose -f docker-compose.test.yml run --rm --build tests-int
 ```
 
 **What this command does:**  

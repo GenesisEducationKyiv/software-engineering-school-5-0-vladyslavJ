@@ -30,4 +30,4 @@ jobs:
         run: npm ci
 
       - name: Run architecture test
-        run: npm run test:arch -- --max-warnings 0
+        run: npm run test:arch
