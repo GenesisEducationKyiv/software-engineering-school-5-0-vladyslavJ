@@ -3,11 +3,10 @@ import { TOKENS } from '../../../infrastructure/di/di-tokens';
 import { Weather } from '../../../domain/models/weather.model';
 import { IWeatherProviderPort } from '../../../domain/ports/providers/weather-provider.port';
 import { IWeatherCachePort } from '../../../domain/ports/cache/weather-cache.port';
-import { IWeatherInputPort } from '../../ports/weather.port';
 import { ILogger } from '../../../shared/interfaces/logger-service.interface';
 
 @injectable()
-export class GetWeatherUseCase implements IWeatherInputPort {
+export class GetWeatherUseCase {
   constructor(
     @inject(TOKENS.IWeatherProviderPort) private weatherProvider: IWeatherProviderPort,
     @inject(TOKENS.IWeatherCachePort) private cache: IWeatherCachePort,

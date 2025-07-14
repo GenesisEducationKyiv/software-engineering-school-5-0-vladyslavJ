@@ -9,7 +9,7 @@ export class OpenWeatherMapMapper implements IWeatherMapper<IOpenWeatherMapRespo
     return new Weather(
       apiResponse.main.temp,
       apiResponse.main.humidity,
-      apiResponse.weather[0]?.description || 'Нет описания',
+      apiResponse.weather[0]?.description,
     );
   }
 }
