@@ -1,9 +1,9 @@
 import 'reflect-metadata';
-import { WeatherMapper } from '../../src/mappers/weather-data.mapper';
-import { IWeatherApiResponse } from '../../src/interfaces/weather-api-response.interface';
+import { WeatherApiMapper } from '../../src/infrastructure/adapters/secondary/weather-providers/mappers/weather-api.mapper';
+import { IWeatherApiResponse } from '../../src/infrastructure/adapters/secondary/weather-providers/interfaces/weather-api-response.interface';
 
-describe('WeatherMapper', () => {
-  it('Mappes the updated API response object to DTO', () => {
+describe('WeatherApiMapper', () => {
+  it('Maps the weather API response object to Weather model', () => {
     const raw: IWeatherApiResponse = {
       location: {
         name: 'London',
@@ -52,9 +52,10 @@ describe('WeatherMapper', () => {
       },
     };
 
-    const dto = new WeatherMapper().mapCurrentWeather(raw);
+    const mapper = new WeatherApiMapper();
+    const weather = mapper.mapCurrentWeather(raw);
 
-    expect(dto).toEqual({
+    expect(weather).toEqual({
       temperature: 26.0,
       humidity: 45,
       description: 'Sunny',
