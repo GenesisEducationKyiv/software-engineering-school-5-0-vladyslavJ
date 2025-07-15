@@ -18,7 +18,7 @@ import { CacheMetricService } from '../services/cache-metric.service';
 import { ICacheMetricService } from '../interfaces/cache-metric-service.interface';
 import { ErrorHandlerMiddleware } from '../adapters/primary/api/middlewares/error-handling/error-handler.middleware';
 import { WeatherDigestJob } from '../adapters/primary/jobs/weather-digest.job';
-import { SubscriptionRepository } from '../adapters/secondary/repositories/subscription.repository';
+import { SubscriptionRepository } from '../database/repositories/subscription.repository';
 import { WeatherCacheAdapter } from '../adapters/secondary/cache/weather-cache.adapter';
 import { EmailAdapter } from '../adapters/secondary/email/email.adapter';
 import { WeatherApiAdapter } from '../adapters/secondary/weather-providers/weather-api.adapter';
@@ -37,6 +37,8 @@ import { SubscriptionController } from '../adapters/primary/api/controllers/subs
 import { ISubscriptionInputPort } from '../../application/ports/subscription.port';
 import { SubscriptionService } from '../../application/services/subscription.service';
 import { WeatherService } from '../../application/services/weather.service';
+import { SubscriptionMapper } from '../database/mappers/subscription.mapper';
+import { ISubscriptionMapper } from '../interfaces/subscription-mapper.interface';
 
 container.registerSingleton<ILogger>(TOKENS.ILogger, LoggerService);
 container.registerSingleton<ErrorHandlerMiddleware>(
@@ -72,6 +74,7 @@ container.registerSingleton(GetWeatherUseCase);
 container.registerSingleton<IWeatherInputPort>(TOKENS.IWeatherInputPort, WeatherService);
 container.registerSingleton(WeatherController);
 
+container.registerSingleton<ISubscriptionMapper>(TOKENS.ISubscriptionMapper, SubscriptionMapper);
 container.register<ISubscriptionRepository>(TOKENS.ISubscriptionRepository, {
   useClass: SubscriptionRepository,
 });

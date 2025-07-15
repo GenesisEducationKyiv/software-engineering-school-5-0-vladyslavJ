@@ -18,19 +18,15 @@ export const TOKENS = {
   RedisPort: Symbol.for('RedisPort'),
   RedisDefaultTTL: Symbol.for('RedisDefaultTTL'),
 
-  // Порты
   IWeatherInputPort: Symbol('IWeatherInputPort'),
   IWeatherProviderPort: Symbol('IWeatherProviderPort'),
   IWeatherCachePort: Symbol('IWeatherCachePort'),
 
-  // Инфраструктурные сервисы
   IRedisClient: Symbol('IRedisClient'),
   ICacheMetricService: Symbol('ICacheMetricService'),
 
-  // Конфигурация
   RedisTTL: Symbol('RedisTTL'),
 
-  //
   WeatherApiMapper: Symbol.for('WeatherApiMapper'),
   OpenWeatherMapMapper: Symbol.for('OpenWeatherMapMapper'),
 
@@ -41,4 +37,7 @@ export const TOKENS = {
   ConfirmSubscriptionUseCase: Symbol('ConfirmSubscriptionUseCase'),
   UnsubscribeUseCase: Symbol('UnsubscribeUseCase'),
   GetWeatherUseCase: Symbol('GetWeatherUseCase'),
+
+  ISubscriptionMapper: Symbol('ISubscriptionMapper'),
+  //SubscriptionMapper: Symbol.for('SubscriptionMapper'),
 } as const;

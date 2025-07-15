@@ -8,8 +8,6 @@ import {
 } from 'typeorm';
 import { SubscriptionFrequency } from '../../../shared/enums/subscription-frequency.enum';
 
-//export type Frequency = 'hourly' | 'daily';
-
 @Entity({ name: 'subscriptions' })
 @Index(['email', 'city', 'frequency'], { unique: true })
 export class Subscription {
