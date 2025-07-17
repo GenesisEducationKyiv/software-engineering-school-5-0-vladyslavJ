@@ -23,8 +23,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@nestjs/config": "^4.0.2",
+    "@nestjs/microservices": "^11.1.4",
     "axios": "^1.9.0",
     "axios-retry": "^4.5.0",
+    "class-validator": "^0.14.2",
     "cors": "^2.8.5",
     "date-fns": "^4.1.0",
     "dotenv": "^16.5.0",
@@ -60,7 +63,7 @@
     "@types/joi": "^17.2.3",
     "@types/morgan": "^1.9.9",
     "@types/nock": "^11.1.0",
-    "@types/node": "^22.15.18",
+    "@types/node": "^22.16.4",
     "@types/node-cron": "^3.0.11",
     "@types/nodemailer": "^6.4.17",
     "@types/pg": "^8.15.1",
@@ -84,7 +87,7 @@
     "tsarch": "^5.4.1",
     "tsconfig-paths": "^4.2.0",
     "tsx": "^4.19.4",
-    "typescript": "^5.8.3",
+    "typescript": "5.3",
     "typescript-eslint": "^8.33.1"
   }
 }
