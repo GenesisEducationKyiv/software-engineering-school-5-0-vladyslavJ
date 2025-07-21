@@ -1,5 +1,6 @@
 import { ExceptionFilter, Catch, ArgumentsHost, HttpStatus } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
+import { GrpcCode } from '../../../../../libs/common/enums/grpc-codes.enum';
 
 type GrpcError = {
   code?: number;
@@ -20,12 +21,12 @@ export class GrpcExceptionFilter implements ExceptionFilter {
     const response = ctx.getResponse();
 
     const grpcToHttpStatus: Record<number, number> = {
-      5: HttpStatus.NOT_FOUND,
-      14: HttpStatus.SERVICE_UNAVAILABLE,
-      3: HttpStatus.BAD_REQUEST,
-      7: HttpStatus.FORBIDDEN,
-      13: HttpStatus.INTERNAL_SERVER_ERROR,
-      2: HttpStatus.INTERNAL_SERVER_ERROR,
+      [GrpcCode.NOT_FOUND]: HttpStatus.NOT_FOUND,
+      [GrpcCode.SERVICE_UNAVAILABLE]: HttpStatus.SERVICE_UNAVAILABLE,
+      [GrpcCode.BAD_REQUEST]: HttpStatus.BAD_REQUEST,
+      [GrpcCode.FORBIDDEN]: HttpStatus.FORBIDDEN,
+      [GrpcCode.INTERNAL_SERVER_ERROR]: HttpStatus.INTERNAL_SERVER_ERROR,
+      [GrpcCode.UNKNOWN]: HttpStatus.INTERNAL_SERVER_ERROR,
     };
 
     const code = exception.code ?? exception.getError?.().code ?? 500;

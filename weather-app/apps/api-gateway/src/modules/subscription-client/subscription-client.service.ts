@@ -1,4 +1,4 @@
-import { Injectable, Inject, OnModuleInit } from '@nestjs/common';
+/*import { Injectable, Inject, OnModuleInit } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 import { GrpcToObservable } from '../../../../../libs/common/types/observable';
@@ -28,4 +28,4 @@ export class SubscriptionServiceClient implements OnModuleInit, ISubscriptionSer
   unsubscribe(req: Token): Promise<Empty> {
     return lastValueFrom(this.serviceClient.unsubscribe(req));
   }
-}
+}*/

@@ -10,6 +10,8 @@ import { LoggerDiTokens } from '../../../../../../libs/modules/logger/di/di-toke
 import { HttpDiTokens } from '../http-client/di/di-tokens';
 import { IOpenWeatherMapErrorData } from './interfaces/open-weather-map-error-response.interface';
 import { mapWeatherApiError } from './mappers/open-weather-map-error.mapper';
+import { GrpcCode } from '../../../../../../libs/common/enums/grpc-codes.enum';
+import { RpcException } from '@nestjs/microservices';
 
 @Injectable()
 export class OpenWeatherMapAdapter implements IWeatherProviderPort {
@@ -38,7 +40,14 @@ export class OpenWeatherMapAdapter implements IWeatherProviderPort {
       return this.mapper.mapCurrentWeather(data as IOpenWeatherMapResponse);
     } catch (error) {
       this.logger.warn(`openweathermap.org - error: ${String(error)}`);
-      throw error;
+      if (error instanceof RpcException) {
+        throw error;
+      }
+      throw new RpcException({
+        code: GrpcCode.SERVICE_UNAVAILABLE,
+        message: 'Failed to fetch weather data',
+        details: String(error),
+      });
     }
   }
 }

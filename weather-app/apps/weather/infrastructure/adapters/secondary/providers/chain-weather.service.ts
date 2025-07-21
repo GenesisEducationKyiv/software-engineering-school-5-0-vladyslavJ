@@ -1,8 +1,10 @@
-import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import { IWeatherProviderPort } from '../../../../domain/ports/providers/weather-provider.port';
 import { Weather } from '../../../../domain/models/weather.model';
 import { LoggerDiTokens } from '../../../../../../libs/modules/logger/di/di-tokens';
 import { ILogger } from '../../../../../../libs/modules/logger/interfaces/logger.interface';
+import { RpcException } from '@nestjs/microservices';
+import { GrpcCode } from '../../../../../../libs/common/enums/grpc-codes.enum';
 
 @Injectable()
 export class ChainWeatherService implements IWeatherProviderPort {
@@ -18,15 +20,24 @@ export class ChainWeatherService implements IWeatherProviderPort {
         return await provider.fetchCurrentWeather(city);
       } catch (error) {
         this.logger.warn(`Provider ${provider.constructor.name} failed: ${String(error)}`);
-        if (error instanceof HttpException && error.getStatus() === HttpStatus.NOT_FOUND) {
-          throw new HttpException('City not found', HttpStatus.NOT_FOUND);
-        }
-        if (error instanceof HttpException && error.getStatus() === HttpStatus.BAD_REQUEST) {
-          throw new HttpException('Invalid request', HttpStatus.BAD_REQUEST);
+
+        let code: number;
+        if (error instanceof RpcException) {
+          const grpcError = error.getError();
+          if (typeof grpcError === 'object' && grpcError !== null && 'code' in grpcError) {
+            code = (grpcError as { code: number }).code;
+            if (code === GrpcCode.NOT_FOUND || code === GrpcCode.BAD_REQUEST) {
+              throw error;
+            }
+          }
         }
         continue;
       }
     }
-    throw new Error(`All providers are unavailable`);
+    throw new RpcException({
+      code: GrpcCode.SERVICE_UNAVAILABLE,
+      message: 'All providers are unavailable',
+      details: 'Service Unavailable',
+    });
   }
 }

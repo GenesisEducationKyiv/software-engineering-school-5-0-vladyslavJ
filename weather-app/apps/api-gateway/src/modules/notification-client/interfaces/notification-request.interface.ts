@@ -1,4 +1,4 @@
-export interface NotificationRequest {
+/*export interface NotificationRequest {
   type: 'EMAIL' | 'PUSH' | 'SMS';
   recipient: {
     email?: string;
@@ -8,3 +8,4 @@ export interface NotificationRequest {
   template: string;
   data: Record<string, string>;
 }
+*/

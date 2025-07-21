@@ -1,4 +1,4 @@
-import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
+/*import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 import { GrpcToObservable } from '../../../../../libs/common/types/observable';
@@ -20,3 +20,4 @@ export class NotificationServiceClient implements OnModuleInit {
     return lastValueFrom(this.serviceClient.sendNotification(req));
   }
 }
+*/

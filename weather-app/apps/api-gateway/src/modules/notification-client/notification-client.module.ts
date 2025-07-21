@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+/*import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ConfigService } from '@nestjs/config';
 import { NotificationServiceClient } from './notification-client.service';
@@ -13,7 +13,7 @@ import { NotificationServiceClient } from './notification-client.service';
           options: {
             url: `${config.get('notification.host')}:${config.get('notification.port')}`,
             package: 'notification', // Назва пакету з proto-файлу.
-            protoPath: 'libs/proto/notification.proto',
+            //protoPath: 'libs/proto/notification.proto',
           },
         }),
         inject: [ConfigService], // Вказує, що у фабрику потрібно інжектити ConfigService.
@@ -24,3 +24,4 @@ import { NotificationServiceClient } from './notification-client.service';
   exports: [NotificationServiceClient],
 })
 export class NotificationServiceClientModule {}
+*/

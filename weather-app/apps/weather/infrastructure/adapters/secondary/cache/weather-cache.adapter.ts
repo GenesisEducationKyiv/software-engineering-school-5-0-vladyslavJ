@@ -6,6 +6,7 @@ import { ICacheServiceClient } from './interfaces/cache-client.interface';
 import { CacheDiTokens } from '../cache/di/di-tokens';
 import { LoggerDiTokens } from '../../../../../../libs/modules/logger/di/di-tokens';
 import { ILogger } from '../../../../../../libs/modules/logger/interfaces/logger.interface';
+import { RpcException } from '@nestjs/microservices';
 
 @Injectable()
 export class WeatherCacheAdapter implements IWeatherCachePort {
@@ -32,7 +33,11 @@ export class WeatherCacheAdapter implements IWeatherCachePort {
     } catch (err) {
       //this.metricService.incCacheError();
       this.logger.error(`[WEATHER-CACHE] Error on GET. Key: ${key}`, String(err));
-      throw err;
+      throw new RpcException({
+        message: 'Cache GET error',
+        key,
+        error: String(err),
+      });
     }
   }
 
@@ -44,7 +49,11 @@ export class WeatherCacheAdapter implements IWeatherCachePort {
     } catch (err) {
       //this.metricService.incCacheError();
       this.logger.error(`[WEATHER-CACHE] Error on SET. Key: ${key}`, String(err));
-      throw err;
+      throw new RpcException({
+        message: 'Cache SET error',
+        key,
+        error: String(err),
+      });
     }
   }
 }

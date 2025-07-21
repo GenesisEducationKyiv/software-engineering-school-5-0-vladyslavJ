@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+/*import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ConfigService } from '@nestjs/config';
 import { SubscriptionServiceClient } from './subscription-client.service';
@@ -22,4 +22,4 @@ import { SubscriptionServiceClient } from './subscription-client.service';
   providers: [SubscriptionServiceClient],
   exports: [SubscriptionServiceClient],
 })
-export class SubscriptionServiceClientModule {}
+export class SubscriptionServiceClientModule {}*/

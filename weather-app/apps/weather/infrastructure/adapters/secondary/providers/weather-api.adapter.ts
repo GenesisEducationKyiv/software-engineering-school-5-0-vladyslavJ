@@ -10,6 +10,8 @@ import { ILogger } from '../../../../../../libs/modules/logger/interfaces/logger
 import { LoggerDiTokens } from '../../../../../../libs/modules/logger/di/di-tokens';
 import { IWeatherApiErrorData } from './interfaces/weather-api-error-response.interface';
 import { mapWeatherApiError } from './mappers/weather-api-error.mapper';
+import { GrpcCode } from '../../../../../../libs/common/enums/grpc-codes.enum';
+import { RpcException } from '@nestjs/microservices';
 
 @Injectable()
 export class WeatherApiAdapter implements IWeatherProviderPort {
@@ -38,7 +40,14 @@ export class WeatherApiAdapter implements IWeatherProviderPort {
       return this.mapper.mapCurrentWeather(data as IWeatherApiResponse);
     } catch (error) {
       this.logger.warn(`weatherapi.com - error: ${String(error)}`);
-      throw error;
+      if (error instanceof RpcException) {
+        throw error;
+      }
+      throw new RpcException({
+        code: GrpcCode.SERVICE_UNAVAILABLE,
+        message: 'Failed to fetch weather data',
+        details: String(error),
+      });
     }
   }
 }

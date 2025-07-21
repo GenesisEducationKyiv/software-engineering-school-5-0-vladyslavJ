@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+/*import { Injectable } from '@nestjs/common';
 import { SubscriptionServiceClient } from '../subscription-client/subscription-client.service';
 import { WeatherServiceClient } from '../weather-client/weather-client.service';
 import { NotificationServiceClient } from '../notification-client/notification-client.service';
@@ -15,7 +15,7 @@ export class SubscriptionService implements ISubscriptionService {
   ) {}
 
   async subscribe(body: SubscriptionDto): Promise<{ message: string }> {
-    /*Додати перевірку чи існує city*/
+    //Додати перевірку чи існує city
 
     const confirmation_token = await this.subscriptionClient.subscribe(body);
     await this.notificationClient.sendNotification({
@@ -36,4 +36,4 @@ export class SubscriptionService implements ISubscriptionService {
     await this.subscriptionClient.unsubscribe(token);
     return { message: 'Unsubscribed successfully.' };
   }
-}
+}*/
