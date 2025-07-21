@@ -7,7 +7,7 @@ import { Weather } from '../../../../../libs/common/interfaces/weather.interface
 export class WeatherService implements IWeatherService {
   constructor(private readonly weatherClient: WeatherServiceClient) {}
 
-  async getWeather(city: string): Promise<Weather> {
-    return this.weatherClient.getWeather(city);
+  async getWeather(req: { city: string }): Promise<Weather> {
+    return this.weatherClient.getWeather(req);
   }
 }

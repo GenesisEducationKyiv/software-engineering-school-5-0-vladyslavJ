@@ -7,6 +7,6 @@ export class WeatherController {
 
   @Get('/weather')
   async getWeather(@Query('city') city: string) {
-    return this.weatherService.getWeather(city);
+    return this.weatherService.getWeather({ city });
   }
 }

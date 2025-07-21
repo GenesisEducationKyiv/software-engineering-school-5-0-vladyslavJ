@@ -15,7 +15,7 @@ export class WeatherServiceClient implements OnModuleInit, IWeatherServiceClient
       this.client.getService<GrpcToObservable<IWeatherServiceClient>>('WeatherService');
   }
 
-  async getWeather(city: string): Promise<Weather> {
-    return lastValueFrom(this.serviceClient.getWeather(city));
+  async getWeather(req: { city: string }): Promise<Weather> {
+    return lastValueFrom(this.serviceClient.getWeather(req));
   }
 }
