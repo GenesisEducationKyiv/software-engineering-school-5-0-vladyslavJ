@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ConfigService } from '@nestjs/config';
 import { WeatherServiceClient } from './weather-client.service';
+import { WeatherServiceClientDiTokens } from './di/di-tokens';
 
 @Module({
   imports: [
@@ -20,7 +21,12 @@ import { WeatherServiceClient } from './weather-client.service';
       },
     ]),
   ],
-  providers: [WeatherServiceClient],
-  exports: [WeatherServiceClient],
+  providers: [
+    {
+      provide: WeatherServiceClientDiTokens.WEATHER_SERVICE_GRPC_CLIENT,
+      useClass: WeatherServiceClient,
+    },
+  ],
+  exports: [WeatherServiceClientDiTokens.WEATHER_SERVICE_GRPC_CLIENT],
 })
 export class WeatherServiceClientModule {}
