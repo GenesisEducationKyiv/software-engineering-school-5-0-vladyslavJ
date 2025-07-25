@@ -1,14 +1,14 @@
 import { NestFactory } from '@nestjs/core';
-import { WeatherModule } from './app.module';
+import { EmailModule } from './app.module';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
-  const app = await NestFactory.createMicroservice<MicroserviceOptions>(WeatherModule, {
+  const app = await NestFactory.createMicroservice<MicroserviceOptions>(EmailModule, {
     transport: Transport.GRPC,
     options: {
-      url: '0.0.0.0:5000',
-      package: 'weather',
-      protoPath: 'libs/proto/weather.proto',
+      url: '0.0.0.0:4650',
+      package: 'email',
+      protoPath: 'libs/proto/email.proto',
     },
   });
   await app.listen();

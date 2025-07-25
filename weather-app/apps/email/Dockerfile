@@ -11,6 +11,6 @@ COPY . .
 
 RUN npm run build
 
-EXPOSE 5000
+EXPOSE 4650
 
-CMD ["node", "dist/apps/weather/main.js"]
+CMD ["node", "dist/apps/email/main.js"]
