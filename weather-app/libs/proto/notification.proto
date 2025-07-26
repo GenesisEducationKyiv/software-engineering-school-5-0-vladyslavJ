@@ -2,66 +2,57 @@ syntax = "proto3";
 
 package notification;
 
-option go_package = "notificationpb";
-
-// Сервіс для надсилання нотифікацій
 service NotificationService {
   rpc SendNotification (Notification) returns (SendNotificationResponse);
 }
 
-// Основне повідомлення для надсилання нотифікації
 message Notification {
   string email = 1;
-
-  oneof payload {
-    SubscriptionConfirmationPayload subscription_confirmation = 2;
-    ConfirmedSubscriptionPayload confirmed_subscription = 3;
-    UnsubscriptionGoodbyePayload unsubscription_goodbye = 4;
-    DigestPayload digest = 5;
+  EmailType type = 2;
+  oneof data {
+    SubscriptionConfirmationData subscription_confirmation = 3;
+    ConfirmedSubscriptionData confirmed_subscription = 4;
+    UnsubscriptionGoodbyeData unsubscription_goodbye = 5;
+    DigestData digest = 6;
   }
 }
 
-// Відповідь на запит надсилання нотифікації
-message SendNotificationResponse {
-  bool success = 1;
-  string error_message = 2; // Додатково: повідомлення про помилку (опціонально)
+enum EmailType {
+  SUBSCRIPTION_CONFIRMATION = 0;
+  CONFIRMED_SUBSCRIPTION = 1;
+  UNSUBSCRIPTION_GOODBYE = 2;
+  DAILY_DIGEST = 3;
+  HOURLY_DIGEST = 4;
 }
 
-// Підтвердження підписки
-message SubscriptionConfirmationPayload {
-  string confirmation_token = 1;
+message SubscriptionConfirmationData {
+  string confirmationToken = 1;
 }
 
-// Підтверджена підписка
-message ConfirmedSubscriptionPayload {
+message ConfirmedSubscriptionData {
   string city = 1;
-  SubscriptionFrequency frequency = 2;
-  string unsubscribe_token = 3;
+  string frequency = 2; // або enum, якщо треба
+  string unsubscribeToken = 3;
 }
 
-// Повідомлення про відписку
-message UnsubscriptionGoodbyePayload {
+message UnsubscriptionGoodbyeData {
   string city = 1;
 }
 
-// Дайджест
-message DigestPayload {
+message DigestData {
   string city = 1;
   string date = 2;
   Weather weather = 3;
-  string unsubscribe_token = 4;
+  string unsubscribeToken = 4;
 }
 
-// Частота підписки
-enum SubscriptionFrequency {
-  UNKNOWN_FREQUENCY = 0;
-  HOURLY = 1;
-  DAILY = 2;
-}
-
-// Погода
 message Weather {
   double temperature = 1;
   double humidity = 2;
   string description = 3;
+}
+
+message SendNotificationResponse {
+  bool success = 1;
+  string error_message = 2;
 }

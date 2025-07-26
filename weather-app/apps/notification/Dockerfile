@@ -10,6 +10,6 @@ COPY . .
 
 RUN npm run build
 
-EXPOSE 6000
+EXPOSE 6600
 
 CMD ["node", "dist/apps/notification/main.js"]

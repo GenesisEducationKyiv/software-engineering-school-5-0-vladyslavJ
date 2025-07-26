@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { AppDataSource } from '../../config/dataSource';
+import { AppDataSource } from '../config/dataSource';
 import { Subscription as SubscriptionEntity } from '../../../../../libs/common/models/subscription.entity';
 import { FindOptionsWhere } from 'typeorm';
 import { SubscriptionRepositoryInterface } from '../../../domain/ports/repositories/subscription-repository.port';

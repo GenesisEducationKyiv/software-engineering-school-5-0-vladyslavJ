@@ -11,7 +11,7 @@ service SubscriptionService {
 message SubscriptionRequest {
   string email = 1;
   string city = 2;
-  SubscriptionFrequency frequency = 3;
+  string frequency = 3;
 }
 
 message TokenRequest {
@@ -23,9 +23,3 @@ message TokenResponse {
 }
 
 message Empty {}
-
-enum SubscriptionFrequency {
-  UNKNOWN_FREQUENCY = 0;
-  HOURLY = 1;
-  DAILY = 2;
-}

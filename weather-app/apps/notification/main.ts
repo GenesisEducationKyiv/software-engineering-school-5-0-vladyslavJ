@@ -6,7 +6,7 @@ async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(NotificationModule, {
     transport: Transport.GRPC,
     options: {
-      url: '0.0.0.0:6000',
+      url: '0.0.0.0:6600',
       package: 'notification',
       protoPath: 'libs/proto/notification.proto',
     },

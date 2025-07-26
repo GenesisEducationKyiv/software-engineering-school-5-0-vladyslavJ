@@ -1,13 +1,13 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Notification } from '../../../../libs/common/types/notification-request.type';
 import { Empty } from '../../../../libs/common/types/empty.type';
-import { EmailDiTokens } from '../../../email/infrastructure/adapters/secondary/di/di-tokens';
 import { EmailSenderInputPortInterface } from '../../../email/application/ports/email.port';
+import { EmailServiceClientDiTokens } from '../../../../libs/common/di/email-di-tokens';
 
 @Injectable()
 export class SendNotificationUseCase {
   constructor(
-    @Inject(EmailDiTokens.EMAIL_SERVICE)
+    @Inject(EmailServiceClientDiTokens.EMAIL_SERVICE_GRPC_CLIENT)
     private readonly emailService: EmailSenderInputPortInterface,
   ) {}
 
