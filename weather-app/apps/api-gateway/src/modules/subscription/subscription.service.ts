@@ -1,19 +1,19 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { SubscriptionDto } from '../../../../../libs/common/dtos/subscription.dto';
 import { WeatherServiceClientDiTokens } from '../../../../../libs/common/di/weather-di-tokens';
-import { IWeatherServiceClient } from '../weather-client/interfaces/weather-client.interface';
+import { WeatherServiceClientInterface } from '../weather-client/interfaces/weather-client.interface';
 import { SubscriptionServiceClientDiTokens } from '../../../../../libs/common/di/subscription-di-tokens';
-import { ISubscriptionServiceClient } from '../subscription-client/interfaces/subscription-client.interface';
-import { ISubscriptionService } from './interfaces/subscription.interface';
+import { SubscriptionServiceClientInterface } from '../subscription-client/interfaces/subscription-client.interface';
+import { SubscriptionServiceInterfaces } from './interfaces/subscription.interface';
 import { Token } from '../subscription-client/interfaces/token.type';
 
 @Injectable()
-export class SubscriptionService implements ISubscriptionService {
+export class SubscriptionService implements SubscriptionServiceInterfaces {
   constructor(
     @Inject(WeatherServiceClientDiTokens.WEATHER_SERVICE_GRPC_CLIENT)
-    private readonly weatherClient: IWeatherServiceClient,
+    private readonly weatherClient: WeatherServiceClientInterface,
     @Inject(SubscriptionServiceClientDiTokens.SUBSCRIPTION_SERVICE_GRPC_CLIENT)
-    private readonly subscriptionClient: ISubscriptionServiceClient,
+    private readonly subscriptionClient: SubscriptionServiceClientInterface,
   ) {}
 
   async subscribe(body: SubscriptionDto): Promise<{ message: string }> {
