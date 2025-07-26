@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { IWeatherCachePort } from '../../../../domain/ports/cache/weather-cache.port';
 //import { ICacheMetricService } from './interfaces/cache-metric-service.interface';
-import { Weather } from '../../../../domain/models/weather.model';
+import { Weather } from '../../../../../../libs/common/models/weather.model';
 import { ICacheServiceClient } from './interfaces/cache-client.interface';
 import { CacheDiTokens } from '../cache/di/di-tokens';
 import { LoggerDiTokens } from '../../../../../../libs/modules/logger/di/di-tokens';

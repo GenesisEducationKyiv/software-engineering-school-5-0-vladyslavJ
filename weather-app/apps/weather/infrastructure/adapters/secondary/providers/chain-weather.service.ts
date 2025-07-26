@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { IWeatherProviderPort } from '../../../../domain/ports/providers/weather-provider.port';
-import { Weather } from '../../../../domain/models/weather.model';
+import { Weather } from '../../../../../../libs/common/models/weather.model';
 import { LoggerDiTokens } from '../../../../../../libs/modules/logger/di/di-tokens';
 import { ILogger } from '../../../../../../libs/modules/logger/interfaces/logger.interface';
 import { RpcException } from '@nestjs/microservices';

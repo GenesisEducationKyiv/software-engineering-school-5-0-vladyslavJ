@@ -1,4 +1,4 @@
-import { Weather } from '../../models/weather.model';
+import { Weather } from '../../../../../libs/common/models/weather.model';
 
 export interface IWeatherProviderPort {
   fetchCurrentWeather(city: string): Promise<Weather>;

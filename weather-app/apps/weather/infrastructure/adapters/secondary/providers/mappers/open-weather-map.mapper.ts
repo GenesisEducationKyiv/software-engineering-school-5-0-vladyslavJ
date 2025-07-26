@@ -1,5 +1,5 @@
 import { injectable } from 'tsyringe';
-import { Weather } from '../../../../../domain/models/weather.model';
+import { Weather } from '../../../../../../../libs/common/models/weather.model';
 import { IWeatherMapper } from '../interfaces/weather-data-mapper.interface';
 import { IOpenWeatherMapResponse } from '../interfaces/open-weather-map-response.interface';
 

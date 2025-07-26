@@ -1,4 +1,4 @@
-import { Weather } from '../../models/weather.model';
+import { Weather } from '../../../../../libs/common/models/weather.model';
 
 export interface IWeatherCachePort {
   get(key: string): Promise<Weather | null>;

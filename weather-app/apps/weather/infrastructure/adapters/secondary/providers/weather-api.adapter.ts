@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@nestjs/common';
 import { IHttpClient } from '../http-client/interfaces/http-client.interface';
 import { IWeatherApiResponse } from './interfaces/weather-api-response.interface';
 import { IWeatherProviderPort } from '../../../../domain/ports/providers/weather-provider.port';
-import { Weather } from '../../../../domain/models/weather.model';
+import { Weather } from '../../../../../../libs/common/models/weather.model';
 import { IWeatherMapper } from './interfaces/weather-data-mapper.interface';
 import { ProviderDiTokens } from './di/di-tokens';
 import { HttpDiTokens } from '../http-client/di/di-tokens';
