@@ -10,8 +10,8 @@ import { EmailType } from '../../../../libs/common/enums/email-type.enum';
 import { Subscription } from '../../../../libs/common/models/subscription.entity';
 import { SubscriptionServiceClientDiTokens } from '../../../../libs/common/di/subscription-di-tokens';
 import { WeatherServiceClientDiTokens } from '../../../../libs/common/di/weather-di-tokens';
-import { IWeatherServiceClient } from '../../../api-gateway/src/modules/weather-client/interfaces/weather-client.interface';
-import { ISubscriptionServiceClient } from '../../../api-gateway/src/modules/subscription-client/interfaces/subscription-client.interface';
+import { WeatherServiceClientInterface } from '../../../api-gateway/src/modules/weather-client/interfaces/weather-client.interface';
+import { SubscriptionServiceClientInterface } from '../../../api-gateway/src/modules/subscription-client/interfaces/subscription-client.interface';
 
 @Injectable()
 export class NotificationService implements NotificationInputPortInterface {
@@ -19,9 +19,9 @@ export class NotificationService implements NotificationInputPortInterface {
     private readonly sendNotificationUseCase: SendNotificationUseCase,
     private readonly sendWeatherDigestUseCase: SendWeatherDigestUseCase,
     @Inject(WeatherServiceClientDiTokens.WEATHER_SERVICE_GRPC_CLIENT)
-    private readonly weatherService: IWeatherServiceClient,
+    private readonly weatherService: WeatherServiceClientInterface,
     @Inject(SubscriptionServiceClientDiTokens.SUBSCRIPTION_SERVICE_GRPC_CLIENT)
-    private readonly subscriptionService: ISubscriptionServiceClient,
+    private readonly subscriptionService: SubscriptionServiceClientInterface,
   ) {}
 
   async sendNotification(data: Notification): Promise<Empty> {

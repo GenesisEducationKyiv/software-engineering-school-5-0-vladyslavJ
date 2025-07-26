@@ -1,13 +1,11 @@
 import { Controller, Inject } from '@nestjs/common';
 import { GrpcMethod, RpcException } from '@nestjs/microservices';
-import { SubscriptionService } from '../../../../application/services/subscription.service';
-import { SubscriptionDto } from '../../../../../../libs/common/dtos/subscription.dto';
+import { SubscriptionInputPortInterface } from '../../../../application/ports/subscription.port';
 import { Token } from '../../../../../api-gateway/src/modules/subscription-client/interfaces/token.type';
 import { GrpcCode } from '../../../../../../libs/common/enums/grpc-codes.enum';
 import { SubscriptionFrequency } from '../../../../../../libs/common/enums/subscription-frequency.enum';
-import { GetSubscribersByFrequencyResponseDto } from './dto/get-subscibers-by-frequency.dto';
 import { Empty } from '../../../../../../libs/common/types/empty.type';
-import { SubscribeDto } from '../../../../../../libs/common/dtos/subscribe.dto';
+import { SubscriptionDto } from '../../../../../../libs/common/dtos/subscription.dto';
 import { Subscription } from '../../../../../../libs/common/models/subscription.entity';
 import { SubscriptionRepoDiTokens } from '../../../database/di/di-tokens';
 
@@ -15,11 +13,11 @@ import { SubscriptionRepoDiTokens } from '../../../database/di/di-tokens';
 export class SubscriptionGrpcController {
   constructor(
     @Inject(SubscriptionRepoDiTokens.SUBSCRIPTION_SERVICE)
-    private readonly subscriptionService: SubscriptionService,
+    private readonly subscriptionService: SubscriptionInputPortInterface,
   ) {}
 
   @GrpcMethod('SubscriptionService', 'Subscribe')
-  async subscribe(dto: SubscribeDto): Promise<Empty> {
+  async subscribe(dto: SubscriptionDto): Promise<Empty> {
     try {
       await this.subscriptionService.subscribe(dto);
       return {};

@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { INotificationServiceClient } from '../../../api-gateway/src/modules/notification-client/interfaces/notification-client.interface';
+import { NotificationServiceClientInterface } from '../../../api-gateway/src/modules/notification-client/interfaces/notification-client.interface';
 import { NotificationServiceClientDiTokens } from '../../../../libs/common/di/notification-di-tokens';
 import { LoggerDiTokens } from '../../../../libs/modules/logger/di/di-tokens';
 import { ILogger } from '../../../../libs/modules/logger/interfaces/logger.interface';
@@ -15,9 +15,10 @@ export class UnsubscribeUseCase {
   constructor(
     @Inject(SubscriptionRepoDiTokens.SUBSCRIPTION_REPOSITORY)
     private readonly repo: SubscriptionRepositoryInterface,
-    @Inject(LoggerDiTokens.LOGGER) private readonly logger: ILogger,
     @Inject(NotificationServiceClientDiTokens.NOTIFICATION_SERVICE_GRPC_CLIENT)
-    private readonly notificationClient: INotificationServiceClient,
+    private readonly notificationClient: NotificationServiceClientInterface,
+    @Inject(LoggerDiTokens.LOGGER)
+    private readonly logger: ILogger,
   ) {}
 
   async unsubscribe(unsubscriptionToken: string): Promise<Empty> {
@@ -33,6 +34,7 @@ export class UnsubscribeUseCase {
       email: subscriber.email,
       data: { city: subscriber.city },
     });
+    
     await this.repo.remove(subscriber);
     this.logger.info(`Subscription removed: email=${subscriber.email}`);
 

@@ -5,7 +5,7 @@ import { SubscriptionRepositoryInterface } from '../../domain/ports/repositories
 import { LoggerDiTokens } from '../../../../libs/modules/logger/di/di-tokens';
 import { ILogger } from '../../../../libs/modules/logger/interfaces/logger.interface';
 import { GrpcCode } from '../../../../libs/common/enums/grpc-codes.enum';
-import { INotificationServiceClient } from '../../../api-gateway/src/modules/notification-client/interfaces/notification-client.interface';
+import { NotificationServiceClientInterface } from '../../../api-gateway/src/modules/notification-client/interfaces/notification-client.interface';
 import { NotificationServiceClientDiTokens } from '../../../../libs/common/di/notification-di-tokens';
 import { EmailType } from '../../../../libs/common/enums/email-type.enum';
 import { Empty } from '../../../../libs/common/types/empty.type';
@@ -16,10 +16,10 @@ export class ConfirmSubscriptionUseCase {
   constructor(
     @Inject(SubscriptionRepoDiTokens.SUBSCRIPTION_REPOSITORY)
     private readonly repo: SubscriptionRepositoryInterface,
+    @Inject(NotificationServiceClientDiTokens.NOTIFICATION_SERVICE_GRPC_CLIENT)
+    private readonly notificationClient: NotificationServiceClientInterface,
     @Inject(LoggerDiTokens.LOGGER)
     private readonly logger: ILogger,
-    @Inject(NotificationServiceClientDiTokens.NOTIFICATION_SERVICE_GRPC_CLIENT)
-    private readonly notificationClient: INotificationServiceClient,
   ) {}
 
   async confirm(confirmationToken: string): Promise<Empty> {
