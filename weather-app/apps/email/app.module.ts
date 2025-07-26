@@ -5,6 +5,7 @@ import { EmailGrpcController } from './infrastructure/adapters/primary/entry-poi
 import { ConfigModule } from '@nestjs/config';
 import configuration from './infrastructure/config/configuration';
 import { EmailSenderModule } from './infrastructure/adapters/secondary/email.module';
+import { EmailDiTokens } from './infrastructure/adapters/secondary/di/di-tokens';
 
 @Module({
   imports: [
@@ -15,6 +16,13 @@ import { EmailSenderModule } from './infrastructure/adapters/secondary/email.mod
     EmailSenderModule,
   ],
   controllers: [EmailGrpcController],
-  providers: [EmailService, SendEmailUseCase],
+  providers: [
+    {
+      provide: EmailDiTokens.EMAIL_SERVICE,
+      useClass: EmailService,
+    },
+    SendEmailUseCase,
+  ],
+  exports: [EmailDiTokens.EMAIL_SERVICE],
 })
 export class EmailModule {}

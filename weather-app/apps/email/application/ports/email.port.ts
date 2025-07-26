@@ -1,5 +1,5 @@
-import { EmailMessage } from '../../domain/models/email.model';
+import { Notification } from '../../../../libs/common/types/notification-request.type';
 
 export interface EmailSenderInputPortInterface {
-  sendEmail(email: EmailMessage): Promise<void>;
+  sendEmail(req: Notification): Promise<void>;
 }

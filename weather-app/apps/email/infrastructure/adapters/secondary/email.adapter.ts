@@ -13,12 +13,10 @@ export class EmailAdapter implements EmailSenderPortInterface {
     private readonly configService: ConfigService,
   ) {}
 
-  async send(opts: EmailMessage): Promise<void> {
+  async send(data: EmailMessage): Promise<void> {
     await this.transporter.send({
       from: this.configService.get<string>('email.from') ?? 'Weather API <no-reply@weatherapi.app>',
-      to: opts.to,
-      subject: opts.subject,
-      html: opts.html,
+      ...data,
     });
   }
 }

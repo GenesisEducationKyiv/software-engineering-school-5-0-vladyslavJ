@@ -6,11 +6,10 @@ COPY ../../package*.json ./
 
 RUN npm install
 
-# Копіюємо весь код сервісу weather
 COPY . .
 
 RUN npm run build
 
-EXPOSE 4650
+EXPOSE 8888
 
 CMD ["node", "dist/apps/email/main.js"]

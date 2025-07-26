@@ -1,5 +1,5 @@
 export default () => ({
-  port: parseInt(process.env.PORT ?? '4650', 10),
+  port: parseInt(process.env.PORT ?? '8888', 10),
   email: {
     host: process.env.MAIL_HOST ?? 'smtp.gmail.com',
     port: parseInt(process.env.MAIL_PORT ?? '465', 10),
