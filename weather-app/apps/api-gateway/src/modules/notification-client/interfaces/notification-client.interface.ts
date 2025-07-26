@@ -1,8 +1,6 @@
-/*import { Observable } from 'rxjs';
+import { Notification } from '../../../../../../libs/common/types/notification-request.type';
 import { Empty } from '../../../../../../libs/common/types/empty.type';
-import { NotificationRequest } from '../../../../../../libs/common/types/notification-request.type';
 
 export interface INotificationServiceClient {
-  sendNotification(request: NotificationRequest): Observable<Empty>;
+  sendNotification(req: Notification): Promise<Empty>;
 }
-*/

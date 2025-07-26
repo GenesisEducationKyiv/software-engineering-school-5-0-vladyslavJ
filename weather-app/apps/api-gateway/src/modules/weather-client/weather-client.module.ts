@@ -2,13 +2,14 @@ import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ConfigService } from '@nestjs/config';
 import { WeatherServiceClient } from './weather-client.service';
-import { WeatherServiceClientDiTokens } from './di/di-tokens';
+import { WeatherServiceClientDiTokens } from '../../../../../libs/common/di/weather-di-tokens';
+import { PackageNames } from '../../common/utils/enums/package-names.enum';
 
 @Module({
   imports: [
     ClientsModule.registerAsync([
       {
-        name: 'WEATHER_PACKAGE',
+        name: PackageNames.WEATHER_PACKAGE,
         useFactory: (config: ConfigService) => ({
           transport: Transport.GRPC,
           options: {

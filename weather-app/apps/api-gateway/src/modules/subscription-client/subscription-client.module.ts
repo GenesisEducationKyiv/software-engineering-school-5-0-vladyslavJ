@@ -1,25 +1,33 @@
-/*import { Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ConfigService } from '@nestjs/config';
 import { SubscriptionServiceClient } from './subscription-client.service';
+import { SubscriptionServiceClientDiTokens } from '../../../../../libs/common/di/subscription-di-tokens';
+import { PackageNames } from '../../common/utils/enums/package-names.enum';
 
 @Module({
   imports: [
     ClientsModule.registerAsync([
       {
-        name: 'SUBSCRIPTION_PACKAGE',
+        name: PackageNames.SUBSCRIPTION_PACKAGE,
         useFactory: (config: ConfigService) => ({
-          transport: Transport.TCP,
+          transport: Transport.GRPC,
           options: {
-            host: config.get('subscription.host'),
-            port: config.get('subscription.port'),
+            url: `${config.get('subscription.host')}:${config.get('subscription.port')}`,
+            package: 'subscription',
+            protoPath: 'libs/proto/subscription.proto',
           },
         }),
         inject: [ConfigService],
       },
     ]),
   ],
-  providers: [SubscriptionServiceClient],
-  exports: [SubscriptionServiceClient],
+  providers: [
+    {
+      provide: SubscriptionServiceClientDiTokens.SUBSCRIPTION_SERVICE_GRPC_CLIENT,
+      useClass: SubscriptionServiceClient,
+    },
+  ],
+  exports: [SubscriptionServiceClientDiTokens.SUBSCRIPTION_SERVICE_GRPC_CLIENT],
 })
-export class SubscriptionServiceClientModule {}*/
+export class SubscriptionServiceClientModule {}

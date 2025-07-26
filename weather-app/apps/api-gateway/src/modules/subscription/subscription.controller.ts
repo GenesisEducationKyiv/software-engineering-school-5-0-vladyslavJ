@@ -1,5 +1,5 @@
-/*import { Controller, Post, Body, Get, Param } from '@nestjs/common';
-import { SubscriptionDto } from './dtos/subscription.dto';
+import { Controller, Post, Body, Get, Param } from '@nestjs/common';
+import { SubscriptionDto } from '../../../../../libs/common/dtos/subscription.dto';
 import { SubscriptionService } from './subscription.service';
 import { Token } from '../subscription-client/interfaces/token.type';
 
@@ -14,11 +14,11 @@ export class SubscriptionController {
 
   @Get('/confirm/:confirmation_token')
   async confirm(@Param('confirmation_token') token: Token) {
-    return this.subscriptionService.confirm(token);
+    return this.subscriptionService.confirm({ token });
   }
 
   @Get('/unsubscribe/:unsubscribe_token')
   async unsubscribe(@Param('unsubscribe_token') token: Token) {
-    return this.subscriptionService.unsubscribe(token);
+    return this.subscriptionService.unsubscribe({ token });
   }
-}*/
+}

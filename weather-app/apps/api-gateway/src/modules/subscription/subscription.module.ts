@@ -1,4 +1,4 @@
-/*import { Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { SubscriptionController } from './subscription.controller';
 import { SubscriptionService } from './subscription.service';
 import { SubscriptionServiceClientModule } from '../subscription-client/subscription-client.module';
@@ -11,7 +11,7 @@ import { NotificationServiceClientModule } from '../notification-client/notifica
     WeatherServiceClientModule,
     NotificationServiceClientModule,
   ],
-  controllers: [SubscriptionController],
   providers: [SubscriptionService],
+  controllers: [SubscriptionController],
 })
-export class SubscriptionModule {}*/
+export class SubscriptionModule {}

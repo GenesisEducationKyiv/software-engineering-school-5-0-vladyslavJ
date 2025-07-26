@@ -1,39 +1,34 @@
-/*import { Injectable } from '@nestjs/common';
-import { SubscriptionServiceClient } from '../subscription-client/subscription-client.service';
-import { WeatherServiceClient } from '../weather-client/weather-client.service';
-import { NotificationServiceClient } from '../notification-client/notification-client.service';
-import { SubscriptionDto } from './dtos/subscription.dto';
+import { Injectable, Inject } from '@nestjs/common';
+import { SubscriptionDto } from '../../../../../libs/common/dtos/subscription.dto';
+import { WeatherServiceClientDiTokens } from '../../../../../libs/common/di/weather-di-tokens';
+import { IWeatherServiceClient } from '../weather-client/interfaces/weather-client.interface';
+import { SubscriptionServiceClientDiTokens } from '../../../../../libs/common/di/subscription-di-tokens';
+import { ISubscriptionServiceClient } from '../subscription-client/interfaces/subscription-client.interface';
 import { ISubscriptionService } from './interfaces/subscription.interface';
 import { Token } from '../subscription-client/interfaces/token.type';
 
 @Injectable()
 export class SubscriptionService implements ISubscriptionService {
   constructor(
-    private readonly subscriptionClient: SubscriptionServiceClient,
-    private readonly weatherClient: WeatherServiceClient,
-    private readonly notificationClient: NotificationServiceClient,
+    @Inject(WeatherServiceClientDiTokens.WEATHER_SERVICE_GRPC_CLIENT)
+    private readonly weatherClient: IWeatherServiceClient,
+    @Inject(SubscriptionServiceClientDiTokens.SUBSCRIPTION_SERVICE_GRPC_CLIENT)
+    private readonly subscriptionClient: ISubscriptionServiceClient,
   ) {}
 
   async subscribe(body: SubscriptionDto): Promise<{ message: string }> {
-    //Додати перевірку чи існує city
-
-    const confirmation_token = await this.subscriptionClient.subscribe(body);
-    await this.notificationClient.sendNotification({
-      type: 'EMAIL',
-      template: 'CONFIRMATION',
-      recipient: { email: body.email },
-      data: { token: confirmation_token },
-    });
+    await this.weatherClient.getWeather({ city: body.city });
+    await this.subscriptionClient.subscribe(body);
     return { message: 'Subscription created. Confirmation email sent.' };
   }
 
-  async confirm(token: Token): Promise<{ message: string }> {
-    await this.subscriptionClient.confirm(token);
+  async confirm(req: { token: Token }): Promise<{ message: string }> {
+    await this.subscriptionClient.confirm(req);
     return { message: 'Subscription confirmed successfully :D' };
   }
 
-  async unsubscribe(token: Token): Promise<{ message: string }> {
-    await this.subscriptionClient.unsubscribe(token);
+  async unsubscribe(req: { token: Token }): Promise<{ message: string }> {
+    await this.subscriptionClient.unsubscribe(req);
     return { message: 'Unsubscribed successfully.' };
   }
-}*/
+}
