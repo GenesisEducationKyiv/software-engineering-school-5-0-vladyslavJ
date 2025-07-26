@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package email;
+
+service EmailService {
+  rpc SendEmail (Notification) returns (SendEmailResponse);
+}
+
+message Notification {
+  string email = 1;
+
+  oneof payload {
+    SubscriptionConfirmation subscription_confirmation = 2;
+    ConfirmedSubscription confirmed_subscription = 3;
+    UnsubscriptionGoodbye unsubscription_goodbye = 4;
+    Digest digest = 5;
+  }
+}
+
+message SubscriptionConfirmation {
+  string confirmationToken = 1;
+}
+
+message ConfirmedSubscription {
+  string city = 1;
+  string frequency = 2;
+  string unsubscribeToken = 3;
+}
+
+message UnsubscriptionGoodbye {
+  string city = 1;
+}
+
+message Digest {
+  string city = 1;
+  string date = 2;
+  Weather weather = 3;
+  string unsubscribeToken = 4;
+}
+
+message Weather {
+  double temperature = 1;
+  double humidity = 2;
+  string description = 3;
+}
+
+message SendEmailResponse {
+  bool success = 1;
+}

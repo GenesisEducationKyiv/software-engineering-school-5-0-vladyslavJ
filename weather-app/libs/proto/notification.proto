@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+package notification;
+
+option go_package = "notificationpb";
+
+// Сервіс для надсилання нотифікацій
+service NotificationService {
+  rpc SendNotification (Notification) returns (SendNotificationResponse);
+}
+
+// Основне повідомлення для надсилання нотифікації
+message Notification {
+  string email = 1;
+
+  oneof payload {
+    SubscriptionConfirmationPayload subscription_confirmation = 2;
+    ConfirmedSubscriptionPayload confirmed_subscription = 3;
+    UnsubscriptionGoodbyePayload unsubscription_goodbye = 4;
+    DigestPayload digest = 5;
+  }
+}
+
+// Відповідь на запит надсилання нотифікації
+message SendNotificationResponse {
+  bool success = 1;
+  string error_message = 2; // Додатково: повідомлення про помилку (опціонально)
+}
+
+// Підтвердження підписки
+message SubscriptionConfirmationPayload {
+  string confirmation_token = 1;
+}
+
+// Підтверджена підписка
+message ConfirmedSubscriptionPayload {
+  string city = 1;
+  SubscriptionFrequency frequency = 2;
+  string unsubscribe_token = 3;
+}
+
+// Повідомлення про відписку
+message UnsubscriptionGoodbyePayload {
+  string city = 1;
+}
+
+// Дайджест
+message DigestPayload {
+  string city = 1;
+  string date = 2;
+  Weather weather = 3;
+  string unsubscribe_token = 4;
+}
+
+// Частота підписки
+enum SubscriptionFrequency {
+  UNKNOWN_FREQUENCY = 0;
+  HOURLY = 1;
+  DAILY = 2;
+}
+
+// Погода
+message Weather {
+  double temperature = 1;
+  double humidity = 2;
+  string description = 3;
+}
