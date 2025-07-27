@@ -1,7 +1,7 @@
 import { Controller, Post, Body, Get, Param } from '@nestjs/common';
 import { SubscriptionDto } from '../../../../../libs/common/dtos/subscription.dto';
 import { SubscriptionService } from './subscription.service';
-import { Token } from './subscription-client/interfaces/token.type';
+import { Token } from '../../../../../libs/common/types/token.type';
 
 @Controller()
 export class SubscriptionController {

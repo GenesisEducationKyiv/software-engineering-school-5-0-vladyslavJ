@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { SubscriptionInputPortInterface } from '../ports/subscription.port';
 import { SubscriptionDto } from '../../../../libs/common/dtos/subscription.dto';
-import { Token } from '../../../api-gateway/src/modules/subscription-client/interfaces/token.type';
+import { Token } from '../../../../libs/common/types/token.type';
 import { SubscribeUseCase } from '../use-cases/subscribe.use-case';
 import { ConfirmSubscriptionUseCase } from '../use-cases/confirm-subscription.use-case';
 import { UnsubscribeUseCase } from '../use-cases/unsubscribe.use-case';

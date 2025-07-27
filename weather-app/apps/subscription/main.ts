@@ -13,7 +13,6 @@ async function bootstrap() {
     },
   });
   await app.listen();
-
   await AppDataSource.initialize();
   await AppDataSource.runMigrations();
 }

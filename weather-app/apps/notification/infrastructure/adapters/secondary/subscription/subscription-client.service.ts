@@ -1,12 +1,14 @@
 import { Injectable, Inject, OnModuleInit } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
-import { lastValueFrom } from 'rxjs';
 import { GrpcToObservable } from '../../../../../../libs/common/types/observable';
+import { lastValueFrom } from 'rxjs';
+import { GrpcClientDiTokens } from '../../../../../../libs/common/di/grpc-client-di-tokens';
 import { SubscriptionServiceClientInterface } from './interfaces/subscription-client.interface';
 import { SubscriptionDto } from '../../../../../../libs/common/dtos/subscription.dto';
-import { Token } from '../../../../../../libs/common/types/token.type';
 import { Empty } from '../../../../../../libs/common/types/empty.type';
-import { GrpcClientDiTokens } from '../../../../../../libs/common/di/grpc-client-di-tokens';
+import { Token } from '../../../../../../libs/common/types/token.type';
+import { Subscription } from '../../../../../../libs/common/models/subscription.entity';
+import { SubscriptionFrequency } from '../../../../../../libs/common/enums/subscription-frequency.enum';
 
 @Injectable()
 export class SubscriptionServiceClient implements OnModuleInit, SubscriptionServiceClientInterface {
@@ -23,8 +25,8 @@ export class SubscriptionServiceClient implements OnModuleInit, SubscriptionServ
       );
   }
 
-  async subscribe(req: SubscriptionDto): Promise<Empty> {
-    return lastValueFrom(this.serviceClient.subscribe(req));
+  async subscribe(dto: SubscriptionDto): Promise<Empty> {
+    return lastValueFrom(this.serviceClient.subscribe(dto));
   }
 
   async confirm(req: { token: Token }): Promise<Empty> {
@@ -33,5 +35,9 @@ export class SubscriptionServiceClient implements OnModuleInit, SubscriptionServ
 
   async unsubscribe(req: { token: Token }): Promise<Empty> {
     return lastValueFrom(this.serviceClient.unsubscribe(req));
+  }
+
+  async getByFrequency(frequency: SubscriptionFrequency): Promise<Subscription[]> {
+    return lastValueFrom(this.serviceClient.getByFrequency(frequency));
   }
 }

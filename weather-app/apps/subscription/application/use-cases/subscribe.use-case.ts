@@ -6,25 +6,32 @@ import { SubscriptionRepositoryInterface } from '../../domain/ports/repositories
 import { genToken } from '../../../../libs/common/utils/gen-token.util';
 import { RpcException } from '@nestjs/microservices';
 import { GrpcCode } from '../../../../libs/common/enums/grpc-codes.enum';
-import { NotificationServiceClientInterface } from '../../../api-gateway/src/modules/notification-client/interfaces/notification-client.interface';
-import { NotificationServiceClientDiTokens } from '../../../../libs/common/di/notification-di-tokens';
+import { NotificationServiceClientInterface } from '../../infrastructure/adapters/secondary/notification/interfaces/notification-client.interface';
 import { EmailType } from '../../../../libs/common/enums/email-type.enum';
 import { Empty } from '../../../../libs/common/types/empty.type';
 import { SubscriptionRepoDiTokens } from '../../infrastructure/database/di/di-tokens';
+import { NotificationServiceClientDiTokens } from '../../infrastructure/adapters/secondary/notification/di/notification-client-di-tokens';
+import { WeatherServiceClientDiTokens } from '../../infrastructure/adapters/secondary/weather/di/weather-client-di-tokens';
+import { WeatherServiceClientInterface } from '../../infrastructure/adapters/secondary/weather/interfaces/weather-client.interface';
 
 @Injectable()
 export class SubscribeUseCase {
   constructor(
     @Inject(SubscriptionRepoDiTokens.SUBSCRIPTION_REPOSITORY)
     private readonly repo: SubscriptionRepositoryInterface,
-    @Inject(NotificationServiceClientDiTokens.NOTIFICATION_SERVICE_GRPC_CLIENT)
+    @Inject(NotificationServiceClientDiTokens.NOTIFICATION_SERVICE_CLIENT)
     private readonly notificationClient: NotificationServiceClientInterface,
+    @Inject(WeatherServiceClientDiTokens.WEATHER_SERVICE_CLIENT)
+    private readonly weatherClient: WeatherServiceClientInterface,
     @Inject(LoggerDiTokens.LOGGER)
     private readonly logger: ILogger,
   ) {}
 
   async subscribe(req: SubscriptionDto): Promise<Empty> {
     const { email, city, frequency } = req;
+
+    await this.weatherClient.getWeather({ city: req.city });
+
     const confirmationToken = genToken();
     const unsubscribeToken = genToken();
 

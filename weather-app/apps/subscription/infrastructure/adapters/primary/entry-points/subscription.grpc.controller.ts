@@ -1,16 +1,17 @@
 import { Controller, Inject } from '@nestjs/common';
 import { GrpcMethod, RpcException } from '@nestjs/microservices';
 import { SubscriptionInputPortInterface } from '../../../../application/ports/subscription.port';
-import { Token } from '../../../../../api-gateway/src/modules/subscription-client/interfaces/token.type';
+import { Token } from '../../../../../../libs/common/types/token.type';
 import { GrpcCode } from '../../../../../../libs/common/enums/grpc-codes.enum';
 import { SubscriptionFrequency } from '../../../../../../libs/common/enums/subscription-frequency.enum';
 import { Empty } from '../../../../../../libs/common/types/empty.type';
 import { SubscriptionDto } from '../../../../../../libs/common/dtos/subscription.dto';
 import { Subscription } from '../../../../../../libs/common/models/subscription.entity';
 import { SubscriptionRepoDiTokens } from '../../../database/di/di-tokens';
+import { SubscriptionMicroserviceInterface } from '../../../../../../libs/common/interfaces/subscription-microservice.interface';
 
 @Controller()
-export class SubscriptionGrpcController {
+export class SubscriptionGrpcController implements SubscriptionMicroserviceInterface {
   constructor(
     @Inject(SubscriptionRepoDiTokens.SUBSCRIPTION_SERVICE)
     private readonly subscriptionService: SubscriptionInputPortInterface,

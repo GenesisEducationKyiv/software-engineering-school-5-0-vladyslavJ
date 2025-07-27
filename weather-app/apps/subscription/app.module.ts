@@ -11,8 +11,8 @@ import { SubscribeUseCase } from './application/use-cases/subscribe.use-case';
 import { ConfirmSubscriptionUseCase } from './application/use-cases/confirm-subscription.use-case';
 import { UnsubscribeUseCase } from './application/use-cases/unsubscribe.use-case';
 import { GetSubscribersByFrequencyUseCase } from './application/use-cases/get-subscribers-by-frequency.use-case';
-import { WeatherGrpcClientModule } from './weather-grpc-client.module';
-import { NotificationGrpcClientModule } from './notification-grpc-client.module';
+import { WeatherServiceClientModule } from './infrastructure/adapters/secondary/weather/weather-client.module';
+import { NotificationServiceClientModule } from './infrastructure/adapters/secondary/notification/notification-client.module';
 
 @Module({
   imports: [
@@ -21,8 +21,8 @@ import { NotificationGrpcClientModule } from './notification-grpc-client.module'
       load: [configuration],
     }),
     LoggerModule,
-    WeatherGrpcClientModule,
-    NotificationGrpcClientModule,
+    WeatherServiceClientModule,
+    NotificationServiceClientModule,
   ],
   controllers: [SubscriptionGrpcController],
   providers: [

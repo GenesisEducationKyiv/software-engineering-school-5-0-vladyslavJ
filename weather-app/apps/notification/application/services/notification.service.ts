@@ -9,18 +9,18 @@ import { SubscriptionFrequency } from '../../../../libs/common/enums/subscriptio
 import { EmailType } from '../../../../libs/common/enums/email-type.enum';
 import { Subscription } from '../../../../libs/common/models/subscription.entity';
 import { SubscriptionServiceClientDiTokens } from '../../../../libs/common/di/subscription-di-tokens';
-import { WeatherServiceClientDiTokens } from '../../../../libs/common/di/weather-di-tokens';
-import { WeatherServiceClientInterface } from '../../../api-gateway/src/modules/weather-client/interfaces/weather-client.interface';
-import { SubscriptionServiceClientInterface } from '../../../api-gateway/src/modules/subscription-client/interfaces/subscription-client.interface';
+import { WeatherServiceClientDiTokens } from '../../../api-gateway/src/modules/weather/weather-client/di/weather-client-di-tokens';
+import { WeatherServiceClientInterface } from '../../infrastructure/adapters/secondary/weather/interfaces/weather-client.interface';
+import { SubscriptionServiceClientInterface } from '../../infrastructure/adapters/secondary/subscription/interfaces/subscription-client.interface';
 
 @Injectable()
 export class NotificationService implements NotificationInputPortInterface {
   constructor(
     private readonly sendNotificationUseCase: SendNotificationUseCase,
     private readonly sendWeatherDigestUseCase: SendWeatherDigestUseCase,
-    @Inject(WeatherServiceClientDiTokens.WEATHER_SERVICE_GRPC_CLIENT)
+    @Inject(WeatherServiceClientDiTokens.WEATHER_SERVICE_CLIENT)
     private readonly weatherService: WeatherServiceClientInterface,
-    @Inject(SubscriptionServiceClientDiTokens.SUBSCRIPTION_SERVICE_GRPC_CLIENT)
+    @Inject(SubscriptionServiceClientDiTokens.SUBSCRIPTION_SERVICE_CLIENT)
     private readonly subscriptionService: SubscriptionServiceClientInterface,
   ) {}
 

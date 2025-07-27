@@ -8,5 +8,13 @@ export default () => ({
     password: process.env.POSTGRES_PASSWORD ?? 'postgres',
     database: process.env.POSTGRES_DB ?? 'subscription',
   },
+  notification: {
+    host: process.env.NOTIFICATION_HOST,
+    port: parseInt(process.env.NOTIFICATION_PORT ?? '6600', 10),
+  },
+  weather: {
+    host: process.env.WEATHER_HOST,
+    port: parseInt(process.env.WEATHER_PORT ?? '5000', 10),
+  },
   appBaseUrl: process.env.APP_BASE_URL ?? 'http://localhost:3000',
 });

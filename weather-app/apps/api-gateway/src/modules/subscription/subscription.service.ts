@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@nestjs/common';
 import { SubscriptionDto } from '../../../../../libs/common/dtos/subscription.dto';
 import { SubscriptionServiceClientInterface } from './subscription-client/interfaces/subscription-client.interface';
 import { SubscriptionServiceInterfaces } from './interfaces/subscription.interface';
-import { Token } from './subscription-client/interfaces/token.type';
+import { Token } from '../../../../../libs/common/types/token.type';
 import { SubscriptionServiceClientDiTokens } from './subscription-client/di/subscription-client-di-tokens';
 
 @Injectable()

@@ -1,9 +1,10 @@
 import { Controller } from '@nestjs/common';
 import { GrpcMethod, RpcException } from '@nestjs/microservices';
 import { WeatherService } from '../../../../application/services/weather.service';
+import { WeatherMicroserviceInterface } from '../../../../../../libs/common/interfaces/weather-microservice.interface';
 
 @Controller()
-export class WeatherGrpcController {
+export class WeatherGrpcController implements WeatherMicroserviceInterface{
   constructor(private readonly weatherService: WeatherService) {}
 
   @GrpcMethod('WeatherService', 'GetWeather')

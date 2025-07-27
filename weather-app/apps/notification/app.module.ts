@@ -3,12 +3,19 @@ import { NotificationGrpcController } from './infrastructure/adapters/primary/en
 import { NotificationService } from './application/services/notification.service';
 import { SendNotificationUseCase } from './application/use-cases/send-notification.use-case';
 import { SendWeatherDigestUseCase } from './application/use-cases/send-weather-digest.use-case';
-import { EmailGrpcClientModule } from './email-grpc-client.module';
-import { SubscriptionGrpcClientModule } from './subscription-grpc-client.module';
-import { WeatherGrpcClientModule } from './weather-grpc-client.module';
+import { WeatherServiceClientModule } from './infrastructure/adapters/secondary/weather/weather-client.module';
+import { SubscriptionServiceClientModule } from './infrastructure/adapters/secondary/subscription/subscription-client.module';
+import { EmailServiceClientModule } from './infrastructure/adapters/secondary/email/email-client.module';
+import { ConfigModule } from '@nestjs/config';
+import configuration from './infrastructure/config/configuration';
 
 @Module({
-  imports: [EmailGrpcClientModule, SubscriptionGrpcClientModule, WeatherGrpcClientModule],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true, load: [configuration] }),
+    WeatherServiceClientModule,
+    SubscriptionServiceClientModule,
+    EmailServiceClientModule,
+  ],
   controllers: [NotificationGrpcController],
   providers: [NotificationService, SendNotificationUseCase, SendWeatherDigestUseCase],
   exports: [NotificationService],
