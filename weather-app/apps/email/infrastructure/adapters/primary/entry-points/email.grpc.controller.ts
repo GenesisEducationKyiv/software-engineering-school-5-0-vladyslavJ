@@ -14,7 +14,7 @@ export class EmailGrpcController implements EmailMicroserviceInterface {
   ) {}
 
   @GrpcMethod('EmailService', 'SendEmail')
-  async sendEmail(notification: Notification): Promise<void> {
+  async sendEmail(notification: Notification): Promise<{ success: boolean }> {
     try {
       return await this.emailService.sendEmail(notification);
     } catch (err) {

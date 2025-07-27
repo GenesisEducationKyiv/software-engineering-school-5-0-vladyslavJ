@@ -2,5 +2,5 @@ import { Notification } from "../types/notification-request.type";
 import { Empty } from '../types/empty.type';
 
 export interface NotificationMicroserviceInterface {
-  sendNotification(data: Notification): Promise<Empty>;
+  sendNotification(data: Notification): Promise<{ success: boolean }>;
 }

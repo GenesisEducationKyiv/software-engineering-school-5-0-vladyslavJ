@@ -7,35 +7,18 @@ service EmailService {
 }
 
 message Notification {
-  string email = 1;
-
-  oneof payload {
-    SubscriptionConfirmation subscription_confirmation = 2;
-    ConfirmedSubscription confirmed_subscription = 3;
-    UnsubscriptionGoodbye unsubscription_goodbye = 4;
-    Digest digest = 5;
-  }
+  string type = 1;
+  string email = 2;
+  Data data = 3;
 }
 
-message SubscriptionConfirmation {
+message Data {
   string confirmationToken = 1;
-}
-
-message ConfirmedSubscription {
-  string city = 1;
-  string frequency = 2;
-  string unsubscribeToken = 3;
-}
-
-message UnsubscriptionGoodbye {
-  string city = 1;
-}
-
-message Digest {
-  string city = 1;
-  string date = 2;
-  Weather weather = 3;
+  string city = 2;
+  string frequency = 3;
   string unsubscribeToken = 4;
+  string date = 5;
+  Weather weather = 6;
 }
 
 message Weather {

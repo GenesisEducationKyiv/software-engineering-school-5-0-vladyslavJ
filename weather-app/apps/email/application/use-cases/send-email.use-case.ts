@@ -12,7 +12,7 @@ export class SendEmailUseCase {
     private readonly emailSender: EmailSenderPortInterface,
   ) {}
 
-  async execute(notification: Notification): Promise<void> {
+  async execute(notification: Notification): Promise<{ success: boolean }> {
     const tplFn = templateMap[notification.type];
     const { subject, html } = tplFn(notification);
     const data: EmailMessage = {
@@ -20,6 +20,8 @@ export class SendEmailUseCase {
       subject,
       html,
     };
-    await this.emailSender.send(data);
+    
+    console.log(`[EMAIL USE CASE] EMAIL SENT: ${JSON.stringify(data)}`);
+    return await this.emailSender.send(data);
   }
 }

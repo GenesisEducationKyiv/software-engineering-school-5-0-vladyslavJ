@@ -2,5 +2,5 @@ import { EmailMicroserviceInterface } from "../../../../../../../libs/common/int
 import { Notification } from "../../../../../../../libs/common/types/notification-request.type";
 
 export interface EmailServiceClientInterface extends EmailMicroserviceInterface {
-  sendEmail(data: Notification): Promise<void>;
+  sendEmail(data: Notification): Promise<{ success: boolean }>;
 }

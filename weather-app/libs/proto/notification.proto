@@ -7,43 +7,18 @@ service NotificationService {
 }
 
 message Notification {
-  string email = 1;
-  EmailType type = 2;
-  oneof data {
-    SubscriptionConfirmationData subscription_confirmation = 3;
-    ConfirmedSubscriptionData confirmed_subscription = 4;
-    UnsubscriptionGoodbyeData unsubscription_goodbye = 5;
-    DigestData digest = 6;
-  }
+  string type = 1;
+  string email = 2;
+  Data data = 3;
 }
 
-enum EmailType {
-  SUBSCRIPTION_CONFIRMATION = 0;
-  CONFIRMED_SUBSCRIPTION = 1;
-  UNSUBSCRIPTION_GOODBYE = 2;
-  DAILY_DIGEST = 3;
-  HOURLY_DIGEST = 4;
-}
-
-message SubscriptionConfirmationData {
+message Data {
   string confirmationToken = 1;
-}
-
-message ConfirmedSubscriptionData {
-  string city = 1;
-  string frequency = 2; // або enum, якщо треба
-  string unsubscribeToken = 3;
-}
-
-message UnsubscriptionGoodbyeData {
-  string city = 1;
-}
-
-message DigestData {
-  string city = 1;
-  string date = 2;
-  Weather weather = 3;
+  string city = 2;
+  string frequency = 3;
   string unsubscribeToken = 4;
+  string date = 5;
+  Weather weather = 6;
 }
 
 message Weather {
@@ -54,5 +29,4 @@ message Weather {
 
 message SendNotificationResponse {
   bool success = 1;
-  string error_message = 2;
 }

@@ -7,7 +7,7 @@ import { Notification } from '../../../../libs/common/types/notification-request
 export class EmailService implements EmailSenderInputPortInterface {
   constructor(private readonly sendEmailUseCase: SendEmailUseCase) {}
 
-  async sendEmail(req: Notification): Promise<void> {
-    await this.sendEmailUseCase.execute(req);
+  async sendEmail(req: Notification): Promise<{ success: boolean }> {
+    return await this.sendEmailUseCase.execute(req);
   }
 }

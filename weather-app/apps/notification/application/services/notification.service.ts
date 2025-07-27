@@ -24,9 +24,8 @@ export class NotificationService implements NotificationInputPortInterface {
     private readonly subscriptionService: SubscriptionServiceClientInterface,
   ) {}
 
-  async sendNotification(data: Notification): Promise<Empty> {
-    await this.sendNotificationUseCase.execute(data);
-    return {};
+  async sendNotification(data: Notification): Promise<{ success: boolean }> {
+    return await this.sendNotificationUseCase.execute(data);
   }
 
   async sendDigest(digests: Notification[]): Promise<Empty> {

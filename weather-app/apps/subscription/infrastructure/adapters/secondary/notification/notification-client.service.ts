@@ -22,7 +22,7 @@ export class NotificationServiceClient implements OnModuleInit, NotificationServ
       );
   }
 
-  async sendNotification(data: Notification): Promise<Empty> {
+  async sendNotification(data: Notification): Promise<{ success: boolean }> {
     return lastValueFrom(this.serviceClient.sendNotification(data));
   }
 }

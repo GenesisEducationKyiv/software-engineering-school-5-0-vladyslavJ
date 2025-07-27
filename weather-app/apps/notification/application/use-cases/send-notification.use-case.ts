@@ -11,8 +11,8 @@ export class SendNotificationUseCase {
     private readonly emailService: EmailSenderInputPortInterface,
   ) {}
 
-  async execute(req: Notification): Promise<Empty> {
-    await this.emailService.sendEmail(req);
-    return {};
+  async execute(req: Notification): Promise<{ success: boolean }> {
+    console.log(`[NOTIFICATION USE CASE] NOTIFICATION REQUEST:${JSON.stringify(req)}`);
+    return await this.emailService.sendEmail(req);
   }
 }

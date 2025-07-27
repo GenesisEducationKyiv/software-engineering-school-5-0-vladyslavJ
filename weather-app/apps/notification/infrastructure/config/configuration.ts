@@ -1,8 +1,8 @@
 export default () => ({
   port: parseInt(process.env.NOTIFICATION_PORT ?? '6600', 10),
   email: {
-    host: process.env.MAIL_HOST,
-    port: '8888',
+    host: process.env.MAIL_DOCKER_HOST,
+    port: process.env.MAIL_DOCKER_PORT,
   },
   subscription: {
     host: process.env.SUBSCRIPTION_HOST,

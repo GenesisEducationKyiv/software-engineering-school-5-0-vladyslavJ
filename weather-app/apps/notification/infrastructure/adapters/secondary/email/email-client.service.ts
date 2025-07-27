@@ -19,8 +19,7 @@ export class EmailServiceClient implements OnModuleInit, EmailServiceClientInter
       this.client.getService<GrpcToObservable<EmailServiceClientInterface>>('EmailService');
   }
 
-  async sendEmail(notification: Notification): Promise<void> {
+  async sendEmail(notification: Notification): Promise<{ success: boolean }> {
     return lastValueFrom(this.serviceClient.sendEmail(notification));
   }
-  
 }

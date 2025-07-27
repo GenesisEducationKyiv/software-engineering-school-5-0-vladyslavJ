@@ -3,5 +3,5 @@ import { Notification } from "../../../../../../../libs/common/types/notificatio
 import { Empty } from "../../../../../../../libs/common/types/empty.type";
 
 export interface NotificationServiceClientInterface extends NotificationMicroserviceInterface {
-    sendNotification(data: Notification): Promise<Empty>;
+  sendNotification(data: Notification): Promise<{ success: boolean }>;
 }
