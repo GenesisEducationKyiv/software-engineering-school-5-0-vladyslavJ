@@ -8,6 +8,7 @@ import {
 } from '../../../../../../libs/common/utils/email-templates.util';
 import { SubscriptionFrequency } from '../../../../../../libs/common/enums/subscription-frequency.enum';
 import { Weather } from '../../../../../../libs/common/interfaces/weather.interface';
+import { validateNotificationData } from '../validators/notification-validator';
 
 const APP_BASE_URL = process.env.APP_BASE_URL || 'http://localhost:3000';
 
@@ -17,6 +18,7 @@ export const templateMap: Record<
 > = {
   [EmailType.SUBSCRIPTION_CONFIRMATION]: notification => {
     const data = notification.data as { confirmationToken: string };
+    validateNotificationData(EmailType.SUBSCRIPTION_CONFIRMATION, data);
     return confirmTpl(APP_BASE_URL, data.confirmationToken);
   },
 
@@ -26,6 +28,7 @@ export const templateMap: Record<
       frequency: SubscriptionFrequency.HOURLY | SubscriptionFrequency.DAILY;
       unsubscribeToken: string;
     };
+    validateNotificationData(EmailType.CONFIRMED_SUBSCRIPTION, data);
     return confirmedTpl(
       APP_BASE_URL,
       notification.email,
@@ -37,6 +40,7 @@ export const templateMap: Record<
 
   [EmailType.UNSUBSCRIPTION_GOODBYE]: notification => {
     const data = notification.data as { city: string };
+    validateNotificationData(EmailType.UNSUBSCRIPTION_GOODBYE, data);
     return goodbyeTpl(data.city);
   },
 
@@ -47,6 +51,7 @@ export const templateMap: Record<
       weather: Weather;
       unsubscribeToken: string;
     };
+    validateNotificationData(EmailType.DAILY_DIGEST, data);
     return digestTpl(APP_BASE_URL, data.city, data.weather, data.date, data.unsubscribeToken);
   },
 
@@ -57,6 +62,7 @@ export const templateMap: Record<
       weather: Weather;
       unsubscribeToken: string;
     };
+    validateNotificationData(EmailType.HOURLY_DIGEST, data);
     return digestTpl(APP_BASE_URL, data.city, data.weather, data.date, data.unsubscribeToken);
   },
 };

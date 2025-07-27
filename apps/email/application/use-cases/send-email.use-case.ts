@@ -20,7 +20,7 @@ export class SendEmailUseCase {
       subject,
       html,
     };
-    
+
     return await this.emailSender.send(data);
   }
 }
