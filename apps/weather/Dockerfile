@@ -6,7 +6,6 @@ COPY ../../package*.json ./
 
 RUN npm install
 
-# Копіюємо весь код сервісу weather
 COPY . .
 
 RUN npm run build

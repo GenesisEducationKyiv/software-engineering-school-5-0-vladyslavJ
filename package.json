@@ -6,6 +6,8 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/server.js",
+    "start:all": "bash libs/common/scripts/start-all.sh",
+    "stop:all": "bash libs/common/scripts/stop-all.sh",
     "dev": "npm run migration:run && tsx --watch src/server.ts",
     "migration:run": "npm run build && node ./node_modules/typeorm/cli.js migration:run -d dist/apps/subscription/infrastructure/database/config/dataSource.js",
     "migration:revert": "npm run build && node ./node_modules/typeorm/cli.js migration:revert -d dist/apps/subscription/infrastructure/database/config/dataSource.js",

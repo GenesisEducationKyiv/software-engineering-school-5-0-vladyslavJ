@@ -1,0 +1,15 @@
+services:
+  email:
+    build:
+      context: ../../
+      dockerfile: apps/email/Dockerfile
+    container_name: email
+    env_file:
+      - .env
+    ports:
+      - '8888:8888'
+
+networks:
+  default:
+    external:
+      name: backend-net
