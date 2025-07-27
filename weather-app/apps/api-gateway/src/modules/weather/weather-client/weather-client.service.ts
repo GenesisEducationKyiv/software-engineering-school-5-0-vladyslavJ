@@ -1,14 +1,17 @@
 import { Injectable, Inject, OnModuleInit } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
-import { GrpcToObservable } from '../../../../../libs/common/types/observable';
+import { GrpcToObservable } from '../../../../../../libs/common/types/observable';
 import { lastValueFrom } from 'rxjs';
 import { WeatherServiceClientInterface } from './interfaces/weather-client.interface';
-import { Weather } from '../../../../../libs/common/interfaces/weather.interface';
-import { PackageNames } from '../../common/utils/enums/package-names.enum';
+import { Weather } from '../../../../../../libs/common/models/weather.model';
+import { GrpcClientDiTokens } from '../../../../../../libs/common/di/grpc-client-di-tokens';
 
 @Injectable()
 export class WeatherServiceClient implements OnModuleInit, WeatherServiceClientInterface {
-  constructor(@Inject(PackageNames.WEATHER_PACKAGE) private readonly client: ClientGrpc) {}
+  constructor(
+    @Inject(GrpcClientDiTokens.WEATHER_SERVICE_GRPC_CLIENT)
+    private readonly client: ClientGrpc,
+  ) {}
   private serviceClient!: GrpcToObservable<WeatherServiceClientInterface>;
 
   onModuleInit() {
