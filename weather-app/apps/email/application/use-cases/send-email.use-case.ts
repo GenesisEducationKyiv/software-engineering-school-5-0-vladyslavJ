@@ -21,7 +21,6 @@ export class SendEmailUseCase {
       html,
     };
     
-    console.log(`[EMAIL USE CASE] EMAIL SENT: ${JSON.stringify(data)}`);
     return await this.emailSender.send(data);
   }
 }

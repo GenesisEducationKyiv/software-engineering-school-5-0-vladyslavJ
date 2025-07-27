@@ -20,7 +20,6 @@ export class EmailAdapter implements EmailSenderPortInterface {
       ...data,
     });
     } catch (err) {
-      console.error(`[EMAIL ADAPTER] Error sending email: ${err}`);
       return { success: false };
     }
     

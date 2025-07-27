@@ -12,7 +12,6 @@ export class SendNotificationUseCase {
   ) {}
 
   async execute(req: Notification): Promise<{ success: boolean }> {
-    console.log(`[NOTIFICATION USE CASE] NOTIFICATION REQUEST:${JSON.stringify(req)}`);
     return await this.emailService.sendEmail(req);
   }
 }
