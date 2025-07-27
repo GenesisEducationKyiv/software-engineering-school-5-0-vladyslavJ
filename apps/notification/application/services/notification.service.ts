@@ -12,6 +12,8 @@ import { SubscriptionServiceClientDiTokens } from '../../../../libs/common/di/su
 import { WeatherServiceClientDiTokens } from '../../../api-gateway/src/modules/weather/weather-client/di/weather-client-di-tokens';
 import { WeatherServiceClientInterface } from '../../infrastructure/adapters/secondary/weather/interfaces/weather-client.interface';
 import { SubscriptionServiceClientInterface } from '../../infrastructure/adapters/secondary/subscription/interfaces/subscription-client.interface';
+import { LoggerDiTokens } from '../../../../libs/modules/logger/di/di-tokens';
+import { ILogger } from '../../../../libs/modules/logger/interfaces/logger.interface';
 
 @Injectable()
 export class NotificationService implements NotificationInputPortInterface {
@@ -22,6 +24,8 @@ export class NotificationService implements NotificationInputPortInterface {
     private readonly weatherService: WeatherServiceClientInterface,
     @Inject(SubscriptionServiceClientDiTokens.SUBSCRIPTION_SERVICE_CLIENT)
     private readonly subscriptionService: SubscriptionServiceClientInterface,
+    @Inject(LoggerDiTokens.LOGGER)
+    private readonly logger: ILogger,
   ) {}
 
   async sendNotification(data: Notification): Promise<{ success: boolean }> {
@@ -38,6 +42,10 @@ export class NotificationService implements NotificationInputPortInterface {
     const hourlySubscribers = await this.subscriptionService.getByFrequency(
       SubscriptionFrequency.HOURLY,
     );
+    if (!hourlySubscribers.length) {
+      this.logger.info('No subscribers for hourly digest');
+      return;
+    }
 
     const notifications: Notification[] = await Promise.all(
       hourlySubscribers.map(async (sub: Subscription) => ({
@@ -60,6 +68,10 @@ export class NotificationService implements NotificationInputPortInterface {
     const dailySubscribers = await this.subscriptionService.getByFrequency(
       SubscriptionFrequency.DAILY,
     );
+    if (!dailySubscribers.length) {
+      this.logger.info('No subscribers for daily digest');
+      return;
+    }
 
     const notifications: Notification[] = await Promise.all(
       dailySubscribers.map(async (sub: Subscription) => ({
