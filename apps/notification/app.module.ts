@@ -8,6 +8,7 @@ import { SubscriptionServiceClientModule } from './infrastructure/adapters/secon
 import { EmailServiceClientModule } from './infrastructure/adapters/secondary/email/email-client.module';
 import { ConfigModule } from '@nestjs/config';
 import configuration from './infrastructure/config/configuration';
+import { LoggerModule } from '../../libs/modules/logger/logger.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import configuration from './infrastructure/config/configuration';
     WeatherServiceClientModule,
     SubscriptionServiceClientModule,
     EmailServiceClientModule,
+    LoggerModule,
   ],
   controllers: [NotificationGrpcController],
   providers: [NotificationService, SendNotificationUseCase, SendWeatherDigestUseCase],

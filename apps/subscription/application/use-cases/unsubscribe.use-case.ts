@@ -9,6 +9,7 @@ import { RpcException } from '@nestjs/microservices';
 import { GrpcCode } from '../../../../libs/common/enums/grpc-codes.enum';
 import { EmailType } from '../../../../libs/common/enums/email-type.enum';
 import { SubscriptionRepoDiTokens } from '../../infrastructure/database/di/di-tokens';
+import { QueryFailedError } from 'typeorm';
 
 @Injectable()
 export class UnsubscribeUseCase {
@@ -25,16 +26,32 @@ export class UnsubscribeUseCase {
     const token = unsubscriptionToken.trim();
     this.logger.info(`Try to unsubscribe token: ${token}`);
 
-    const subscriber = await this.repo.findByToken(token, 'unsubscribe_token');
-    if (!subscriber)
+    let subscriber;
+    try {
+      subscriber = await this.repo.findByToken(token, 'unsubscribe_token');
+    } catch (err) {
+      if (err instanceof QueryFailedError) {
+        throw new RpcException({
+          code: GrpcCode.INVALID_ARGUMENT,
+          message: 'Invalid token format',
+        });
+      }
+      throw new RpcException({
+        code: GrpcCode.INTERNAL_SERVER_ERROR,
+        message: 'Internal server error',
+      });
+    }
+
+    if (!subscriber) {
       throw new RpcException({ code: GrpcCode.NOT_FOUND, message: 'Token not found' });
+    }
 
     await this.notificationClient.sendNotification({
       type: EmailType.UNSUBSCRIPTION_GOODBYE,
       email: subscriber.email,
       data: { city: subscriber.city },
     });
-    
+
     await this.repo.remove(subscriber);
     this.logger.info(`Subscription removed: email=${subscriber.email}`);
 

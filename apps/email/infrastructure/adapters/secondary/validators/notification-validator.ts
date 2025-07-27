@@ -1,4 +1,6 @@
 import { EmailType } from '../../../../../../libs/common/enums/email-type.enum';
+import { RpcException } from '@nestjs/microservices';
+import { GrpcCode } from '../../../../../../libs/common/enums/grpc-codes.enum';
 
 export function validateNotificationData(type: EmailType, data: unknown): void {
   const requiredFieldsMap: Record<EmailType, string[]> = {
@@ -11,7 +13,10 @@ export function validateNotificationData(type: EmailType, data: unknown): void {
   const requiredFields = requiredFieldsMap[type];
   if (!requiredFields) return;
   if (typeof data !== 'object' || data === null) {
-    throw new Error(`notification.data must be an object for template ${type}`);
+    throw new RpcException({
+      code: GrpcCode.INVALID_ARGUMENT,
+      message: `notification.data must be an object for template ${type}`,
+    });
   }
   const missing = requiredFields.filter(
     field =>
@@ -19,6 +24,9 @@ export function validateNotificationData(type: EmailType, data: unknown): void {
       (data as Record<string, unknown>)[field] === null,
   );
   if (missing.length) {
-    throw new Error(`Missing required fields for template ${type}: ${missing.join(', ')}`);
+    throw new RpcException({
+      code: GrpcCode.INVALID_ARGUMENT,
+      message: `Missing required fields for template ${type}: ${missing.join(', ')}`,
+    });
   }
 }

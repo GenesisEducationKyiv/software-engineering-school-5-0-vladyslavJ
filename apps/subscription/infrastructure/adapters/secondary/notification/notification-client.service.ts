@@ -5,7 +5,7 @@ import { lastValueFrom } from 'rxjs';
 import { NotificationServiceClientInterface } from './interfaces/notification-client.interface';
 import { GrpcClientDiTokens } from '../../../../../../libs/common/di/grpc-client-di-tokens';
 import { Notification } from '../../../../../../libs/common/types/notification-request.type';
-import { Empty } from '../../../../../../libs/common/types/empty.type';
+import { EmailResponseInterface } from '../../../../../../libs/common/interfaces/emai-response.interface';
 
 @Injectable()
 export class NotificationServiceClient implements OnModuleInit, NotificationServiceClientInterface {
@@ -22,7 +22,7 @@ export class NotificationServiceClient implements OnModuleInit, NotificationServ
       );
   }
 
-  async sendNotification(data: Notification): Promise<{ success: boolean }> {
+  async sendNotification(data: Notification): Promise<EmailResponseInterface> {
     return lastValueFrom(this.serviceClient.sendNotification(data));
   }
 }

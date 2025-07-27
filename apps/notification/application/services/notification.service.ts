@@ -14,6 +14,7 @@ import { WeatherServiceClientInterface } from '../../infrastructure/adapters/sec
 import { SubscriptionServiceClientInterface } from '../../infrastructure/adapters/secondary/subscription/interfaces/subscription-client.interface';
 import { LoggerDiTokens } from '../../../../libs/modules/logger/di/di-tokens';
 import { ILogger } from '../../../../libs/modules/logger/interfaces/logger.interface';
+import { EmailResponseInterface } from '../../../../libs/common/interfaces/emai-response.interface';
 
 @Injectable()
 export class NotificationService implements NotificationInputPortInterface {
@@ -28,7 +29,7 @@ export class NotificationService implements NotificationInputPortInterface {
     private readonly logger: ILogger,
   ) {}
 
-  async sendNotification(data: Notification): Promise<{ success: boolean }> {
+  async sendNotification(data: Notification): Promise<EmailResponseInterface> {
     return await this.sendNotificationUseCase.execute(data);
   }
 

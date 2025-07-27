@@ -4,6 +4,7 @@ import { EmailMessage } from '../../../domain/models/email.model';
 import { EmailDiTokens } from './di/di-tokens';
 import { EmailTransportInterface } from './interfaces/email-transport.interface';
 import { ConfigService } from '@nestjs/config';
+import { EmailResponseInterface } from '../../../../../libs/common/interfaces/emai-response.interface';
 
 @Injectable()
 export class EmailAdapter implements EmailSenderPortInterface {
@@ -13,7 +14,7 @@ export class EmailAdapter implements EmailSenderPortInterface {
     private readonly configService: ConfigService,
   ) {}
 
-  async send(data: EmailMessage): Promise<{ success: boolean }> {
+  async send(data: EmailMessage): Promise<EmailResponseInterface> {
     try {
       await this.transporter.send({
         from:
@@ -21,9 +22,17 @@ export class EmailAdapter implements EmailSenderPortInterface {
         ...data,
       });
     } catch (err) {
-      return { success: false };
+      return {
+        success: false,
+        message: err instanceof Error ? err.message : 'Unknown error',
+        errorCode: 'SEND_ERROR',
+      };
     }
 
-    return { success: true };
+    return {
+      success: true,
+      message: 'Email sent',
+      errorCode: '',
+    };
   }
 }

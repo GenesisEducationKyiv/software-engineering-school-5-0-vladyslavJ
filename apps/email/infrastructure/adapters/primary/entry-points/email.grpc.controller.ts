@@ -5,6 +5,7 @@ import { EmailService } from '../../../../application/services/email.service';
 import { Notification } from '../../../../../../libs/common/types/notification-request.type';
 import { EmailDiTokens } from '../../secondary/di/di-tokens';
 import { EmailMicroserviceInterface } from '../../../../../../libs/common/interfaces/email-microservice.interface';
+import { EmailResponseInterface } from '../../../../../../libs/common/interfaces/emai-response.interface';
 
 @Controller()
 export class EmailGrpcController implements EmailMicroserviceInterface {
@@ -14,7 +15,7 @@ export class EmailGrpcController implements EmailMicroserviceInterface {
   ) {}
 
   @GrpcMethod('EmailService', 'SendEmail')
-  async sendEmail(notification: Notification): Promise<{ success: boolean }> {
+  async sendEmail(notification: Notification): Promise<EmailResponseInterface> {
     try {
       return await this.emailService.sendEmail(notification);
     } catch (err) {

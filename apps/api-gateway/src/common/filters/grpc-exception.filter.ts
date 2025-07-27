@@ -27,6 +27,8 @@ export class GrpcExceptionFilter implements ExceptionFilter {
       [GrpcCode.FORBIDDEN]: HttpStatus.FORBIDDEN,
       [GrpcCode.INTERNAL_SERVER_ERROR]: HttpStatus.INTERNAL_SERVER_ERROR,
       [GrpcCode.UNKNOWN]: HttpStatus.INTERNAL_SERVER_ERROR,
+      [GrpcCode.ABORTED]: HttpStatus.CONFLICT,
+      [GrpcCode.DATA_LOSS]: HttpStatus.BAD_REQUEST,
     };
 
     const code = exception.code ?? exception.getError?.().code ?? 500;

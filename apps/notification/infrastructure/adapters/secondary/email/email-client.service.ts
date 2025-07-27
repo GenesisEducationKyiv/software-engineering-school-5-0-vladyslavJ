@@ -5,6 +5,7 @@ import { lastValueFrom } from 'rxjs';
 import { GrpcClientDiTokens } from '../../../../../../libs/common/di/grpc-client-di-tokens';
 import { EmailServiceClientInterface } from './interfaces/email-client.interface';
 import { Notification } from '../../../../../../libs/common/types/notification-request.type';
+import { EmailResponseInterface } from '../../../../../../libs/common/interfaces/emai-response.interface';
 
 @Injectable()
 export class EmailServiceClient implements OnModuleInit, EmailServiceClientInterface {
@@ -19,7 +20,7 @@ export class EmailServiceClient implements OnModuleInit, EmailServiceClientInter
       this.client.getService<GrpcToObservable<EmailServiceClientInterface>>('EmailService');
   }
 
-  async sendEmail(notification: Notification): Promise<{ success: boolean }> {
+  async sendEmail(notification: Notification): Promise<EmailResponseInterface> {
     return lastValueFrom(this.serviceClient.sendEmail(notification));
   }
 }

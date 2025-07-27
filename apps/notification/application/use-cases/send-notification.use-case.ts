@@ -1,8 +1,8 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Notification } from '../../../../libs/common/types/notification-request.type';
-import { Empty } from '../../../../libs/common/types/empty.type';
 import { EmailSenderInputPortInterface } from '../../../email/application/ports/email.port';
 import { EmailServiceClientDiTokens } from '../../infrastructure/adapters/secondary/email/di/email-client-di-tokens';
+import { EmailResponseInterface } from '../../../../libs/common/interfaces/emai-response.interface';
 
 @Injectable()
 export class SendNotificationUseCase {
@@ -11,7 +11,7 @@ export class SendNotificationUseCase {
     private readonly emailService: EmailSenderInputPortInterface,
   ) {}
 
-  async execute(req: Notification): Promise<{ success: boolean }> {
+  async execute(req: Notification): Promise<EmailResponseInterface> {
     return await this.emailService.sendEmail(req);
   }
 }

@@ -1,6 +1,6 @@
-import { Notification } from "../types/notification-request.type";
-import { Empty } from '../types/empty.type';
+import { Notification } from '../types/notification-request.type';
+import { EmailResponseInterface } from './emai-response.interface';
 
 export interface NotificationMicroserviceInterface {
-  sendNotification(data: Notification): Promise<{ success: boolean }>;
+  sendNotification(data: Notification): Promise<EmailResponseInterface>;
 }
