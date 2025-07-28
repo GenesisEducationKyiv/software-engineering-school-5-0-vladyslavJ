@@ -52,8 +52,8 @@ to common libraries only.
   internal microservices.
 - **REST endpoints**: 
   - `POST /subscribe`
-  - `POST /confirm`
-  - `POST /unsubscribe`
+  - `GET /confirm`
+  - `GET /unsubscribe`
   - `GET /weather`
 - **Dependencies**:
   - Forwards requests to internal gRPC APIs of other services
