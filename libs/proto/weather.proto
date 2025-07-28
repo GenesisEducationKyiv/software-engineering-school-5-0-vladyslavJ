@@ -4,6 +4,7 @@ package weather;
 
 service WeatherService {
   rpc GetWeather (WeatherRequest) returns (WeatherResponse);
+  rpc GetMetrics (MetricsRequest) returns (MetricsResponse);
 }
 
 message WeatherRequest {
@@ -14,4 +15,11 @@ message WeatherResponse {
   double temperature = 1;
   double humidity = 2;
   string description = 3;
+}
+
+message MetricsRequest {
+}
+
+message MetricsResponse {
+  string metrics = 1;
 }

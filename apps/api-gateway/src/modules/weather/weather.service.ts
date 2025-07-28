@@ -3,6 +3,7 @@ import { WeatherServiceInterface } from './interfaces/weather.interface';
 import { WeatherServiceClientInterface } from './weather-client/interfaces/weather-client.interface';
 import { Weather } from '../../../../../libs/common/interfaces/weather.interface';
 import { WeatherServiceClientDiTokens } from './weather-client/di/weather-client-di-tokens';
+import { Empty } from '../../../../../libs/common/types/empty.type';
 
 @Injectable()
 export class WeatherService implements WeatherServiceInterface {
@@ -13,5 +14,9 @@ export class WeatherService implements WeatherServiceInterface {
 
   async getWeather(req: { city: string }): Promise<Weather> {
     return this.weatherClient.getWeather(req);
+  }
+
+  async getMetrics(req: Empty): Promise<{ metrics: string }> {
+    return this.weatherClient.getMetrics(req);
   }
 }

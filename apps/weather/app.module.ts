@@ -7,6 +7,7 @@ import { ProvidersModule } from './infrastructure/adapters/secondary/providers/p
 import { CacheModule } from './infrastructure/adapters/secondary/cache/cache.module';
 import { LoggerModule } from '../../libs/modules/logger/logger.module';
 import { GetWeatherUseCase } from './application/use-cases/get-weather.use-case';
+import { MetricsModule } from '../../libs/modules/metrics/metrics.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { GetWeatherUseCase } from './application/use-cases/get-weather.use-case'
     ProvidersModule,
     CacheModule,
     LoggerModule,
+    MetricsModule,
   ],
   controllers: [WeatherGrpcController],
   providers: [WeatherService, GetWeatherUseCase],
