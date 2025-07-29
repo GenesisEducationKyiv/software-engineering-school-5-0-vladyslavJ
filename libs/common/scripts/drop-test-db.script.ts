@@ -31,7 +31,7 @@ async function dropTestDb(): Promise<void> {
     );
 
     await client.query(`DROP DATABASE IF EXISTS "${TEST_DB_NAME}";`);
-  } catch (err: unknown) {
+  } catch {
     process.exit(1);
   } finally {
     await client.end();

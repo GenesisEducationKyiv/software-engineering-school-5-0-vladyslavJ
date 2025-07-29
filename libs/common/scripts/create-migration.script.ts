@@ -42,6 +42,6 @@ export class ${className} implements MigrationInterface {
 
   const filePath = join(migrationsDir, fileName);
   writeFileSync(filePath, content, { encoding: 'utf-8' });
-} catch (err: unknown) {
+} catch {
   process.exit(1);
 }

@@ -102,14 +102,26 @@ npm run stop:all
 ## 📂 File/Folder Structure
 
 - `apps/` — main microservices:
-  - `api-gateway/` — entrypoint for all external requests
+  - `api-gateway/` — entry point for all external requests
   - `subscription/` — user subscription management
   - `weather/` — weather data provider
   - `notification/` — notification and digest delivery
   - `email/` — email delivery service
-- `libs/` — shared libraries, DTOs, interfaces, utils, configs, proto files
+- `libs/` — shared libraries and modules:
+  - `common/` — DTOs, enums, interfaces, models, DI tokens, utilities, types, scripts
+    - `di/` — dependency injection tokens for microservices
+    - `dtos/` — shared data transfer objects
+    - `enums/` — shared enums
+    - `interfaces/` — shared interfaces
+    - `models/` — shared models/entities
+    - `types/` — shared types
+    - `utils/` — shared utility functions and helpers
+    - `scripts/` — scripts for migrations, healthchecks, starting/stopping services, etc.
+  - `config/` — centralized configuration (e.g., `configuration.ts`)
+  - `modules/` — additional modules (e.g., `logger/`, `metrics/`)
+  - `proto/` — gRPC proto files for inter-service communication
 - `docs/` — documentation, system design, ADRs
-- `logs/` — all runtime logs are stored here
+- `logs/` — all runtime logs are stored here (created at runtime)
 - `docker-compose.yml`, `Dockerfile`, `Dockerfile.dev` — for containerization
 
 ## ℹ️ Notes
