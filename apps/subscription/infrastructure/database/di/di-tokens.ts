@@ -1,0 +1,4 @@
+export const SubscriptionRepoDiTokens = {
+  SUBSCRIPTION_REPOSITORY: Symbol.for('SUBSCRIPTION_REPOSITORY'),
+  SUBSCRIPTION_SERVICE: Symbol.for('SUBSCRIPTION_SERVICE'),
+};

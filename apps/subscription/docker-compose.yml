@@ -1,0 +1,38 @@
+services:
+  subscription:
+    build:
+      context: ../../
+      dockerfile: apps/subscription/Dockerfile
+    container_name: subscription
+    env_file:
+      - .env
+    ports:
+      - '4000:4000'
+    depends_on:
+      - postgres
+    restart: on-failure
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: postgres
+    environment:
+      POSTGRES_DB: weatherdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pgdata:
+
+networks:
+  default:
+    external:
+      name: backend-net

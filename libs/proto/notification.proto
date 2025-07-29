@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package notification;
+
+service NotificationService {
+  rpc SendNotification (Notification) returns (SendNotificationResponse);
+}
+
+message Notification {
+  string type = 1;
+  string email = 2;
+  Data data = 3;
+}
+
+message Data {
+  string confirmationToken = 1;
+  string city = 2;
+  string frequency = 3;
+  string unsubscribeToken = 4;
+  string date = 5;
+  Weather weather = 6;
+}
+
+message Weather {
+  double temperature = 1;
+  double humidity = 2;
+  string description = 3;
+}
+
+message SendNotificationResponse {
+  bool success = 1;
+  string message = 2;
+  string errorCode = 3;
+}
