@@ -9,8 +9,7 @@ import {
 import { SubscriptionFrequency } from '../../../../../../libs/common/enums/subscription-frequency.enum';
 import { Weather } from '../../../../../../libs/common/interfaces/weather.interface';
 import { validateNotificationData } from '../validators/notification-validator';
-
-const APP_BASE_URL = process.env.APP_BASE_URL || 'http://localhost:3000';
+import { APP_BASE_URL } from '../../../config/env';
 
 export const templateMap: Record<
   EmailType,

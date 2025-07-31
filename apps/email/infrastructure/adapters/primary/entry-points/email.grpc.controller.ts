@@ -17,22 +17,17 @@ export class EmailGrpcController implements EmailMicroserviceInterface {
 
   @GrpcMethod('EmailService', 'SendEmail')
   async sendEmail(notification: Notification): Promise<EmailResponseInterface> {
-    try {
-      return await this.emailService.sendEmail(notification);
-    } catch (err) {
-      throw err instanceof RpcException
-        ? err
-        : new RpcException({
-            code: GrpcCode.INTERNAL_SERVER_ERROR,
-            message: 'Internal server error',
-          });
-    }
+    return this.send(notification);
   }
 
   @EventPattern('digest.ready')
   async handleDigest(@Payload() digest: Notification): Promise<EmailResponseInterface> {
+    return this.send(digest);
+  }
+
+  private async send(req: Notification): Promise<EmailResponseInterface> {
     try {
-      return await this.emailService.sendEmail(digest);
+      return await this.emailService.sendEmail(req);
     } catch (err) {
       throw err instanceof RpcException
         ? err
