@@ -7,10 +7,8 @@ import { SubscriptionServiceClientInterface } from './interfaces/subscription-cl
 import { SubscriptionDto } from '../../../../../../libs/common/dtos/subscription.dto';
 import { Empty } from '../../../../../../libs/common/types/empty.type';
 import { Token } from '../../../../../../libs/common/types/token.type';
-//import { Subscription } from '../../../../../../libs/common/models/subscription.entity';
 import { SubscriptionFrequency } from '../../../../../../libs/common/enums/subscription-frequency.enum';
-
-import { SubscriptionModel } from './interfaces/subscription-client.interface';
+import { SubscriptionModel } from '../../../../../../libs/common/models/subscription.model';
 
 @Injectable()
 export class SubscriptionServiceClient implements OnModuleInit, SubscriptionServiceClientInterface {
@@ -43,6 +41,7 @@ export class SubscriptionServiceClient implements OnModuleInit, SubscriptionServ
     frequency: SubscriptionFrequency;
   }): Promise<{ subscriptions: SubscriptionModel[] }> {
     const raw = await firstValueFrom(this.serviceClient.getByFrequency(data));
+    console.log(`[SubscriptionServiceClient] Received subscriptions: ${JSON.stringify(raw)}`);
     const subscriptions = Array.isArray(raw?.subscriptions) ? raw.subscriptions : [];
     return { subscriptions };
   }

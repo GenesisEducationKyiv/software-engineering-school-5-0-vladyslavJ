@@ -8,7 +8,7 @@ import { UnsubscribeUseCase } from '../use-cases/unsubscribe.use-case';
 import { SubscriptionFrequency } from '../../../../libs/common/enums/subscription-frequency.enum';
 import { GetSubscribersByFrequencyUseCase } from '../use-cases/get-subscribers-by-frequency.use-case';
 import { Empty } from '../../../../libs/common/types/empty.type';
-import { Subscription } from '../../../../libs/common/models/subscription.entity';
+import { SubscriptionModel } from '../../../../libs/common/models/subscription.model';
 
 @Injectable()
 export class SubscriptionService implements SubscriptionInputPortInterface {
@@ -31,7 +31,7 @@ export class SubscriptionService implements SubscriptionInputPortInterface {
     return this.unsubscribeUseCase.unsubscribe(token);
   }
 
-  async getByFrequency(frequency: SubscriptionFrequency): Promise<Subscription[]> {
+  async getByFrequency(frequency: SubscriptionFrequency): Promise<SubscriptionModel[]> {
     return this.getSubscribersByFrequencyUseCase.getByFrequency(frequency);
   }
 }

@@ -1,17 +1,16 @@
-import { Subscription } from '../../../../../libs/common/models/subscription.entity';
 import { SubscriptionFrequency } from '../../../../../libs/common/enums/subscription-frequency.enum';
-
-export type SubscriptionField = 'confirmation_token' | 'unsubscribe_token';
+import { SubscriptionModel } from '../../../../../libs/common/models/subscription.model';
+import { SubscriptionField } from '../../../../../libs/common/types/subscription-fields.type';
 
 export interface SubscriptionRepositoryInterface {
-  save(sub: Partial<Subscription>): Promise<Subscription>;
-  confirm(sub: Subscription): Promise<void>;
-  remove(sub: Subscription): Promise<void>;
-  findByToken(token: string, field: SubscriptionField): Promise<Subscription | null>;
+  save(sub: Partial<SubscriptionModel>): Promise<SubscriptionModel>;
+  confirm(sub: SubscriptionModel): Promise<void>;
+  remove(sub: SubscriptionModel): Promise<void>;
+  findByToken(token: string, field: SubscriptionField): Promise<SubscriptionModel | null>;
   findExisting(
     email: string,
     city: string,
     frequency: SubscriptionFrequency,
-  ): Promise<Subscription | null>;
-  findConfirmedByFrequency(frequency: SubscriptionFrequency): Promise<Subscription[]>;
+  ): Promise<SubscriptionModel | null>;
+  findConfirmedByFrequency(frequency: SubscriptionFrequency): Promise<SubscriptionModel[]>;
 }

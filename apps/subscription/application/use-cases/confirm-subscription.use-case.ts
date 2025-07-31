@@ -10,6 +10,7 @@ import { NotificationServiceClientDiTokens } from '../../infrastructure/adapters
 import { EmailType } from '../../../../libs/common/enums/email-type.enum';
 import { Empty } from '../../../../libs/common/types/empty.type';
 import { SubscriptionRepoDiTokens } from '../../infrastructure/database/di/di-tokens';
+import { SubscriptionField } from '../../../../libs/common/types/subscription-fields.type';
 
 @Injectable()
 export class ConfirmSubscriptionUseCase {
@@ -28,7 +29,7 @@ export class ConfirmSubscriptionUseCase {
 
     let subscriber;
     try {
-      subscriber = await this.repo.findByToken(token, 'confirmation_token');
+      subscriber = await this.repo.findByToken(token, SubscriptionField.CONFIRMATION_TOKEN);
     } catch (err) {
       if (err instanceof QueryFailedError) {
         throw new RpcException({
@@ -57,7 +58,7 @@ export class ConfirmSubscriptionUseCase {
       data: {
         city: subscriber.city,
         frequency: subscriber.frequency,
-        unsubscribeToken: subscriber.unsubscribe_token,
+        unsubscribeToken: subscriber.unsubscribeToken,
       },
     });
     this.logger.info(`Subscription confirmed: sub=${subscriber.email}`);

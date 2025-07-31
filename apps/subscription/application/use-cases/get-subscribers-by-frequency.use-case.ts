@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { SubscriptionRepositoryInterface } from '../../domain/ports/repositories/subscription-repository.port';
 import { SubscriptionFrequency } from '../../../../libs/common/enums/subscription-frequency.enum';
-import { Subscription } from '../../../../libs/common/models/subscription.entity';
+import { SubscriptionModel } from '../../../../libs/common/models/subscription.model';
 import { SubscriptionRepoDiTokens } from '../../infrastructure/database/di/di-tokens';
 
 @Injectable()
@@ -11,7 +11,9 @@ export class GetSubscribersByFrequencyUseCase {
     private readonly repo: SubscriptionRepositoryInterface,
   ) {}
 
-  async getByFrequency(req: SubscriptionFrequency): Promise<Subscription[]> {
-    return await this.repo.findConfirmedByFrequency(req);
+  async getByFrequency(req: SubscriptionFrequency): Promise<SubscriptionModel[]> {
+    const result = await this.repo.findConfirmedByFrequency(req);
+    console.log(`[GetSubscribersByFrequencyUseCase] ${JSON.stringify(result)}`);
+    return result;
   }
 }

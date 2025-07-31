@@ -3,7 +3,6 @@ import { Cron } from '@nestjs/schedule';
 import { Notification } from '../../../../../../libs/common/types/notification-request.type';
 import { SubscriptionFrequency } from '../../../../../../libs/common/enums/subscription-frequency.enum';
 import { EmailType } from '../../../../../../libs/common/enums/email-type.enum';
-//import { Subscription } from '../../../../../../libs/common/models/subscription.entity';
 import { SubscriptionServiceClientDiTokens } from '../../../../../../libs/common/di/subscription-di-tokens';
 import { WeatherServiceClientDiTokens } from '../../secondary/weather/di/weather-client-di-tokens';
 import { WeatherServiceClientInterface } from '../../secondary/weather/interfaces/weather-client.interface';
@@ -14,7 +13,7 @@ import { CronServiceInterface } from './interfaces/cron.interface';
 import { DigestPublisherInterface } from '../../secondary/digest-publisher/interfaces/digest-publisher.interface';
 import { DigestServiceDiTokens } from '../../secondary/digest-publisher/di/digest-publisher-di-tokens';
 import CRON_FREQUENCY from '../../../../../../libs/common/utils/constants/cron.constant';
-import { SubscriptionModel } from '../../secondary/subscription/interfaces/subscription-client.interface';
+import { SubscriptionModel } from '../../../../../../libs/common/models/subscription.model';
 
 @Injectable()
 export class CronService implements CronServiceInterface {
@@ -38,6 +37,7 @@ export class CronService implements CronServiceInterface {
       this.logger.info('No subscribers for hourly digest');
       return;
     }
+    console.log(`[CRON] Hourly subscribers: ${JSON.stringify(hourlySubscribers)}`);
 
     const notifications: Notification[] = await Promise.all(
       hourlySubscribers.map(async (sub: SubscriptionModel) => ({
@@ -66,6 +66,7 @@ export class CronService implements CronServiceInterface {
       this.logger.info('No subscribers for daily digest');
       return;
     }
+    console.log(`[CRON] Daily subscribers: ${JSON.stringify(dailySubscribers)}`);
 
     const notifications: Notification[] = await Promise.all(
       dailySubscribers.map(async (sub: SubscriptionModel) => ({

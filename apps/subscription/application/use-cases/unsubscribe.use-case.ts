@@ -10,6 +10,7 @@ import { GrpcCode } from '../../../../libs/common/enums/grpc-codes.enum';
 import { EmailType } from '../../../../libs/common/enums/email-type.enum';
 import { SubscriptionRepoDiTokens } from '../../infrastructure/database/di/di-tokens';
 import { QueryFailedError } from 'typeorm';
+import { SubscriptionField } from '../../../../libs/common/types/subscription-fields.type';
 
 @Injectable()
 export class UnsubscribeUseCase {
@@ -28,7 +29,7 @@ export class UnsubscribeUseCase {
 
     let subscriber;
     try {
-      subscriber = await this.repo.findByToken(token, 'unsubscribe_token');
+      subscriber = await this.repo.findByToken(token, SubscriptionField.UNSUBSCRIBE_TOKEN);
     } catch (err) {
       if (err instanceof QueryFailedError) {
         throw new RpcException({
