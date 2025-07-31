@@ -3,18 +3,14 @@ name: Unit Tests
 on:
   push:
     paths:
-      - 'apps/email/src/**'
+      - 'apps/email/**'
       - 'apps/email/tests/unit/**'
       - 'libs/**'
-      - 'package.json'
-      - 'package-lock.json'
   pull_request:
     paths:
       - 'apps/email/src/**'
       - 'apps/email/tests/unit/**'
       - 'libs/**'
-      - 'package.json'
-      - 'package-lock.json'
 
 jobs:
   test-email:
