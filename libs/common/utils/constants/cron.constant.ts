@@ -1,6 +1,5 @@
 const CRON_FREQUENCY = Object.freeze({
-  //HOURLY: '0 * * * *',
-  HOURLY: '* * * * *',
+  HOURLY: '0 * * * *',
   DAILY: '0 7 * * *',
 } as const);
 
