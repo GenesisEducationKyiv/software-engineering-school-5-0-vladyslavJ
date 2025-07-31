@@ -67,9 +67,7 @@ export class SubscriptionGrpcController implements SubscriptionMicroserviceInter
     frequency: SubscriptionFrequency;
   }): Promise<{ subscriptions: SubscriptionModel[] }> {
     try {
-      const result = await this.subscriptionService.getByFrequency(dto.frequency);
-      console.log(`[SubscriptionGrpcController] GetByFrequency: ${JSON.stringify(result)}`);
-      return { subscriptions: result };
+      return { subscriptions: await this.subscriptionService.getByFrequency(dto.frequency) };
     } catch (error) {
       throw error instanceof RpcException
         ? error

@@ -12,8 +12,6 @@ export class GetSubscribersByFrequencyUseCase {
   ) {}
 
   async getByFrequency(req: SubscriptionFrequency): Promise<SubscriptionModel[]> {
-    const result = await this.repo.findConfirmedByFrequency(req);
-    console.log(`[GetSubscribersByFrequencyUseCase] ${JSON.stringify(result)}`);
-    return result;
+    return await this.repo.findConfirmedByFrequency(req);
   }
 }

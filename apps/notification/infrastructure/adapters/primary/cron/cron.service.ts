@@ -37,7 +37,6 @@ export class CronService implements CronServiceInterface {
       this.logger.info('No subscribers for hourly digest');
       return;
     }
-    console.log(`[CRON] Hourly subscribers: ${JSON.stringify(hourlySubscribers)}`);
 
     const notifications: Notification[] = await Promise.all(
       hourlySubscribers.map(async (sub: SubscriptionModel) => ({
@@ -66,7 +65,6 @@ export class CronService implements CronServiceInterface {
       this.logger.info('No subscribers for daily digest');
       return;
     }
-    console.log(`[CRON] Daily subscribers: ${JSON.stringify(dailySubscribers)}`);
 
     const notifications: Notification[] = await Promise.all(
       dailySubscribers.map(async (sub: SubscriptionModel) => ({

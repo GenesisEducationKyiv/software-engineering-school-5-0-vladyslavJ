@@ -41,7 +41,6 @@ export class SubscriptionServiceClient implements OnModuleInit, SubscriptionServ
     frequency: SubscriptionFrequency;
   }): Promise<{ subscriptions: SubscriptionModel[] }> {
     const raw = await firstValueFrom(this.serviceClient.getByFrequency(data));
-    console.log(`[SubscriptionServiceClient] Received subscriptions: ${JSON.stringify(raw)}`);
     const subscriptions = Array.isArray(raw?.subscriptions) ? raw.subscriptions : [];
     return { subscriptions };
   }
