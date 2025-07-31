@@ -6,6 +6,7 @@ import { Notification } from '../../../../../../libs/common/types/notification-r
 import { EmailDiTokens } from '../../secondary/di/di-tokens';
 import { EmailMicroserviceInterface } from '../../../../../../libs/common/interfaces/email-microservice.interface';
 import { EmailResponseInterface } from '../../../../../../libs/common/interfaces/emai-response.interface';
+import { EventPattern, Payload } from '@nestjs/microservices';
 
 @Controller()
 export class EmailGrpcController implements EmailMicroserviceInterface {
@@ -18,6 +19,20 @@ export class EmailGrpcController implements EmailMicroserviceInterface {
   async sendEmail(notification: Notification): Promise<EmailResponseInterface> {
     try {
       return await this.emailService.sendEmail(notification);
+    } catch (err) {
+      throw err instanceof RpcException
+        ? err
+        : new RpcException({
+            code: GrpcCode.INTERNAL_SERVER_ERROR,
+            message: 'Internal server error',
+          });
+    }
+  }
+
+  @EventPattern('digest.ready')
+  async handleDigest(@Payload() digest: Notification): Promise<EmailResponseInterface> {
+    try {
+      return await this.emailService.sendEmail(digest);
     } catch (err) {
       throw err instanceof RpcException
         ? err

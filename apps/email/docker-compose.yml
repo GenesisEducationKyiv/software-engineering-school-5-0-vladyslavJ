@@ -8,6 +8,9 @@ services:
       - .env
     ports:
       - '8888:8888'
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
 
 networks:
   default:

@@ -1,6 +1,6 @@
 import { Injectable, Inject, OnModuleInit } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
-import { lastValueFrom } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { GrpcToObservable } from '../../../../../../libs/common/types/observable';
 import { SubscriptionServiceClientInterface } from './interfaces/subscription-client.interface';
 import { SubscriptionDto } from '../../../../../../libs/common/dtos/subscription.dto';
@@ -24,14 +24,14 @@ export class SubscriptionServiceClient implements OnModuleInit, SubscriptionServ
   }
 
   async subscribe(req: SubscriptionDto): Promise<Empty> {
-    return lastValueFrom(this.serviceClient.subscribe(req));
+    return firstValueFrom(this.serviceClient.subscribe(req));
   }
 
   async confirm(req: { token: Token }): Promise<Empty> {
-    return lastValueFrom(this.serviceClient.confirm(req));
+    return firstValueFrom(this.serviceClient.confirm(req));
   }
 
   async unsubscribe(req: { token: Token }): Promise<Empty> {
-    return lastValueFrom(this.serviceClient.unsubscribe(req));
+    return firstValueFrom(this.serviceClient.unsubscribe(req));
   }
 }

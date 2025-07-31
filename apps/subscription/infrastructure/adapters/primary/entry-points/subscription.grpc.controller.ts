@@ -62,13 +62,23 @@ export class SubscriptionGrpcController implements SubscriptionMicroserviceInter
     }
   }
 
-  @GrpcMethod('SubscriptionService', 'GetSubscribersByFrequency')
-  async getSubscribersByFrequency(
-    dto: SubscriptionFrequency,
-  ): Promise<{ subscribers: Subscription[] }> {
+  @GrpcMethod('SubscriptionService', 'GetByFrequency')
+  async getByFrequency(dto: {
+    frequency: SubscriptionFrequency;
+  }): Promise<{ subscriptions: Subscription[] }> {
     try {
-      const subscribers = await this.subscriptionService.getByFrequency(dto);
-      return { subscribers };
+      const subscriptionsRaw = await this.subscriptionService.getByFrequency(dto.frequency);
+      const subscriptions = Array.isArray(subscriptionsRaw)
+        ? subscriptionsRaw.map((sub: Subscription) => ({
+            ...sub,
+            confirmationToken: sub.confirmation_token,
+            unsubscribeToken: sub.unsubscribe_token,
+            createdAt: sub.created_at,
+            updatedAt: sub.updated_at,
+          }))
+        : [];
+
+      return { subscriptions };
     } catch (error) {
       throw error instanceof RpcException
         ? error
