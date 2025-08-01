@@ -1,18 +1,27 @@
 import type { Config } from 'jest';
+import { resolve } from 'path';
+
+const rootDir = resolve(__dirname, '..');
 
 const config: Config = {
-  rootDir: '../../',
-  testMatch: ['<rootDir>/apps/email/tests/unit/**/*.spec.ts'],
+  rootDir,
+  preset: 'ts-jest',
+  testEnvironment: 'node',
+  testMatch: ['<rootDir>/unit/**/*.spec.ts'],
   moduleFileExtensions: ['js', 'json', 'ts'],
   transform: {
     '^.+\\.(t|j)s$': 'ts-jest',
   },
-  testEnvironment: 'node',
   moduleNameMapper: {
     '^@common/(.*)$': '<rootDir>/libs/common/$1',
   },
-  coverageDirectory: '<rootDir>/coverage/email',
-  collectCoverageFrom: ['<rootDir>/apps/email/**/*.ts'],
+  coverageDirectory: '<rootDir>/coverage/email/unit',
+  collectCoverageFrom: [
+    '../application/**/*.ts',
+    '../domain/**/*.ts',
+    '../infrastructure/**/*.ts',
+    '../main.ts',
+  ],
 };
 
 export default config;

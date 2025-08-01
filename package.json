@@ -18,7 +18,7 @@
     "lint": "eslint \"apps/**/*.{js,ts}\" \"libs/**/*.{js,ts}\"",
     "lint:fix": "eslint \"apps/**/*.{js,ts}\" \"libs/**/*.{js,ts}\" --fix",
     "format": "prettier . --write",
-    "test:unit": "jest --config tests/setup/jest-unit.config.ts",
+    "test:unit": "jest --config apps/email/tests/setup/jest-unit.config.ts",
     "test:int": "jest --config tests/setup/jest-integration.config.ts",
     "test:arch": "jest tests/architecture/dependency.test.ts",
     "test:email": "jest apps/email",
