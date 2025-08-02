@@ -2,32 +2,50 @@
 
 ## Overview
 
-This policy defines how long different types of logs are retained, and the procedures for log
-deletion and archiving. The policy is designed to balance operational needs, compliance, and storage
-efficiency, considering the use of log levels and sampling.
+This document describes the log retention policy for the application, specifying how long different
+types of logs are stored, when and how they are deleted or archived, and the rationale behind these
+decisions.
 
-## Retention Periods
+## Log Types and Retention Periods
 
-- **Error Logs:** Retain for 90 days.
-  - _Reason:_ Error logs are critical for incident investigation and post-mortem analysis.
-- **Warning Logs:** Retain for 30 days.
-  - _Reason:_ Useful for trend analysis and early detection of recurring issues.
-- **Info Logs:** Retain for 14 days (sampled if high volume).
-  - _Reason:_ Provide operational context; sampling reduces storage while preserving insight.
-- **Debug Logs:** Retain for 7 days (sampled aggressively).
-  - _Reason:_ Mainly used for troubleshooting; short retention and sampling minimize storage impact.
+### Error Logs
 
-## Log Deletion and Archiving
+- **Retention:** 90 days
+- **Rationale:** Error logs are critical for incident investigation, compliance, and post-mortem
+  analysis. Retaining them for 3 months ensures enough time to analyze and resolve issues, including
+  those discovered late.
 
-- **Automatic Deletion:** Logs older than their retention period are automatically deleted.
-- **Archiving:** Critical error logs (e.g., related to security or compliance) may be archived to
-  secure storage for up to 1 year.
-- **Sampling:** For high-volume logs (info/debug), only a representative subset is stored, based on
-  defined sampling rules.
+### Warn Logs
+
+- **Retention:** 30 days
+- **Rationale:** Warning logs help identify potential problems before they become critical. One
+  month is sufficient for trend analysis and proactive maintenance.
+
+### Info Logs (Sampled)
+
+- **Retention:** 14 days
+- **Rationale:** Info logs are sampled (~30%) to reduce volume. They are useful for auditing and
+  operational monitoring, but do not require long-term storage. Two weeks balances usefulness and
+  storage cost.
+
+### Debug Logs
+
+- **Retention:** 7 days
+- **Rationale:** Debug logs are mainly used for short-term troubleshooting and are only enabled in
+  specific environments. One week is enough for most debugging sessions.
+
+## Deletion and Archiving
+
+- **Automatic Deletion:** Logs older than their retention period are automatically deleted by
+  scheduled jobs (e.g., daily cleanup scripts or log management tools).
+- **Archiving:** Error logs older than 90 days may be archived to cold storage (e.g., cloud object
+  storage) if required by compliance or business needs. Other log types are not archived due to
+  lower value and higher volume.
 
 ## Rationale
 
-Longer retention for error logs ensures sufficient time for investigation and compliance. Shorter
-retention and sampling for less critical logs optimize storage and reduce costs. Archiving is
-reserved for logs with legal or audit requirements. This approach maintains operational visibility
-while ensuring efficient resource usage.
+The retention periods are chosen to balance:
+
+- **Incident response and compliance needs** (longer for error logs)
+- **Storage cost and performance** (shorter for info/debug logs, sampling for info)
+- **Operational usefulness** (enough time for trend analysis and troubleshooting)

@@ -1,49 +1,71 @@
 # Alerting Policy
 
-## Overview
+## 1. Alerts Based on Logging
 
-This document describes the alerting policy for the application, based on implemented logging (info,
-warn, error, debug levels), metrics, and log sampling. The goal is to ensure timely detection of
-issues and maintain high service reliability.
+### Error-level
 
-## Alert Types
+- **Description:** Detection of `error` level entries in logs.
+- **Alert:** If the number of errors within a certain period exceeds a threshold (e.g., >5 in 5
+  minutes).
+- **Why important:** Indicates critical failures in the service that require immediate attention.
 
-### 1. Error Rate Alerts
+### Warn-level
 
-- **Trigger:** High rate of `error` level logs within a short period (e.g., more than 5 errors per
-  minute).
-- **Reason:** Indicates possible service malfunction or critical failures.
-- **Importance:** Immediate attention required to prevent downtime or data loss.
+- **Description:** Detection of `warn` level entries.
+- **Alert:** If the number of warnings increases abnormally.
+- **Why important:** May signal potential issues that have not yet caused failures.
 
-### 2. Warning Rate Alerts
+### Debug-level
 
-- **Trigger:** Sudden spike in `warn` level logs (e.g., more than 20 warnings in 10 minutes).
-- **Reason:** May signal degraded performance, potential issues, or misconfigurations.
-- **Importance:** Early warning to investigate before escalation to errors.
+- **Description:** Used for detailed analysis, but not a trigger for alerts in production.
+- **Alert:** Not configured, but can be useful for incident investigation.
 
-### 3. Service Health Metrics
+### Info-level
 
-- **Trigger:** Key metrics (e.g., request latency, error rate, CPU/memory usage) exceed defined
-  thresholds.
-- **Reason:** Metrics provide quantitative insight into service health and performance.
-- **Importance:** Proactive detection of performance bottlenecks or resource exhaustion.
+- **Description:** Reflects major events (service start, successful operations). For `info` level,
+  log sampling is implemented: only about 30% of info logs are actually written, to reduce log
+  volume and storage costs.
+- **Alert:** Not configured, used for audit purposes. Sampling should be considered when analyzing
+  info-level logs, as not all events are logged.
 
-### 4. Log Sampling Anomalies
+## 2. Alerts Based on Metrics
 
-- **Trigger:** Unusual patterns detected in sampled logs (e.g., rare errors or unexpected debug
-  messages).
-- **Reason:** Sampling helps catch infrequent but critical issues without overwhelming the system.
-- **Importance:** Ensures rare but important events are not missed.
+### 2.1. Cache Metrics (Redis)
 
-### 5. Unavailability or Downtime
+- **redis_cache_error_total**  
+  **Alert:** >0 in 5 minutes  
+  **Why important:** Cache errors can lead to performance degradation or data loss.
 
-- **Trigger:** No logs or metrics received from a service for a defined period (e.g., 5 minutes).
-- **Reason:** May indicate a crash, network partition, or infrastructure failure.
-- **Importance:** Immediate action required to restore service.
+- **redis_cache_miss_total**  
+  **Alert:** Sharp increase in cache misses  
+  **Why important:** May indicate issues with cache population or changes in usage patterns.
 
-## Rationale
+- **redis_cache_hit_total**  
+  **Alert:** Decrease in cache hits  
+  **Why important:** Indicates inefficient cache operation.
 
-These alerts are chosen to balance between noise and actionable signals. Error and warning log
-alerts provide direct insight into application issues, while metrics-based alerts cover performance
-and resource health. Log sampling ensures that even with reduced log volume, critical anomalies are
-still detected. This layered approach helps maintain reliability and quick incident response.
+- **redis_cache_set_total**  
+  **Alert:** Abnormally low number of cache set operations  
+  **Why important:** May indicate problems with data updates.
+
+### 2.2. General Service Metrics
+
+- **HTTP/gRPC error rate (Counter/Histogram):**  
+  **Alert:** >5% errors of total requests  
+  **Why important:** Indicates issues in API operation.
+
+- **Latency (Histogram/Summary):**  
+  **Alert:** Exceeding latency threshold (e.g., 95th percentile >1 sec)  
+  **Why important:** Indicates performance degradation.
+
+- **Service availability (Gauge):**  
+  **Alert:** Service unavailable for >1 minute  
+  **Why important:** Indicates downtime.
+
+## 3. Argumentation
+
+- **Logging** allows for quick identification of the cause and impact of incidents.
+- **Metrics** enable automatic response to anomalies in service operation, increasing stability and
+  reliability.
+- **Alerts** for critical errors, cache and performance degradation are essential for maintaining
+  SLA and rapid incident response.

@@ -8,7 +8,7 @@ import { WeatherServiceClientDiTokens } from '../../secondary/weather/di/weather
 import { WeatherServiceClientInterface } from '../../secondary/weather/interfaces/weather-client.interface';
 import { SubscriptionServiceClientInterface } from '../../secondary/subscription/interfaces/subscription-client.interface';
 import { LoggerDiTokens } from '../../../../../../libs/modules/logger/di/di-tokens';
-import { ILogger } from '../../../../../../libs/modules/logger/interfaces/logger.interface';
+import { LoggerInterface } from '../../../../../../libs/modules/logger/interfaces/logger.interface';
 import { CronServiceInterface } from './interfaces/cron.interface';
 import { DigestPublisherInterface } from '../../secondary/digest-publisher/interfaces/digest-publisher.interface';
 import { DigestServiceDiTokens } from '../../secondary/digest-publisher/di/digest-publisher-di-tokens';
@@ -25,8 +25,10 @@ export class CronService implements CronServiceInterface {
     @Inject(DigestServiceDiTokens.DIGEST_PUBLISHER)
     private readonly digestPublisher: DigestPublisherInterface,
     @Inject(LoggerDiTokens.LOGGER)
-    private readonly logger: ILogger,
-  ) {}
+    private readonly logger: LoggerInterface,
+  ) {
+    this.logger.setContext(CronService.name);
+  }
 
   @Cron(CRON_FREQUENCY.HOURLY, { name: 'hourly-digest' })
   async handleHourlyWeatherDigestCron(): Promise<void> {

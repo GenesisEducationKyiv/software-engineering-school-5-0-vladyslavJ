@@ -1,10 +1,10 @@
 import { Injectable, Scope } from '@nestjs/common';
-import { ILogger } from './interfaces/logger.interface';
+import { LoggerInterface } from './interfaces/logger.interface';
 import * as fs from 'fs';
 import * as path from 'path';
 
 @Injectable({ scope: Scope.TRANSIENT })
-export class LoggerService implements ILogger {
+export class LoggerService implements LoggerInterface {
   private context = 'App';
   private logDir = path.resolve(process.cwd(), 'logs');
 

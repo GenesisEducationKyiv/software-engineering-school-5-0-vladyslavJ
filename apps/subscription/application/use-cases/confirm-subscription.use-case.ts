@@ -3,7 +3,7 @@ import { RpcException } from '@nestjs/microservices';
 import { QueryFailedError } from 'typeorm';
 import { SubscriptionRepositoryInterface } from '../../domain/ports/repositories/subscription-repository.port';
 import { LoggerDiTokens } from '../../../../libs/modules/logger/di/di-tokens';
-import { ILogger } from '../../../../libs/modules/logger/interfaces/logger.interface';
+import { LoggerInterface } from '../../../../libs/modules/logger/interfaces/logger.interface';
 import { GrpcCode } from '../../../../libs/common/enums/grpc-codes.enum';
 import { NotificationServiceClientInterface } from '../../infrastructure/adapters/secondary/notification/interfaces/notification-client.interface';
 import { NotificationServiceClientDiTokens } from '../../infrastructure/adapters/secondary/notification/di/notification-client-di-tokens';
@@ -20,8 +20,10 @@ export class ConfirmSubscriptionUseCase {
     @Inject(NotificationServiceClientDiTokens.NOTIFICATION_SERVICE_CLIENT)
     private readonly notificationClient: NotificationServiceClientInterface,
     @Inject(LoggerDiTokens.LOGGER)
-    private readonly logger: ILogger,
-  ) {}
+    private readonly logger: LoggerInterface,
+  ) {
+    this.logger.setContext(ConfirmSubscriptionUseCase.name);
+  }
 
   async confirm(confirmationToken: string): Promise<Empty> {
     const token = confirmationToken.trim();

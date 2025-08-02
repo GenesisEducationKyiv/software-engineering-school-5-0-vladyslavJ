@@ -14,6 +14,9 @@ for SERVICE in "${SERVICES[@]}"; do
   docker-compose -f "apps/$SERVICE/docker-compose.yml" down
 done
 
+echo "Stopping Prometheus & Grafana infrastructure..."
+docker-compose -f "docker-compose.monitoring.yml" down
+
 echo "Stopping RabbitMQ infrastructure..."
 docker-compose -f "docker-compose.rabbitmq.yml" down
 

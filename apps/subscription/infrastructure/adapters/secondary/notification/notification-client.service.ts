@@ -6,12 +6,16 @@ import { NotificationServiceClientInterface } from './interfaces/notification-cl
 import { GrpcClientDiTokens } from '../../../../../../libs/common/di/grpc-client-di-tokens';
 import { Notification } from '../../../../../../libs/common/types/notification-request.type';
 import { EmailResponseInterface } from '../../../../../../libs/common/interfaces/emai-response.interface';
+import { LoggerDiTokens } from '../../../../../../libs/modules/logger/di/di-tokens';
+import { LoggerInterface } from '../../../../../../libs/modules/logger/interfaces/logger.interface';
 
 @Injectable()
 export class NotificationServiceClient implements OnModuleInit, NotificationServiceClientInterface {
   constructor(
     @Inject(GrpcClientDiTokens.NOTIFICATION_SERVICE_GRPC_CLIENT)
     private readonly client: ClientGrpc,
+    @Inject(LoggerDiTokens.LOGGER)
+    private readonly logger: LoggerInterface,
   ) {}
   private serviceClient!: GrpcToObservable<NotificationServiceClientInterface>;
 
@@ -20,9 +24,17 @@ export class NotificationServiceClient implements OnModuleInit, NotificationServ
       this.client.getService<GrpcToObservable<NotificationServiceClientInterface>>(
         'NotificationService',
       );
+    this.logger.setContext(NotificationServiceClient.name);
+    this.logger.info('gRPC NotificationServiceClient initialized');
   }
 
   async sendNotification(data: Notification): Promise<EmailResponseInterface> {
-    return firstValueFrom(this.serviceClient.sendNotification(data));
+    this.logger.info(`sendNotification called for: ${data.email}`);
+    try {
+      return await firstValueFrom(this.serviceClient.sendNotification(data));
+    } catch (error) {
+      this.logger.error('Error sending notification via gRPC', error);
+      throw error;
+    }
   }
 }

@@ -5,7 +5,7 @@ import { IWeatherMapper } from './interfaces/weather-data-mapper.interface';
 import { Weather } from '../../../../../../libs/common/models/weather.model';
 import { IHttpClient } from '../http-client/interfaces/http-client.interface';
 import { ProviderDiTokens } from './di/di-tokens';
-import { ILogger } from '../../../../../../libs/modules/logger/interfaces/logger.interface';
+import { LoggerInterface } from '../../../../../../libs/modules/logger/interfaces/logger.interface';
 import { LoggerDiTokens } from '../../../../../../libs/modules/logger/di/di-tokens';
 import { HttpDiTokens } from '../http-client/di/di-tokens';
 import { IOpenWeatherMapErrorData } from './interfaces/open-weather-map-error-response.interface';
@@ -25,8 +25,10 @@ export class OpenWeatherMapAdapter implements IWeatherProviderPort {
     @Inject(ProviderDiTokens.OpenWeatherMapBaseUrl)
     private readonly baseUrl: string,
     @Inject(LoggerDiTokens.LOGGER)
-    private readonly logger: ILogger,
-  ) {}
+    private readonly logger: LoggerInterface,
+  ) {
+    this.logger.setContext(OpenWeatherMapAdapter.name);
+  }
 
   async fetchCurrentWeather(city: string): Promise<Weather> {
     const url = `${this.baseUrl}/weather?q=${encodeURIComponent(city)}&appid=${this.apiKey}&units=metric`;

@@ -8,7 +8,7 @@ import { ProviderDiTokens } from './di/di-tokens';
 import { LoggerModule } from '../../../../../../libs/modules/logger/logger.module';
 import { HttpClientModule } from '../http-client/http-client.module';
 import { ChainWeatherService } from './chain-weather.service';
-import { ILogger } from '../../../../../../libs/modules/logger/interfaces/logger.interface';
+import { LoggerInterface } from '../../../../../../libs/modules/logger/interfaces/logger.interface';
 import { LoggerDiTokens } from '../../../../../../libs/modules/logger/di/di-tokens';
 
 @Module({
@@ -59,7 +59,7 @@ import { LoggerDiTokens } from '../../../../../../libs/modules/logger/di/di-toke
       useFactory: (
         weatherApi: WeatherApiAdapter,
         openWeatherMap: OpenWeatherMapAdapter,
-        logger: ILogger,
+        logger: LoggerInterface,
       ) => new ChainWeatherService([weatherApi, openWeatherMap], logger),
       inject: [
         ProviderDiTokens.WEATHER_API_ADAPTER,
