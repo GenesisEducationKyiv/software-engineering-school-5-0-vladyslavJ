@@ -122,7 +122,25 @@ npm run stop:all
   - `proto/` — gRPC proto files for inter-service communication
 - `docs/` — documentation, system design, ADRs
 - `logs/` — all runtime logs are stored here (created at runtime)
+
 - `docker-compose.yml`, `Dockerfile`, `Dockerfile.dev` — for containerization
+
+## 📊 Monitoring & Observability
+
+- **Prometheus** is used to collect application metrics, including weather cache statistics.
+- **Grafana** is used for visualization and alerting based on these metrics.
+
+### Weather Cache Metrics (Redis)
+
+The following metrics are exposed for weather data caching:
+
+- `redis_cache_hit_total`: Total number of cache hits (requested key found in Redis)
+- `redis_cache_miss_total`: Total number of cache misses (requested key not found)
+- `redis_cache_error_total`: Total number of cache operation errors (get/set/del)
+- `redis_cache_set_total`: Total number of successful cache set/update operations
+
+These metrics can be visualized in Grafana dashboards and used to set up alerts (see
+`docs/observability/alerting-policy.md`).
 
 ## ℹ️ Notes
 
