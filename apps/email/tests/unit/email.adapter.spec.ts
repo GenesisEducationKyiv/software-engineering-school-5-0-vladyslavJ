@@ -4,6 +4,7 @@ import { EmailDiTokens } from '../../infrastructure/adapters/secondary/di/di-tok
 import { ConfigService } from '@nestjs/config';
 import { EmailTransportInterface } from '../../infrastructure/adapters/secondary/interfaces/email-transport.interface';
 import { EmailMessage } from '../../domain/models/email.model';
+import { LoggerDiTokens } from '../../../../libs/modules/logger/di/di-tokens';
 
 describe('EmailAdapter', () => {
   let adapter: EmailAdapter;
@@ -28,6 +29,16 @@ describe('EmailAdapter', () => {
         EmailAdapter,
         { provide: EmailDiTokens.EMAIL_CLIENT, useValue: transporter },
         { provide: ConfigService, useValue: configService },
+        {
+          provide: LoggerDiTokens.LOGGER,
+          useValue: {
+            setContext: jest.fn(),
+            info: jest.fn(),
+            warn: jest.fn(),
+            error: jest.fn(),
+            debug: jest.fn(),
+          },
+        },
       ],
     }).compile();
 

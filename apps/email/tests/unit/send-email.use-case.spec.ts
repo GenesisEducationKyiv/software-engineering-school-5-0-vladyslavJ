@@ -5,6 +5,7 @@ import { Notification } from '../../../../libs/common/types/notification-request
 import { EmailResponseInterface } from '../../../../libs/common/interfaces/emai-response.interface';
 import { EmailDiTokens } from '../../infrastructure/adapters/secondary/di/di-tokens';
 import { EmailType } from '../../../../libs/common/enums/email-type.enum';
+import { LoggerDiTokens } from '../../../../libs/modules/logger/di/di-tokens';
 
 describe('SendEmailUseCase', () => {
   let useCase: SendEmailUseCase;
@@ -16,6 +17,16 @@ describe('SendEmailUseCase', () => {
       providers: [
         SendEmailUseCase,
         { provide: EmailDiTokens.EMAIL_TRANSPORTER, useValue: emailSender },
+        {
+          provide: LoggerDiTokens.LOGGER,
+          useValue: {
+            setContext: jest.fn(),
+            info: jest.fn(),
+            warn: jest.fn(),
+            error: jest.fn(),
+            debug: jest.fn(),
+          },
+        },
       ],
     }).compile();
     useCase = module.get<SendEmailUseCase>(SendEmailUseCase);
