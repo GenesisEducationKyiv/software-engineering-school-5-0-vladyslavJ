@@ -15,6 +15,8 @@ import { DigestServiceDiTokens } from '../../secondary/digest-publisher/di/diges
 import CRON_FREQUENCY from '../../../../../../libs/common/utils/constants/cron.constant';
 import { SubscriptionModel } from '../../../../../../libs/common/models/subscription.model';
 
+const CHUNK_SIZE = 100;
+
 @Injectable()
 export class CronService implements CronServiceInterface {
   constructor(
@@ -38,21 +40,30 @@ export class CronService implements CronServiceInterface {
       return;
     }
 
-    const notifications: Notification[] = await Promise.all(
-      hourlySubscribers.map(async (sub: SubscriptionModel) => ({
-        type: EmailType.HOURLY_DIGEST,
-        email: sub.email,
-        data: {
-          city: sub.city,
-          date: new Date().toISOString(),
-          weather: await this.weatherService.getWeather({ city: sub.city }),
-          unsubscribeToken: sub.unsubscribeToken,
-        },
-      })),
+    this.logger.info(
+      `Found ${hourlySubscribers.length} subscribers for hourly digest. Processing in chunks of ${CHUNK_SIZE}...`,
     );
 
-    for (const notification of notifications) {
-      await this.digestPublisher.publishDigest(notification);
+    for (let i = 0; i < hourlySubscribers.length; i += CHUNK_SIZE) {
+      const chunk = hourlySubscribers.slice(i, i + CHUNK_SIZE);
+      this.logger.info(`Processing chunk ${i / CHUNK_SIZE + 1} with ${chunk.length} subscribers.`);
+
+      const notifications: Notification[] = await Promise.all(
+        chunk.map(async (sub: SubscriptionModel) => ({
+          type: EmailType.HOURLY_DIGEST,
+          email: sub.email,
+          data: {
+            city: sub.city,
+            date: new Date().toISOString(),
+            weather: await this.weatherService.getWeather({ city: sub.city }),
+            unsubscribeToken: sub.unsubscribeToken,
+          },
+        })),
+      );
+
+      await Promise.all(
+        notifications.map(notification => this.digestPublisher.publishDigest(notification)),
+      );
     }
   }
 
@@ -66,21 +77,30 @@ export class CronService implements CronServiceInterface {
       return;
     }
 
-    const notifications: Notification[] = await Promise.all(
-      dailySubscribers.map(async (sub: SubscriptionModel) => ({
-        type: EmailType.DAILY_DIGEST,
-        email: sub.email,
-        data: {
-          city: sub.city,
-          date: new Date().toISOString().slice(0, 10),
-          weather: await this.weatherService.getWeather({ city: sub.city }),
-          unsubscribeToken: sub.unsubscribeToken,
-        },
-      })),
+    this.logger.info(
+      `Found ${dailySubscribers.length} subscribers for daily digest. Processing in chunks of ${CHUNK_SIZE}...`,
     );
 
-    for (const notification of notifications) {
-      await this.digestPublisher.publishDigest(notification);
+    for (let i = 0; i < dailySubscribers.length; i += CHUNK_SIZE) {
+      const chunk = dailySubscribers.slice(i, i + CHUNK_SIZE);
+      this.logger.info(`Processing chunk ${i / CHUNK_SIZE + 1} with ${chunk.length} subscribers.`);
+
+      const notifications: Notification[] = await Promise.all(
+        chunk.map(async (sub: SubscriptionModel) => ({
+          type: EmailType.DAILY_DIGEST,
+          email: sub.email,
+          data: {
+            city: sub.city,
+            date: new Date().toISOString(),
+            weather: await this.weatherService.getWeather({ city: sub.city }),
+            unsubscribeToken: sub.unsubscribeToken,
+          },
+        })),
+      );
+
+      await Promise.all(
+        notifications.map(notification => this.digestPublisher.publishDigest(notification)),
+      );
     }
   }
 }
