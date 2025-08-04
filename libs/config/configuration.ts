@@ -16,4 +16,7 @@ export default () => ({
     host: process.env.SUBSCRIPTION_HOST,
     port: parseInt(process.env.SUBSCRIPTION_PORT ?? '4000', 10),
   },
+  logger: {
+    samplingRate: parseFloat(process.env.LOGGER_SAMPLING_RATE ?? '0.3'),
+  },
 });

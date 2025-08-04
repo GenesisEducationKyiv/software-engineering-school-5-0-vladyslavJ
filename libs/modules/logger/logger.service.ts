@@ -1,5 +1,6 @@
 import { Injectable, Scope } from '@nestjs/common';
 import { LoggerInterface } from './interfaces/logger.interface';
+import { ConfigService } from '@nestjs/config';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -7,11 +8,13 @@ import * as path from 'path';
 export class LoggerService implements LoggerInterface {
   private context = 'App';
   private logDir = path.resolve(process.cwd(), 'logs');
+  private samplingRate: number;
 
-  constructor() {
+  constructor(private readonly configService: ConfigService) {
     if (!fs.existsSync(this.logDir)) {
       fs.mkdirSync(this.logDir, { recursive: true });
     }
+    this.samplingRate = this.configService.get<number>('logger.samplingRate', 0.3);
   }
 
   setContext(context: string) {
@@ -23,7 +26,7 @@ export class LoggerService implements LoggerInterface {
   }
 
   private shouldLog(): boolean {
-    return Math.random() < 0.3; // 30% sampling
+    return Math.random() < this.samplingRate;
   }
 
   private writeToFile(level: string, message: string) {
