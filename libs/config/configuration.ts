@@ -17,6 +17,13 @@ export default () => ({
     port: parseInt(process.env.SUBSCRIPTION_PORT ?? '4000', 10),
   },
   logger: {
+    path: process.env.LOGGER_PATH,
     samplingRate: parseFloat(process.env.LOGGER_SAMPLING_RATE ?? '0.3'),
+    retention: {
+      error: parseInt(process.env.LOG_RETENTION_ERROR ?? '90', 10),
+      warn: parseInt(process.env.LOG_RETENTION_WARN ?? '30', 10),
+      info: parseInt(process.env.LOG_RETENTION_INFO ?? '14', 10),
+      debug: parseInt(process.env.LOG_RETENTION_DEBUG ?? '7', 10),
+    },
   },
 });
