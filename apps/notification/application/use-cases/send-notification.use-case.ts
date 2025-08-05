@@ -3,15 +3,27 @@ import { Notification } from '../../../../libs/common/types/notification-request
 import { EmailSenderInputPortInterface } from '../../../email/application/ports/email.port';
 import { EmailServiceClientDiTokens } from '../../infrastructure/adapters/secondary/email/di/email-client-di-tokens';
 import { EmailResponseInterface } from '../../../../libs/common/interfaces/emai-response.interface';
+import { LoggerDiTokens } from '../../../../libs/modules/logger/di/di-tokens';
+import { LoggerInterface } from '../../../../libs/modules/logger/interfaces/logger.interface';
 
 @Injectable()
 export class SendNotificationUseCase {
   constructor(
     @Inject(EmailServiceClientDiTokens.EMAIL_SERVICE_CLIENT)
     private readonly emailService: EmailSenderInputPortInterface,
-  ) {}
+    @Inject(LoggerDiTokens.LOGGER)
+    private readonly logger: LoggerInterface,
+  ) {
+    this.logger.setContext(SendNotificationUseCase.name);
+  }
 
   async execute(req: Notification): Promise<EmailResponseInterface> {
-    return await this.emailService.sendEmail(req);
+    this.logger.info(`sendNotification called for: ${req.email}`);
+    try {
+      return await this.emailService.sendEmail(req);
+    } catch (error) {
+      this.logger.error('Error sending notification', error);
+      throw error;
+    }
   }
 }

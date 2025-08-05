@@ -6,25 +6,33 @@ import { WeatherServiceClientInterface } from './interfaces/weather-client.inter
 import { Weather } from '../../../../../../libs/common/models/weather.model';
 import { GrpcClientDiTokens } from '../../../../../../libs/common/di/grpc-client-di-tokens';
 import { Empty } from '../../../../../../libs/common/types/empty.type';
+import { LoggerDiTokens } from '../../../../../../libs/modules/logger/di/di-tokens';
+import { LoggerInterface } from '../../../../../../libs/modules/logger/interfaces/logger.interface';
 
 @Injectable()
 export class WeatherServiceClient implements OnModuleInit, WeatherServiceClientInterface {
   constructor(
     @Inject(GrpcClientDiTokens.WEATHER_SERVICE_GRPC_CLIENT)
     private readonly client: ClientGrpc,
+    @Inject(LoggerDiTokens.LOGGER)
+    private readonly logger: LoggerInterface,
   ) {}
   private serviceClient!: GrpcToObservable<WeatherServiceClientInterface>;
 
   onModuleInit() {
     this.serviceClient =
       this.client.getService<GrpcToObservable<WeatherServiceClientInterface>>('WeatherService');
+    this.logger.setContext(WeatherServiceClient.name);
+    this.logger.info('gRPC WeatherServiceClient initialized');
   }
 
   async getWeather(req: { city: string }): Promise<Weather> {
+    this.logger.info(`getWeather called for city: ${req.city}`);
     return firstValueFrom(this.serviceClient.getWeather(req));
   }
 
   async getMetrics(req: Empty): Promise<{ metrics: string }> {
+    this.logger.info('getMetrics called');
     return firstValueFrom(this.serviceClient.getMetrics(req));
   }
 }

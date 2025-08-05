@@ -1,13 +1,18 @@
 import { Module, Global } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { LoggerService } from './logger.service';
 import { LoggerDiTokens } from './di/di-tokens';
 
 @Global()
 @Module({
+  imports: [ConfigModule],
   providers: [
     {
       provide: LoggerDiTokens.LOGGER,
-      useClass: LoggerService,
+      useFactory: (configService: ConfigService) => {
+        return new LoggerService(configService);
+      },
+      inject: [ConfigService],
     },
   ],
   exports: [LoggerDiTokens.LOGGER],

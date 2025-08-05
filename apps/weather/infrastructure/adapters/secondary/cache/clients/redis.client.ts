@@ -2,7 +2,7 @@ import { Injectable, Inject, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { createClient, RedisClientType } from 'redis';
 import { ICacheServiceClient } from '../interfaces/cache-client.interface';
-import { ILogger } from '../../../../../../../libs/modules/logger/interfaces/logger.interface';
+import { LoggerInterface } from '../../../../../../../libs/modules/logger/interfaces/logger.interface';
 import { LoggerDiTokens } from '../../../../../../../libs/modules/logger/di/di-tokens';
 
 @Injectable()
@@ -14,7 +14,7 @@ export class RedisClient implements ICacheServiceClient, OnModuleInit {
   constructor(
     private readonly configService: ConfigService,
     @Inject(LoggerDiTokens.LOGGER)
-    private readonly logger: ILogger,
+    private readonly logger: LoggerInterface,
   ) {
     const host = this.configService.get<string>('redis.host');
     const port = this.configService.get<number>('redis.port');
@@ -44,6 +44,8 @@ export class RedisClient implements ICacheServiceClient, OnModuleInit {
       this.isConnected = false;
       this.logger.warn('[REDIS] Connection closed');
     });
+
+    this.logger.setContext(RedisClient.name);
   }
 
   async onModuleInit() {

@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { SubscriptionDto } from '../../../../libs/common/dtos/subscription.dto';
 import { LoggerDiTokens } from '../../../../libs/modules/logger/di/di-tokens';
-import { ILogger } from '../../../../libs/modules/logger/interfaces/logger.interface';
+import { LoggerInterface } from '../../../../libs/modules/logger/interfaces/logger.interface';
 import { SubscriptionRepositoryInterface } from '../../domain/ports/repositories/subscription-repository.port';
 import { genToken } from '../../../../libs/common/utils/gen-token.util';
 import { RpcException } from '@nestjs/microservices';
@@ -24,8 +24,10 @@ export class SubscribeUseCase {
     @Inject(WeatherServiceClientDiTokens.WEATHER_SERVICE_CLIENT)
     private readonly weatherClient: WeatherServiceClientInterface,
     @Inject(LoggerDiTokens.LOGGER)
-    private readonly logger: ILogger,
-  ) {}
+    private readonly logger: LoggerInterface,
+  ) {
+    this.logger.setContext(SubscribeUseCase.name);
+  }
 
   async subscribe(req: SubscriptionDto): Promise<Empty> {
     const { email, city, frequency } = req;

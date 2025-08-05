@@ -6,7 +6,7 @@ import { Weather } from '../../../../../../libs/common/models/weather.model';
 import { IWeatherMapper } from './interfaces/weather-data-mapper.interface';
 import { ProviderDiTokens } from './di/di-tokens';
 import { HttpDiTokens } from '../http-client/di/di-tokens';
-import { ILogger } from '../../../../../../libs/modules/logger/interfaces/logger.interface';
+import { LoggerInterface } from '../../../../../../libs/modules/logger/interfaces/logger.interface';
 import { LoggerDiTokens } from '../../../../../../libs/modules/logger/di/di-tokens';
 import { IWeatherApiErrorData } from './interfaces/weather-api-error-response.interface';
 import { mapWeatherApiError } from './mappers/weather-api-error.mapper';
@@ -25,8 +25,10 @@ export class WeatherApiAdapter implements IWeatherProviderPort {
     @Inject(ProviderDiTokens.WeatherBaseUrl)
     private readonly baseUrl: string,
     @Inject(LoggerDiTokens.LOGGER)
-    private readonly logger: ILogger,
-  ) {}
+    private readonly logger: LoggerInterface,
+  ) {
+    this.logger.setContext(WeatherApiAdapter.name);
+  }
 
   async fetchCurrentWeather(city: string): Promise<Weather> {
     const url = `${this.baseUrl}/current.json?q=${encodeURIComponent(city)}&key=${this.apiKey}&aqi=no`;
