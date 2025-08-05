@@ -8,17 +8,21 @@ import { EmailResponseInterface } from '../../../../../libs/common/interfaces/em
 
 @Injectable()
 export class EmailAdapter implements EmailSenderPortInterface {
+  private readonly fromAddress: string;
+
   constructor(
     @Inject(EmailDiTokens.EMAIL_CLIENT)
     private readonly transporter: EmailTransportInterface,
     private readonly configService: ConfigService,
-  ) {}
+  ) {
+    this.fromAddress =
+      this.configService.get<string>('email.from') ?? 'Weather API <no-reply@weatherapi.app>';
+  }
 
   async send(data: EmailMessage): Promise<EmailResponseInterface> {
     try {
       await this.transporter.send({
-        from:
-          this.configService.get<string>('email.from') ?? 'Weather API <no-reply@weatherapi.app>',
+        from: this.fromAddress,
         ...data,
       });
     } catch (err) {

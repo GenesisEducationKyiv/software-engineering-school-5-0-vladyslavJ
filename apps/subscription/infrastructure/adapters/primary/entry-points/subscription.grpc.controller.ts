@@ -6,9 +6,9 @@ import { GrpcCode } from '../../../../../../libs/common/enums/grpc-codes.enum';
 import { SubscriptionFrequency } from '../../../../../../libs/common/enums/subscription-frequency.enum';
 import { Empty } from '../../../../../../libs/common/types/empty.type';
 import { SubscriptionDto } from '../../../../../../libs/common/dtos/subscription.dto';
-import { Subscription } from '../../../../../../libs/common/models/subscription.entity';
 import { SubscriptionRepoDiTokens } from '../../../database/di/di-tokens';
 import { SubscriptionMicroserviceInterface } from '../../../../../../libs/common/interfaces/subscription-microservice.interface';
+import { SubscriptionModel } from '../../../../../../libs/common/models/subscription.model';
 
 @Controller()
 export class SubscriptionGrpcController implements SubscriptionMicroserviceInterface {
@@ -62,13 +62,12 @@ export class SubscriptionGrpcController implements SubscriptionMicroserviceInter
     }
   }
 
-  @GrpcMethod('SubscriptionService', 'GetSubscribersByFrequency')
-  async getSubscribersByFrequency(
-    dto: SubscriptionFrequency,
-  ): Promise<{ subscribers: Subscription[] }> {
+  @GrpcMethod('SubscriptionService', 'GetByFrequency')
+  async getByFrequency(dto: {
+    frequency: SubscriptionFrequency;
+  }): Promise<{ subscriptions: SubscriptionModel[] }> {
     try {
-      const subscribers = await this.subscriptionService.getByFrequency(dto);
-      return { subscribers };
+      return { subscriptions: await this.subscriptionService.getByFrequency(dto.frequency) };
     } catch (error) {
       throw error instanceof RpcException
         ? error

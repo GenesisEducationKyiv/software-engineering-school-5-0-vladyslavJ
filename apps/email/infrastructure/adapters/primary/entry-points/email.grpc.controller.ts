@@ -6,6 +6,7 @@ import { Notification } from '../../../../../../libs/common/types/notification-r
 import { EmailDiTokens } from '../../secondary/di/di-tokens';
 import { EmailMicroserviceInterface } from '../../../../../../libs/common/interfaces/email-microservice.interface';
 import { EmailResponseInterface } from '../../../../../../libs/common/interfaces/emai-response.interface';
+import { EventPattern, Payload } from '@nestjs/microservices';
 
 @Controller()
 export class EmailGrpcController implements EmailMicroserviceInterface {
@@ -16,8 +17,17 @@ export class EmailGrpcController implements EmailMicroserviceInterface {
 
   @GrpcMethod('EmailService', 'SendEmail')
   async sendEmail(notification: Notification): Promise<EmailResponseInterface> {
+    return this.send(notification);
+  }
+
+  @EventPattern('digest.ready')
+  async handleDigest(@Payload() digest: Notification): Promise<EmailResponseInterface> {
+    return this.send(digest);
+  }
+
+  private async send(req: Notification): Promise<EmailResponseInterface> {
     try {
-      return await this.emailService.sendEmail(notification);
+      return await this.emailService.sendEmail(req);
     } catch (err) {
       throw err instanceof RpcException
         ? err

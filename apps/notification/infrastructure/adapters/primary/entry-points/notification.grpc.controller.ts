@@ -13,10 +13,4 @@ export class NotificationGrpcController {
     await this.notificationService.sendNotification(data);
     return {};
   }
-
-  @GrpcMethod('NotificationService', 'SendDigest')
-  async sendDigest(data: { digests: Notification[] }): Promise<Empty> {
-    await this.notificationService.sendDigest(data.digests);
-    return {};
-  }
 }

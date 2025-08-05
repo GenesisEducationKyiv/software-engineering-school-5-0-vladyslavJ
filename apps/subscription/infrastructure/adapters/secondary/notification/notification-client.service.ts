@@ -1,7 +1,7 @@
 import { Injectable, Inject, OnModuleInit } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
 import { GrpcToObservable } from '../../../../../../libs/common/types/observable';
-import { lastValueFrom } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { NotificationServiceClientInterface } from './interfaces/notification-client.interface';
 import { GrpcClientDiTokens } from '../../../../../../libs/common/di/grpc-client-di-tokens';
 import { Notification } from '../../../../../../libs/common/types/notification-request.type';
@@ -23,6 +23,6 @@ export class NotificationServiceClient implements OnModuleInit, NotificationServ
   }
 
   async sendNotification(data: Notification): Promise<EmailResponseInterface> {
-    return lastValueFrom(this.serviceClient.sendNotification(data));
+    return firstValueFrom(this.serviceClient.sendNotification(data));
   }
 }

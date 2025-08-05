@@ -12,6 +12,9 @@ SERVICES=(
 echo "Ensuring shared Docker network exists..."
 docker network inspect backend-net >/dev/null 2>&1 || docker network create backend-net
 
+echo "Starting RabbitMQ infrastructure..."
+docker-compose -f "docker-compose.rabbitmq.yml" up -d --build
+
 for SERVICE in "${SERVICES[@]}"; do
   echo "Starting $SERVICE..."
   docker-compose -f "apps/$SERVICE/docker-compose.yml" up -d --build

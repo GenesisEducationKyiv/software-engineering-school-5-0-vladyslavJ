@@ -1,33 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { AppDataSource } from '../config/dataSource';
 import { Subscription as SubscriptionEntity } from '../../../../../libs/common/models/subscription.entity';
+import { SubscriptionModel } from '../../../../../libs/common/models/subscription.model';
 import { FindOptionsWhere } from 'typeorm';
 import { SubscriptionRepositoryInterface } from '../../../domain/ports/repositories/subscription-repository.port';
 import { SubscriptionMapper } from '../mappers/subscription.mapper';
-
-export interface ISubscriptionMapper {
-  toDomain(entity: SubscriptionEntity): SubscriptionModel;
-  toPersistence(model: Partial<SubscriptionModel>): SubscriptionEntity;
-}
-
-export enum SubscriptionFrequency {
-  HOURLY = 'hourly',
-  DAILY = 'daily',
-}
-
-export type SubscriptionField = 'confirmation_token' | 'unsubscribe_token';
-
-export class SubscriptionModel {
-  id!: string;
-  email!: string;
-  city!: string;
-  frequency!: SubscriptionFrequency;
-  confirmed!: boolean;
-  confirmation_token!: string;
-  unsubscribe_token!: string;
-  created_at!: Date;
-  updated_at!: Date;
-}
+import { SubscriptionFrequency } from '../../../../../libs/common/enums/subscription-frequency.enum';
+import { SubscriptionField } from '../../../../../libs/common/types/subscription-fields.type';
 
 @Injectable()
 export class SubscriptionRepository implements SubscriptionRepositoryInterface {

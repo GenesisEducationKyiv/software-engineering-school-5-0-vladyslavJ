@@ -6,6 +6,9 @@ services:
     container_name: notification
     env_file:
       - .env
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
     ports:
       - '6600:6600'
 

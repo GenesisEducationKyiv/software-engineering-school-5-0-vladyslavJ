@@ -50,8 +50,8 @@ export class SubscribeUseCase {
       email: email,
       city: city,
       frequency: frequency,
-      confirmation_token: confirmationToken,
-      unsubscribe_token: unsubscribeToken,
+      confirmationToken: confirmationToken,
+      unsubscribeToken: unsubscribeToken,
     });
     this.logger.info(`Subscription created`);
 
