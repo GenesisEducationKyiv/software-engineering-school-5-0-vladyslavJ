@@ -3,7 +3,7 @@ import nodemailer, { Transporter } from 'nodemailer';
 import type SMTPTransport from 'nodemailer/lib/smtp-transport';
 import { EmailTransportInterface } from '../interfaces/email-transport.interface';
 import { LoggerDiTokens } from '../../../../../../libs/modules/logger/di/di-tokens';
-import { ILogger } from '../../../../../../libs/modules/logger/interfaces/logger.interface';
+import { LoggerInterface } from '../../../../../../libs/modules/logger/interfaces/logger.interface';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
@@ -12,7 +12,7 @@ export class NodemailerTransport implements EmailTransportInterface {
   constructor(
     private readonly configService: ConfigService,
     @Inject(LoggerDiTokens.LOGGER)
-    private readonly logger: ILogger,
+    private readonly logger: LoggerInterface,
   ) {
     const host = this.configService.get<string>('email.host');
     const port = this.configService.get<number>('email.port');
@@ -28,18 +28,19 @@ export class NodemailerTransport implements EmailTransportInterface {
 
     this.transporter = nodemailer.createTransport(smtpOptions);
     this.verifyWithRetry().catch(() =>
-      this.logger.error('[MAIL] SMTP not available, emails will not be sent.'),
+      this.logger.error('SMTP not available, emails will not be sent.'),
     );
+    this.logger.setContext(NodemailerTransport.name);
   }
 
   private async verifyWithRetry(attempts = 5, delayMs = 5_000) {
     for (let i = 1; i <= attempts; i++) {
       try {
         await this.transporter.verify();
-        this.logger.info(`[MAIL] SMTP connection is OK (try ${i})`);
+        this.logger.info(`SMTP connection is OK (try ${i})`);
         return;
       } catch (err) {
-        this.logger.error(`[MAIL] SMTP connection failed (try ${i})`, err);
+        this.logger.error(`SMTP connection failed (try ${i})`, err);
         if (i === attempts) throw err;
         await new Promise(r => setTimeout(r, delayMs));
       }

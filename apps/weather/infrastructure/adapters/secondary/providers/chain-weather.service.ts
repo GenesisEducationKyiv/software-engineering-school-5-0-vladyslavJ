@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@nestjs/common';
 import { IWeatherProviderPort } from '../../../../domain/ports/providers/weather-provider.port';
 import { Weather } from '../../../../../../libs/common/models/weather.model';
 import { LoggerDiTokens } from '../../../../../../libs/modules/logger/di/di-tokens';
-import { ILogger } from '../../../../../../libs/modules/logger/interfaces/logger.interface';
+import { LoggerInterface } from '../../../../../../libs/modules/logger/interfaces/logger.interface';
 import { RpcException } from '@nestjs/microservices';
 import { GrpcCode } from '../../../../../../libs/common/enums/grpc-codes.enum';
 
@@ -11,8 +11,10 @@ export class ChainWeatherService implements IWeatherProviderPort {
   constructor(
     private readonly providers: IWeatherProviderPort[],
     @Inject(LoggerDiTokens.LOGGER)
-    private readonly logger: ILogger,
-  ) {}
+    private readonly logger: LoggerInterface,
+  ) {
+    this.logger.setContext(ChainWeatherService.name);
+  }
 
   async fetchCurrentWeather(city: string): Promise<Weather> {
     for (const provider of this.providers) {

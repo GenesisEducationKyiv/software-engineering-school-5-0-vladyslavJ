@@ -4,7 +4,7 @@ import { AppModule } from './modules/app.module';
 import { GrpcExceptionFilter } from './common/filters/grpc-exception.filter';
 import setupApp from './common/utils/setup-app';
 import { LoggerDiTokens } from '../../../libs/modules/logger/di/di-tokens';
-import { ILogger } from '../../../libs/modules/logger/interfaces/logger.interface';
+import { LoggerInterface } from '../../../libs/modules/logger/interfaces/logger.interface';
 import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
@@ -24,8 +24,9 @@ async function bootstrap() {
   const port = configService.getOrThrow<number>('port');
 
   await app.listen(port);
-  const logger = app.get<ILogger>(LoggerDiTokens.LOGGER);
-  logger.info(`[API-GATEWAY] started on http://localhost:${port}`);
+  const logger = await app.resolve<LoggerInterface>(LoggerDiTokens.LOGGER);
+  logger.setContext('API-GATEWAY');
+  logger.info(`Started on http://localhost:${port}`);
 }
 
 void bootstrap();
