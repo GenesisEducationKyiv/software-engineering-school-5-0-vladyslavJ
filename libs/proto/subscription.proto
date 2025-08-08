@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package subscription;
+
+service SubscriptionService {
+  rpc Subscribe (SubscriptionRequest) returns (TokenResponse);
+  rpc Confirm (TokenRequest) returns (Empty);
+  rpc Unsubscribe (TokenRequest) returns (Empty);
+  rpc GetByFrequency (GetByFrequencyRequest) returns (GetByFrequencyResponse);
+}
+
+message SubscriptionRequest {
+  string email = 1;
+  string city = 2;
+  string frequency = 3;
+}
+
+message TokenRequest {
+  string token = 1;
+}
+
+message TokenResponse {
+  string token = 1;
+}
+
+message Empty {}
+
+message GetByFrequencyRequest {
+  string frequency = 1;
+}
+
+message Subscription {
+  string id = 1;
+  string email = 2;
+  string city = 3;
+  string frequency = 4;
+  bool confirmed = 5;
+  string confirmationToken = 6;
+  string unsubscribeToken = 7;
+  string createdAt = 8;
+  string updatedAt = 9;
+}
+
+message GetByFrequencyResponse {
+  repeated Subscription subscriptions = 1;
+}

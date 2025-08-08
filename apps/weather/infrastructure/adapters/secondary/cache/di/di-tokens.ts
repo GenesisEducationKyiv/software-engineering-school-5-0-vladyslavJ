@@ -1,0 +1,5 @@
+export const CacheDiTokens = {
+  WEATHER_CACHE_SERVICE: Symbol.for('WEATHER_CACHE_SERVICE'),
+  REDIS_CACHE_CLIENT: Symbol.for('REDIS_CACHE_CLIENT'),
+  WEATHER_TTL: Symbol.for('WEATHER_TIMEOUT'),
+};
