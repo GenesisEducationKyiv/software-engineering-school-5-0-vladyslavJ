@@ -24,7 +24,7 @@ export class RedisClient implements ICacheServiceClient, OnModuleInit {
       url: `redis://${host}:${port}`,
       socket: {
         reconnectStrategy: retries => {
-          this.logger.warn(`[REDIS] Reconnecting... (attempt: ${retries + 1})`);
+          this.logger.warn(`Reconnecting... (attempt: ${retries + 1})`);
           return Math.min(retries * 50, 5000);
         },
       },
@@ -32,17 +32,17 @@ export class RedisClient implements ICacheServiceClient, OnModuleInit {
 
     this.client.on('connect', () => {
       this.isConnected = true;
-      this.logger.info('[REDIS] Connected successfully');
+      this.logger.info('Connected successfully');
     });
 
     this.client.on('error', err => {
       this.isConnected = false;
-      this.logger.error('[REDIS] Error', err);
+      this.logger.error('Error', err);
     });
 
     this.client.on('end', () => {
       this.isConnected = false;
-      this.logger.warn('[REDIS] Connection closed');
+      this.logger.warn('Connection closed');
     });
 
     this.logger.setContext(RedisClient.name);
@@ -54,7 +54,7 @@ export class RedisClient implements ICacheServiceClient, OnModuleInit {
 
   async get(key: string): Promise<string | null> {
     if (!this.isConnected) {
-      this.logger.warn(`[REDIS] GET call aborted, no connection. Key: ${key}`);
+      this.logger.warn(`GET call aborted, no connection. Key: ${key}`);
       return null;
     }
     return this.client.get(key);
@@ -62,7 +62,7 @@ export class RedisClient implements ICacheServiceClient, OnModuleInit {
 
   async set(key: string, value: string, ttl?: number): Promise<void> {
     if (!this.isConnected) {
-      this.logger.warn(`[REDIS] SET call aborted, no connection. Key: ${key}`);
+      this.logger.warn(`SET call aborted, no connection. Key: ${key}`);
       return;
     }
     const finalTtl = ttl ?? this.defaultTtl;
@@ -71,7 +71,7 @@ export class RedisClient implements ICacheServiceClient, OnModuleInit {
 
   async del(key: string): Promise<void> {
     if (!this.isConnected) {
-      this.logger.warn(`[REDIS] DEL call aborted, no connection. Key: ${key}`);
+      this.logger.warn(`DEL call aborted, no connection. Key: ${key}`);
       return;
     }
     await this.client.del(key);

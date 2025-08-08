@@ -9,6 +9,8 @@ import { SubscriptionDto } from '../../../../../../libs/common/dtos/subscription
 import { SubscriptionRepoDiTokens } from '../../../database/di/di-tokens';
 import { SubscriptionMicroserviceInterface } from '../../../../../../libs/common/interfaces/subscription-microservice.interface';
 import { SubscriptionModel } from '../../../../../../libs/common/models/subscription.model';
+import { GRPC_SERVICES } from '../../../../../../libs/common/constants/grpc-service.const';
+import { GRPC_METHODS } from '../../../../../../libs/common/constants/grpc-method.const';
 
 @Controller()
 export class SubscriptionGrpcController implements SubscriptionMicroserviceInterface {
@@ -17,7 +19,7 @@ export class SubscriptionGrpcController implements SubscriptionMicroserviceInter
     private readonly subscriptionService: SubscriptionInputPortInterface,
   ) {}
 
-  @GrpcMethod('SubscriptionService', 'Subscribe')
+  @GrpcMethod(GRPC_SERVICES.SUBSCRIPTION, GRPC_METHODS.SUBSCRIPTION.SUBSCRIBE)
   async subscribe(dto: SubscriptionDto): Promise<Empty> {
     try {
       await this.subscriptionService.subscribe(dto);
@@ -32,7 +34,7 @@ export class SubscriptionGrpcController implements SubscriptionMicroserviceInter
     }
   }
 
-  @GrpcMethod('SubscriptionService', 'Confirm')
+  @GrpcMethod(GRPC_SERVICES.SUBSCRIPTION, GRPC_METHODS.SUBSCRIPTION.CONFIRM)
   async confirm(req: { token: Token }): Promise<Empty> {
     try {
       await this.subscriptionService.confirm(req.token);
@@ -47,7 +49,7 @@ export class SubscriptionGrpcController implements SubscriptionMicroserviceInter
     }
   }
 
-  @GrpcMethod('SubscriptionService', 'Unsubscribe')
+  @GrpcMethod(GRPC_SERVICES.SUBSCRIPTION, GRPC_METHODS.SUBSCRIPTION.UNSUBSCRIBE)
   async unsubscribe(req: { token: Token }): Promise<Empty> {
     try {
       await this.subscriptionService.unsubscribe(req.token);
@@ -62,7 +64,7 @@ export class SubscriptionGrpcController implements SubscriptionMicroserviceInter
     }
   }
 
-  @GrpcMethod('SubscriptionService', 'GetByFrequency')
+  @GrpcMethod(GRPC_SERVICES.SUBSCRIPTION, GRPC_METHODS.SUBSCRIPTION.GET_BY_FREQUENCY)
   async getByFrequency(dto: {
     frequency: SubscriptionFrequency;
   }): Promise<{ subscriptions: SubscriptionModel[] }> {
