@@ -7,7 +7,9 @@ import { EmailDiTokens } from '../../secondary/di/di-tokens';
 import { EmailMicroserviceInterface } from '../../../../../../libs/common/interfaces/email-microservice.interface';
 import { EmailResponseInterface } from '../../../../../../libs/common/interfaces/emai-response.interface';
 import { EventPattern, Payload } from '@nestjs/microservices';
-
+import { GRPC_SERVICES } from '../../../../../../libs/common/constants/grpc-service.const';
+import { GRPC_METHODS } from '../../../../../../libs/common/constants/grpc-method.const';
+import { EVENT_PATTERNS } from '../../../../../../libs/common/constants/events.const';
 @Controller()
 export class EmailGrpcController implements EmailMicroserviceInterface {
   constructor(
@@ -15,12 +17,12 @@ export class EmailGrpcController implements EmailMicroserviceInterface {
     private readonly emailService: EmailService,
   ) {}
 
-  @GrpcMethod('EmailService', 'SendEmail')
+  @GrpcMethod(GRPC_SERVICES.EMAIL, GRPC_METHODS.EMAIL.SEND_EMAIL)
   async sendEmail(notification: Notification): Promise<EmailResponseInterface> {
     return this.send(notification);
   }
 
-  @EventPattern('digest.ready')
+  @EventPattern(EVENT_PATTERNS.DIGEST_READY)
   async handleDigest(@Payload() digest: Notification): Promise<EmailResponseInterface> {
     return this.send(digest);
   }

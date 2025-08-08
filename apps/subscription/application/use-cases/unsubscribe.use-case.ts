@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { NotificationServiceClientInterface } from '../../infrastructure/adapters/secondary/notification/interfaces/notification-client.interface';
-import { NotificationServiceClientDiTokens } from '../../infrastructure/adapters/secondary/notification/di/notification-client-di-tokens';
+import { NotificationServiceClientDiTokens } from '../../../../libs/common/di/notification-di-tokens';
 import { LoggerDiTokens } from '../../../../libs/modules/logger/di/di-tokens';
 import { LoggerInterface } from '../../../../libs/modules/logger/interfaces/logger.interface';
 import { SubscriptionRepositoryInterface } from '../../domain/ports/repositories/subscription-repository.port';

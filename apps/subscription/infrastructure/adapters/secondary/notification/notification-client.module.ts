@@ -3,7 +3,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { GrpcClientDiTokens } from '../../../../../../libs/common/di/grpc-client-di-tokens';
 import { ConfigService } from '@nestjs/config';
 import { NotificationServiceClient } from './notification-client.service';
-import { NotificationServiceClientDiTokens } from './di/notification-client-di-tokens';
+import { NotificationServiceClientDiTokens } from '../../../../../../libs/common/di/notification-di-tokens';
 import { GRPC_PACKAGES } from '../../../../../../libs/common/constants/grpc-package.const';
 
 @Module({

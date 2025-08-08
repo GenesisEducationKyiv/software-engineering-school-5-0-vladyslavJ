@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ConfigService } from '@nestjs/config';
 import { WeatherServiceClient } from './weather-client.service';
-import { WeatherServiceClientDiTokens } from './di/weather-client-di-tokens';
+import { WeatherServiceClientDiTokens } from '../../../../../../libs/common/di/weather-di-tokens';
 import { GrpcClientDiTokens } from '../../../../../../libs/common/di/grpc-client-di-tokens';
 import { GRPC_PACKAGES } from '../../../../../../libs/common/constants/grpc-package.const';
 

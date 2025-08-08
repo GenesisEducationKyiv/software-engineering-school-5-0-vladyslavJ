@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Notification } from '../../../../libs/common/types/notification-request.type';
 import { EmailSenderInputPortInterface } from '../../../email/application/ports/email.port';
-import { EmailServiceClientDiTokens } from '../../infrastructure/adapters/secondary/email/di/email-client-di-tokens';
+import { EmailServiceClientDiTokens } from '../../../../libs/common/di/email-di-tokens';
 import { EmailResponseInterface } from '../../../../libs/common/interfaces/emai-response.interface';
 import { LoggerDiTokens } from '../../../../libs/modules/logger/di/di-tokens';
 import { LoggerInterface } from '../../../../libs/modules/logger/interfaces/logger.interface';

@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { SubscriptionServiceClientDiTokens } from './di/subscription-client-di-tokens';
+import { SubscriptionServiceClientDiTokens } from '../../../../../../libs/common/di/subscription-di-tokens';
 import { GrpcClientDiTokens } from '../../../../../../libs/common/di/grpc-client-di-tokens';
 import { ConfigService } from '@nestjs/config';
 import { SubscriptionServiceClient } from './subscription-client.service';

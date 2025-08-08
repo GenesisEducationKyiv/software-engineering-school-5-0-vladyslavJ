@@ -5,6 +5,8 @@ import { WeatherMicroserviceInterface } from '../../../../../../libs/common/inte
 import { MetricsDiTokens } from '../../../../../../libs/modules/metrics/di/di-tokens';
 import { CacheMetricServiceInterface } from '../../../../../../libs/modules/metrics/interfaces/cache-metric-service.interface';
 import { Empty } from '../../../../../../libs/common/types/empty.type';
+import { GRPC_SERVICES } from '../../../../../../libs/common/constants/grpc-service.const';
+import { GRPC_METHODS } from '../../../../../../libs/common/constants/grpc-method.const';
 
 @Controller()
 export class WeatherGrpcController implements WeatherMicroserviceInterface {
@@ -14,7 +16,7 @@ export class WeatherGrpcController implements WeatherMicroserviceInterface {
     private readonly cacheMetricsService: CacheMetricServiceInterface,
   ) {}
 
-  @GrpcMethod('WeatherService', 'GetWeather')
+  @GrpcMethod(GRPC_SERVICES.WEATHER, GRPC_METHODS.WEATHER.GET_WEATHER)
   async getWeather(req: { city: string }) {
     try {
       return await this.weatherService.getWeather(req.city);
@@ -29,7 +31,7 @@ export class WeatherGrpcController implements WeatherMicroserviceInterface {
     }
   }
 
-  @GrpcMethod('WeatherService', 'GetMetrics')
+  @GrpcMethod(GRPC_SERVICES.WEATHER, GRPC_METHODS.WEATHER.GET_METRICS)
   async getMetrics(req: Empty) {
     try {
       const metrics = await this.cacheMetricsService.getMetrics(req);

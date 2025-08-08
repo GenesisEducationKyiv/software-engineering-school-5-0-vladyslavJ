@@ -3,7 +3,7 @@ import { SubscriptionDto } from '../../../../../libs/common/dtos/subscription.dt
 import { SubscriptionServiceClientInterface } from './subscription-client/interfaces/subscription-client.interface';
 import { SubscriptionServiceInterfaces } from './interfaces/subscription.interface';
 import { Token } from '../../../../../libs/common/types/token.type';
-import { SubscriptionServiceClientDiTokens } from './subscription-client/di/subscription-client-di-tokens';
+import { SubscriptionServiceClientDiTokens } from '../../../../../libs/common/di/subscription-di-tokens';
 
 @Injectable()
 export class SubscriptionService implements SubscriptionServiceInterfaces {

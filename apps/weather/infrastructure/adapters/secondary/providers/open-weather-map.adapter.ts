@@ -30,8 +30,16 @@ export class OpenWeatherMapAdapter implements IWeatherProviderPort {
     this.logger.setContext(OpenWeatherMapAdapter.name);
   }
 
+  private buildExternalWeatherApiUrl(city: string): string {
+    const url = new URL(`${this.baseUrl}/weather`);
+    url.searchParams.set('q', city);
+    url.searchParams.set('appid', this.apiKey);
+    url.searchParams.set('units', 'metric');
+    return url.toString();
+  }
+
   async fetchCurrentWeather(city: string): Promise<Weather> {
-    const url = `${this.baseUrl}/weather?q=${encodeURIComponent(city)}&appid=${this.apiKey}&units=metric`;
+    const url = this.buildExternalWeatherApiUrl(city);
     try {
       const response = await this.httpClient.get(url);
       const data = await response.json();

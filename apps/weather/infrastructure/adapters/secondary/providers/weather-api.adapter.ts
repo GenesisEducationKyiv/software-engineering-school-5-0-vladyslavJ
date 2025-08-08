@@ -30,8 +30,16 @@ export class WeatherApiAdapter implements IWeatherProviderPort {
     this.logger.setContext(WeatherApiAdapter.name);
   }
 
+  private buildExternalWeatherApiUrl(city: string): string {
+    const url = new URL(`${this.baseUrl}/current.json`);
+    url.searchParams.set('q', city);
+    url.searchParams.set('key', this.apiKey);
+    url.searchParams.set('aqi', 'no');
+    return url.toString();
+  }
+
   async fetchCurrentWeather(city: string): Promise<Weather> {
-    const url = `${this.baseUrl}/current.json?q=${encodeURIComponent(city)}&key=${this.apiKey}&aqi=no`;
+    const url = this.buildExternalWeatherApiUrl(city);
     try {
       const response = await this.httpClient.get(url);
       const data = await response.json();
