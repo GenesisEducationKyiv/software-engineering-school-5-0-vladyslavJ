@@ -4,7 +4,7 @@ import { Notification } from '../../../../../../libs/common/types/notification-r
 import { SubscriptionFrequency } from '../../../../../../libs/common/enums/subscription-frequency.enum';
 import { EmailType } from '../../../../../../libs/common/enums/email-type.enum';
 import { SubscriptionServiceClientDiTokens } from '../../../../../../libs/common/di/subscription-di-tokens';
-import { WeatherServiceClientDiTokens } from '../../secondary/weather/di/weather-client-di-tokens';
+import { WeatherServiceClientDiTokens } from '../../../../../../libs/common/di/weather-di-tokens';
 import { WeatherServiceClientInterface } from '../../secondary/weather/interfaces/weather-client.interface';
 import { SubscriptionServiceClientInterface } from '../../secondary/subscription/interfaces/subscription-client.interface';
 import { LoggerDiTokens } from '../../../../../../libs/modules/logger/di/di-tokens';

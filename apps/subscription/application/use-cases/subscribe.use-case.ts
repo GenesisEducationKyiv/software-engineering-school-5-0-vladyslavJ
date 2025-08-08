@@ -10,8 +10,8 @@ import { NotificationServiceClientInterface } from '../../infrastructure/adapter
 import { EmailType } from '../../../../libs/common/enums/email-type.enum';
 import { Empty } from '../../../../libs/common/types/empty.type';
 import { SubscriptionRepoDiTokens } from '../../infrastructure/database/di/di-tokens';
-import { NotificationServiceClientDiTokens } from '../../infrastructure/adapters/secondary/notification/di/notification-client-di-tokens';
-import { WeatherServiceClientDiTokens } from '../../infrastructure/adapters/secondary/weather/di/weather-client-di-tokens';
+import { NotificationServiceClientDiTokens } from '../../../../libs/common/di/notification-di-tokens';
+import { WeatherServiceClientDiTokens } from '../../../../libs/common/di/weather-di-tokens';
 import { WeatherServiceClientInterface } from '../../infrastructure/adapters/secondary/weather/interfaces/weather-client.interface';
 
 @Injectable()

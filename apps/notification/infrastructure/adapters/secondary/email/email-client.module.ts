@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { GrpcClientDiTokens } from '../../../../../../libs/common/di/grpc-client-di-tokens';
 import { ConfigService } from '@nestjs/config';
-import { EmailServiceClientDiTokens } from './di/email-client-di-tokens';
+import { EmailServiceClientDiTokens } from '../../../../../../libs/common/di/email-di-tokens';
 import { EmailServiceClient } from './email-client.service';
 import { GRPC_PACKAGES } from '../../../../../../libs/common/constants/grpc-package.const';
 

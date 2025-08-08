@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { WeatherServiceClientDiTokens } from './di/weather-client-di-tokens';
+import { WeatherServiceClientDiTokens } from '../../../../../../libs/common/di/weather-di-tokens';
 import { GrpcClientDiTokens } from '../../../../../../libs/common/di/grpc-client-di-tokens';
 import { ConfigService } from '@nestjs/config';
 import { WeatherServiceClient } from './weather-client.service';

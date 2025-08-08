@@ -6,7 +6,7 @@ import { LoggerDiTokens } from '../../../../libs/modules/logger/di/di-tokens';
 import { LoggerInterface } from '../../../../libs/modules/logger/interfaces/logger.interface';
 import { GrpcCode } from '../../../../libs/common/enums/grpc-codes.enum';
 import { NotificationServiceClientInterface } from '../../infrastructure/adapters/secondary/notification/interfaces/notification-client.interface';
-import { NotificationServiceClientDiTokens } from '../../infrastructure/adapters/secondary/notification/di/notification-client-di-tokens';
+import { NotificationServiceClientDiTokens } from '../../../../libs/common/di/notification-di-tokens';
 import { EmailType } from '../../../../libs/common/enums/email-type.enum';
 import { Empty } from '../../../../libs/common/types/empty.type';
 import { SubscriptionRepoDiTokens } from '../../infrastructure/database/di/di-tokens';
