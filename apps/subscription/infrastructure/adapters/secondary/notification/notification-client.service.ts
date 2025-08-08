@@ -8,7 +8,7 @@ import { Notification } from '../../../../../../libs/common/types/notification-r
 import { EmailResponseInterface } from '../../../../../../libs/common/interfaces/emai-response.interface';
 import { LoggerDiTokens } from '../../../../../../libs/modules/logger/di/di-tokens';
 import { LoggerInterface } from '../../../../../../libs/modules/logger/interfaces/logger.interface';
-
+import { GRPC_SERVICES } from '../../../../../../libs/common/constants/grpc-service.const';
 @Injectable()
 export class NotificationServiceClient implements OnModuleInit, NotificationServiceClientInterface {
   constructor(
@@ -20,10 +20,9 @@ export class NotificationServiceClient implements OnModuleInit, NotificationServ
   private serviceClient!: GrpcToObservable<NotificationServiceClientInterface>;
 
   onModuleInit() {
-    this.serviceClient =
-      this.client.getService<GrpcToObservable<NotificationServiceClientInterface>>(
-        'NotificationService',
-      );
+    this.serviceClient = this.client.getService<
+      GrpcToObservable<NotificationServiceClientInterface>
+    >(GRPC_SERVICES.NOTIFICATION);
     this.logger.setContext(NotificationServiceClient.name);
     this.logger.info('gRPC NotificationServiceClient initialized');
   }

@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { WeatherServiceClient } from './weather-client.service';
 import { WeatherServiceClientDiTokens } from './di/weather-client-di-tokens';
 import { GrpcClientDiTokens } from '../../../../../../libs/common/di/grpc-client-di-tokens';
+import { GRPC_PACKAGES } from '../../../../../../libs/common/constants/grpc-package.const';
 
 @Module({
   imports: [
@@ -14,7 +15,7 @@ import { GrpcClientDiTokens } from '../../../../../../libs/common/di/grpc-client
           transport: Transport.GRPC,
           options: {
             url: `${config.get('weather.host')}:${config.get('weather.port')}`,
-            package: 'weather',
+            package: GRPC_PACKAGES.WEATHER,
             protoPath: 'libs/proto/weather.proto',
           },
         }),

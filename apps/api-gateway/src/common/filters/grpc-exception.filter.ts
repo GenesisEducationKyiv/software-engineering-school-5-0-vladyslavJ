@@ -1,18 +1,7 @@
 import { ExceptionFilter, Catch, ArgumentsHost, HttpStatus } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import { GrpcCode } from '../../../../../libs/common/enums/grpc-codes.enum';
-
-type GrpcError = {
-  code?: number;
-  details?: string;
-  message?: string;
-  metadata?: unknown;
-  getError?: () => {
-    code?: number;
-    details?: string;
-    message?: string;
-  };
-};
+import { GrpcError } from './types/grpc-error.type';
 
 @Catch(RpcException, Error)
 export class GrpcExceptionFilter implements ExceptionFilter {
@@ -38,7 +27,6 @@ export class GrpcExceptionFilter implements ExceptionFilter {
       exception.getError?.().details ??
       exception.getError?.().message ??
       'Internal server error';
-
     const status = grpcToHttpStatus[code] ?? HttpStatus.INTERNAL_SERVER_ERROR;
 
     response.status(status).json({

@@ -9,6 +9,7 @@ import { Empty } from '../../../../../../libs/common/types/empty.type';
 import { GrpcClientDiTokens } from '../../../../../../libs/common/di/grpc-client-di-tokens';
 import { LoggerDiTokens } from '../../../../../../libs/modules/logger/di/di-tokens';
 import { LoggerInterface } from '../../../../../../libs/modules/logger/interfaces/logger.interface';
+import { GRPC_SERVICES } from '../../../../../../libs/common/constants/grpc-service.const';
 
 @Injectable()
 export class SubscriptionServiceClient implements OnModuleInit, SubscriptionServiceClientInterface {
@@ -21,10 +22,9 @@ export class SubscriptionServiceClient implements OnModuleInit, SubscriptionServ
   private serviceClient!: GrpcToObservable<SubscriptionServiceClientInterface>;
 
   onModuleInit() {
-    this.serviceClient =
-      this.client.getService<GrpcToObservable<SubscriptionServiceClientInterface>>(
-        'SubscriptionService',
-      );
+    this.serviceClient = this.client.getService<
+      GrpcToObservable<SubscriptionServiceClientInterface>
+    >(GRPC_SERVICES.SUBSCRIPTION);
     this.logger.setContext(SubscriptionServiceClient.name);
     this.logger.info('gRPC SubscriptionServiceClient initialized');
   }

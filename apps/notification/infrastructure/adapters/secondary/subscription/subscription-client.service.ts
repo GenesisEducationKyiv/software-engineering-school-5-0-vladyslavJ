@@ -11,7 +11,7 @@ import { SubscriptionFrequency } from '../../../../../../libs/common/enums/subsc
 import { SubscriptionModel } from '../../../../../../libs/common/models/subscription.model';
 import { LoggerDiTokens } from '../../../../../../libs/modules/logger/di/di-tokens';
 import { LoggerInterface } from '../../../../../../libs/modules/logger/interfaces/logger.interface';
-
+import { GRPC_SERVICES } from '../../../../../../libs/common/constants/grpc-service.const';
 @Injectable()
 export class SubscriptionServiceClient implements OnModuleInit, SubscriptionServiceClientInterface {
   constructor(
@@ -23,10 +23,9 @@ export class SubscriptionServiceClient implements OnModuleInit, SubscriptionServ
   private serviceClient!: GrpcToObservable<SubscriptionServiceClientInterface>;
 
   onModuleInit() {
-    this.serviceClient =
-      this.client.getService<GrpcToObservable<SubscriptionServiceClientInterface>>(
-        'SubscriptionService',
-      );
+    this.serviceClient = this.client.getService<
+      GrpcToObservable<SubscriptionServiceClientInterface>
+    >(GRPC_SERVICES.SUBSCRIPTION);
     this.logger.setContext(SubscriptionServiceClient.name);
     this.logger.info('gRPC SubscriptionServiceClient initialized');
   }

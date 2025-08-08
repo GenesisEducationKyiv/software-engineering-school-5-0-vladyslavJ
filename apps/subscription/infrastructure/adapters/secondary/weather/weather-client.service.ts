@@ -7,7 +7,7 @@ import { Weather } from '../../../../../../libs/common/models/weather.model';
 import { GrpcClientDiTokens } from '../../../../../../libs/common/di/grpc-client-di-tokens';
 import { LoggerDiTokens } from '../../../../../../libs/modules/logger/di/di-tokens';
 import { LoggerInterface } from '../../../../../../libs/modules/logger/interfaces/logger.interface';
-
+import { GRPC_SERVICES } from '../../../../../../libs/common/constants/grpc-service.const';
 @Injectable()
 export class WeatherServiceClient implements OnModuleInit, WeatherServiceClientInterface {
   constructor(
@@ -19,8 +19,9 @@ export class WeatherServiceClient implements OnModuleInit, WeatherServiceClientI
   private serviceClient!: GrpcToObservable<WeatherServiceClientInterface>;
 
   onModuleInit() {
-    this.serviceClient =
-      this.client.getService<GrpcToObservable<WeatherServiceClientInterface>>('WeatherService');
+    this.serviceClient = this.client.getService<GrpcToObservable<WeatherServiceClientInterface>>(
+      GRPC_SERVICES.WEATHER,
+    );
     this.logger.setContext(WeatherServiceClient.name);
     this.logger.info('gRPC WeatherServiceClient initialized');
   }

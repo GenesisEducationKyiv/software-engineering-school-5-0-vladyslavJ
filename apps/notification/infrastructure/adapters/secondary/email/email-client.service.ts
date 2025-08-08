@@ -8,6 +8,7 @@ import { Notification } from '../../../../../../libs/common/types/notification-r
 import { EmailResponseInterface } from '../../../../../../libs/common/interfaces/emai-response.interface';
 import { LoggerDiTokens } from '../../../../../../libs/modules/logger/di/di-tokens';
 import { LoggerInterface } from '../../../../../../libs/modules/logger/interfaces/logger.interface';
+import { GRPC_SERVICES } from '../../../../../../libs/common/constants/grpc-service.const';
 
 @Injectable()
 export class EmailServiceClient implements OnModuleInit, EmailServiceClientInterface {
@@ -20,8 +21,9 @@ export class EmailServiceClient implements OnModuleInit, EmailServiceClientInter
   private serviceClient!: GrpcToObservable<EmailServiceClientInterface>;
 
   onModuleInit() {
-    this.serviceClient =
-      this.client.getService<GrpcToObservable<EmailServiceClientInterface>>('EmailService');
+    this.serviceClient = this.client.getService<GrpcToObservable<EmailServiceClientInterface>>(
+      GRPC_SERVICES.EMAIL,
+    );
     this.logger.setContext(EmailServiceClient.name);
     this.logger.info('gRPC EmailServiceClient initialized');
   }

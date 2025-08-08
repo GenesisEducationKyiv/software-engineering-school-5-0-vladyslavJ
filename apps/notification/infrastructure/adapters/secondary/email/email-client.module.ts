@@ -4,6 +4,7 @@ import { GrpcClientDiTokens } from '../../../../../../libs/common/di/grpc-client
 import { ConfigService } from '@nestjs/config';
 import { EmailServiceClientDiTokens } from './di/email-client-di-tokens';
 import { EmailServiceClient } from './email-client.service';
+import { GRPC_PACKAGES } from '../../../../../../libs/common/constants/grpc-package.const';
 
 @Module({
   imports: [
@@ -14,7 +15,7 @@ import { EmailServiceClient } from './email-client.service';
           transport: Transport.GRPC,
           options: {
             url: `${config.get('email.host')}:${config.get('email.port')}`,
-            package: 'email',
+            package: GRPC_PACKAGES.EMAIL,
             protoPath: 'libs/proto/email.proto',
           },
         }),

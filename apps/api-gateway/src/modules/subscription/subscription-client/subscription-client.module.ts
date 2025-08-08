@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { SubscriptionServiceClient } from './subscription-client.service';
 import { SubscriptionServiceClientDiTokens } from '../../../../../../libs/common/di/subscription-di-tokens';
 import { GrpcClientDiTokens } from '../../../../../../libs/common/di/grpc-client-di-tokens';
+import { GRPC_PACKAGES } from '../../../../../../libs/common/constants/grpc-package.const';
 
 @Module({
   imports: [
@@ -14,7 +15,7 @@ import { GrpcClientDiTokens } from '../../../../../../libs/common/di/grpc-client
           transport: Transport.GRPC,
           options: {
             url: `${config.get('subscription.host')}:${config.get('subscription.port')}`,
-            package: 'subscription',
+            package: GRPC_PACKAGES.SUBSCRIPTION,
             protoPath: 'libs/proto/subscription.proto',
           },
         }),

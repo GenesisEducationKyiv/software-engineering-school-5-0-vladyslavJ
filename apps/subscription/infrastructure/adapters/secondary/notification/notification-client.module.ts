@@ -4,6 +4,7 @@ import { GrpcClientDiTokens } from '../../../../../../libs/common/di/grpc-client
 import { ConfigService } from '@nestjs/config';
 import { NotificationServiceClient } from './notification-client.service';
 import { NotificationServiceClientDiTokens } from './di/notification-client-di-tokens';
+import { GRPC_PACKAGES } from '../../../../../../libs/common/constants/grpc-package.const';
 
 @Module({
   imports: [
@@ -14,7 +15,7 @@ import { NotificationServiceClientDiTokens } from './di/notification-client-di-t
           transport: Transport.GRPC,
           options: {
             url: `${config.get('notification.host')}:${config.get('notification.port')}`,
-            package: 'notification',
+            package: GRPC_PACKAGES.NOTIFICATION,
             protoPath: 'libs/proto/notification.proto',
           },
         }),
